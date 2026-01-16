@@ -1,0 +1,125 @@
+.billing-portal {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 24px;
+}
+
+.billing-portal h2 {
+  font-size: 24px;
+  font-weight: 600;
+  color: #111827;
+  margin-bottom: 24px;
+}
+
+.billing-loading {
+  text-align: center;
+  padding: 40px;
+  color: #6b7280;
+}
+
+.billing-error {
+  padding: 12px;
+  background: #fee2e2;
+  color: #dc2626;
+  border-radius: 6px;
+  margin-bottom: 24px;
+}
+
+.current-plan {
+  margin-bottom: 32px;
+}
+
+.current-plan h3 {
+  font-size: 18px;
+  font-weight: 600;
+  color: #111827;
+  margin-bottom: 12px;
+}
+
+.plan-card {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 24px;
+}
+
+.plan-name {
+  font-size: 24px;
+  font-weight: 600;
+  color: #111827;
+  margin-bottom: 8px;
+  text-transform: capitalize;
+}
+
+.plan-status {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.plan-status.active {
+  background: #d1fae5;
+  color: #065f46;
+}
+
+.plan-status.trialing {
+  background: #dbeafe;
+  color: #1e40af;
+}
+
+.plan-status.canceled {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.plan-renewal {
+  font-size: 14px;
+  color: #6b7280;
+}
+
+.plan-actions {
+  margin-top: 24px;
+}
+
+.manage-btn {
+  padding: 12px 24px;
+  background: #6366f1;
+  color: #ffffff;
+  border: none;
+  border-radius: 6px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.manage-btn:hover {
+  background: #4f46e5;
+}
+
+.upgrade-options {
+  display: flex;
+  gap: 12px;
+}
+
+.upgrade-btn {
+  flex: 1;
+  padding: 12px 24px;
+  background: #6366f1;
+  color: #ffffff;
+  border: none;
+  border-radius: 6px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.upgrade-btn:hover {
+  background: #4f46e5;
+}
+

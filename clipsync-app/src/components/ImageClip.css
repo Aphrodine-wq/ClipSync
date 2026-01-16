@@ -1,0 +1,156 @@
+.image-clip {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 16px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.2s;
+}
+
+.image-clip:hover {
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.image-clip-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.image-clip-type {
+  font-size: 11px;
+  padding: 4px 8px;
+  background: #e5e7eb;
+  border-radius: 4px;
+  color: #374151;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+.pin-icon {
+  color: #6366f1;
+  font-size: 16px;
+}
+
+.image-clip-preview {
+  position: relative;
+  width: 100%;
+  min-height: 200px;
+  background: #f3f4f6;
+  border-radius: 8px;
+  overflow: hidden;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.image-preview {
+  max-width: 100%;
+  max-height: 400px;
+  object-fit: contain;
+  border-radius: 8px;
+}
+
+.image-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+}
+
+.spinner {
+  width: 32px;
+  height: 32px;
+  border: 3px solid #e5e7eb;
+  border-top-color: #6366f1;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.image-error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+  color: #6b7280;
+}
+
+.image-error span {
+  font-size: 32px;
+  margin-bottom: 8px;
+}
+
+.image-clip-info {
+  margin-bottom: 12px;
+  font-size: 12px;
+  color: #6b7280;
+}
+
+.file-name {
+  font-weight: 500;
+  color: #111827;
+  margin-bottom: 4px;
+}
+
+.file-size,
+.image-dimensions {
+  margin: 2px 0;
+}
+
+.image-clip-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.action-btn {
+  flex: 1;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.copy-btn {
+  background: #6366f1;
+  color: #ffffff;
+}
+
+.copy-btn:hover {
+  background: #4f46e5;
+}
+
+.pin-btn {
+  background: #f3f4f6;
+  color: #374151;
+}
+
+.pin-btn:hover {
+  background: #e5e7eb;
+}
+
+.pin-btn.pinned {
+  background: #ede9fe;
+  color: #6366f1;
+}
+
+.delete-btn {
+  background: #fee2e2;
+  color: #dc2626;
+}
+
+.delete-btn:hover {
+  background: #fecaca;
+}
+

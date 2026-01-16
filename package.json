@@ -1,0 +1,22 @@
+{
+  "name": "clipsync-launcher",
+  "version": "1.0.0",
+  "description": "ClipSync Application Launcher",
+  "main": "scripts/launcher.js",
+  "scripts": {
+    "start": "node scripts/launcher.js",
+    "build:exe": "pkg scripts/launcher.js --targets node18-win-x64 --output ClipSync.exe"
+  },
+  "bin": {
+    "clipsync": "./scripts/launcher.js"
+  },
+  "keywords": [
+    "clipsync",
+    "launcher"
+  ],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "pkg": "^5.8.1"
+  }
+}

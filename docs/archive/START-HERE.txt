@@ -1,0 +1,95 @@
+╔══════════════════════════════════════════════════════════════╗
+║                    ClipSync - Quick Start                    ║
+╚══════════════════════════════════════════════════════════════╝
+
+🚀 TO START CLIPSYNC:
+
+1. Double-click "START.bat" in the root folder
+   (This is the simplest way to start ClipSync)
+
+2. The launcher will:
+   ✓ Start Docker services (if Docker is running)
+   ✓ Start the backend server
+   ✓ Start the frontend server
+   ✓ Open your browser automatically
+
+3. ClipSync will be available at: http://localhost:5173
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📝 FIRST TIME SETUP:
+
+On first run, the launcher will create .env files from templates.
+You'll need to update these files with your Google OAuth credentials:
+
+1. backend/.env
+   - Set JWT_SECRET (generate a secure random string)
+   - Set GOOGLE_CLIENT_ID (from Google Cloud Console)
+
+2. clipsync-app/.env
+   - Set VITE_GOOGLE_CLIENT_ID (same as backend)
+
+See LOCAL-SETUP.md for detailed instructions.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🛑 TO STOP:
+
+Close the two service windows (Backend and Frontend).
+Or press Ctrl+C in each window.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📚 ALTERNATIVE LAUNCHERS:
+
+Web Application:
+• START.bat - Simple launcher (recommended)
+• launcher.bat - Full launcher with error checking and logging
+• ClipSync.exe - Optional standalone executable (if built)
+
+Desktop Application (Electron):
+• START-ELECTRON.bat - Full Electron launcher (builds if needed)
+• START-ELECTRON-SIMPLE.bat - Simple Electron launcher (assumes built)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+❓ TROUBLESHOOTING:
+
+🔴 Launcher Window Closes Immediately:
+
+If the window flashes and disappears:
+1. Use launcher.bat instead of START.bat (better error handling)
+2. Check launcher-error.log file (errors are logged there)
+3. Run from command prompt:
+   - Open CMD
+   - Navigate to ClipSync folder
+   - Type: START.bat
+   - This will show any errors before closing
+
+🔴 "Docker is not running":
+- This is OK! ClipSync will work without Docker
+- For full database features, start Docker Desktop manually
+- The launcher will continue even if Docker isn't running
+
+🔴 "Node.js not found":
+- Install Node.js from https://nodejs.org/
+- Restart your computer after installation
+- Verify with: node --version in command prompt
+
+🔴 Port already in use:
+- Close other applications using ports 3001 or 5173
+- Check if ClipSync is already running
+
+🔴 Services won't start:
+- Check launcher-error.log for detailed errors
+- Make sure Node.js is installed
+- Try running launcher.bat for better error messages
+
+For more help, see:
+- LOCAL-SETUP.md - Detailed setup guide
+- QUICK-REFERENCE.md - Command reference
+- README.md - Full documentation
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Enjoy ClipSync! 🎉

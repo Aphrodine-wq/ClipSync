@@ -1,0 +1,28 @@
+{
+  "name": "clipsync-cli",
+  "version": "1.0.0",
+  "description": "ClipSync Command Line Interface",
+  "main": "src/index.js",
+  "bin": {
+    "clipsync": "./src/index.js"
+  },
+  "scripts": {
+    "start": "node src/index.js"
+  },
+  "dependencies": {
+    "commander": "^11.1.0",
+    "inquirer": "^9.2.12",
+    "chalk": "^4.1.2",
+    "node-fetch": "^2.7.0",
+    "clipboardy": "^3.0.0",
+    "configstore": "^5.0.1"
+  },
+  "keywords": [
+    "clipboard",
+    "cli",
+    "sync"
+  ],
+  "author": "",
+  "license": "MIT"
+}
+

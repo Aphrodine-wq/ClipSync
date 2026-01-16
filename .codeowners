@@ -1,0 +1,37 @@
+# Code Owners
+# This file defines ownership of code areas
+
+# Core Backend
+/backend/ @clipsync/backend-team
+
+# Frontend Application
+/clipsync-app/ @clipsync/frontend-team
+
+# Desktop Application
+/clipsync-desktop/ @clipsync/desktop-team
+
+# Mobile Applications
+/clipsync-mobile/ @clipsync/mobile-team
+
+# Browser Extensions
+/browser-extension/ @clipsync/extensions-team
+
+# IDE Plugins
+/ide-plugins/ @clipsync/plugins-team
+
+# Integrations
+/integrations/ @clipsync/integrations-team
+
+# Documentation
+/docs/ @clipsync/docs-team
+
+# CLI
+/clipsync-cli/ @clipsync/cli-team
+
+# VS Code Extension
+/vscode-extension/ @clipsync/vscode-team
+
+# Root files
+/*.md @clipsync/engineering-team
+/.github/ @clipsync/engineering-team
+
