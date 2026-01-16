@@ -1,0 +1,80 @@
+{
+  "name": "clipsync-desktop",
+  "version": "1.0.0",
+  "description": "ClipSync - Professional Clipboard Manager for Windows",
+  "main": "main.js",
+  "author": "ClipSync",
+  "license": "MIT",
+  "scripts": {
+    "start": "electron .",
+    "dev": "concurrently \"npm run dev:web\" \"wait-on http://localhost:5173 && electron .\"",
+    "dev:web": "cd ../clipsync-app && npm run dev",
+    "build": "electron-builder",
+    "build:win": "npm run build:web && electron-builder --win --x64",
+    "build:win32": "npm run build:web && electron-builder --win --ia32",
+    "build:portable": "npm run build:web && electron-builder --win portable --x64",
+    "build:all": "npm run build:web && electron-builder --win --x64 --ia32",
+    "pack": "electron-builder --dir",
+    "dist": "npm run build:web && electron-builder",
+    "build:web": "cd ../clipsync-app && npm run build",
+    "release:copy": "node ../release/scripts/copy-builds.js",
+    "release:build": "npm run build:all && npm run release:copy",
+    "release:portable": "npm run build:portable && npm run release:copy"
+  },
+  "build": {
+    "appId": "com.clipsync.app",
+    "productName": "ClipSync",
+    "copyright": "Copyright © 2024 ClipSync",
+    "directories": {
+      "output": "dist",
+      "buildResources": "build"
+    },
+    "files": [
+      "main.js",
+      "preload.js",
+      "renderer/**/*",
+      "assets/**/*",
+      "node_modules/**/*"
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "dir",
+          "arch": ["x64"]
+        }
+      ],
+      "artifactName": "${productName}-${version}-${arch}.${ext}"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "ClipSync",
+      "deleteAppDataOnUninstall": false,
+      "runAfterFinish": true,
+      "menuCategory": true
+    },
+    "portable": {
+      "artifactName": "${productName}-Portable-${version}-${arch}.${ext}"
+    },
+    "extraResources": [
+      {
+        "from": "../clipsync-app/dist",
+        "to": "app",
+        "filter": ["**/*"]
+      }
+    ]
+  },
+  "dependencies": {
+    "electron-store": "^8.1.0",
+    "electron-updater": "^6.1.7",
+    "node-notifier": "^10.0.1"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2",
+    "electron": "^28.1.0",
+    "electron-builder": "^24.9.1",
+    "wait-on": "^7.2.0"
+  }
+}

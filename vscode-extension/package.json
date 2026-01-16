@@ -1,0 +1,218 @@
+{
+  "name": "clipsync-vscode",
+  "displayName": "ClipSync",
+  "description": "Professional clipboard manager with team collaboration, snippets, and developer tools",
+  "version": "1.0.0",
+  "publisher": "clipsync",
+  "icon": "images/icon.png",
+  "engines": {
+    "vscode": "^1.80.0"
+  },
+  "categories": [
+    "Other",
+    "Snippets",
+    "Formatters"
+  ],
+  "keywords": [
+    "clipboard",
+    "snippets",
+    "productivity",
+    "team",
+    "sync"
+  ],
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "clipsync.openPanel",
+        "title": "ClipSync: Open Panel",
+        "icon": "$(clippy)"
+      },
+      {
+        "command": "clipsync.pasteFromHistory",
+        "title": "ClipSync: Paste from History",
+        "icon": "$(history)"
+      },
+      {
+        "command": "clipsync.saveSnippet",
+        "title": "ClipSync: Save as Snippet",
+        "icon": "$(save)"
+      },
+      {
+        "command": "clipsync.insertSnippet",
+        "title": "ClipSync: Insert Snippet",
+        "icon": "$(symbol-snippet)"
+      },
+      {
+        "command": "clipsync.formatCode",
+        "title": "ClipSync: Format Code",
+        "icon": "$(symbol-color)"
+      },
+      {
+        "command": "clipsync.transformText",
+        "title": "ClipSync: Transform Text",
+        "icon": "$(symbol-misc)"
+      },
+      {
+        "command": "clipsync.shareWithTeam",
+        "title": "ClipSync: Share with Team",
+        "icon": "$(organization)"
+      },
+      {
+        "command": "clipsync.generateCommit",
+        "title": "ClipSync: Generate Commit Message",
+        "icon": "$(git-commit)"
+      },
+      {
+        "command": "clipsync.testRegex",
+        "title": "ClipSync: Test Regex",
+        "icon": "$(regex)"
+      },
+      {
+        "command": "clipsync.compareText",
+        "title": "ClipSync: Compare Text (Diff)",
+        "icon": "$(diff)"
+      }
+    ],
+    "keybindings": [
+      {
+        "command": "clipsync.openPanel",
+        "key": "ctrl+shift+v",
+        "mac": "cmd+shift+v"
+      },
+      {
+        "command": "clipsync.pasteFromHistory",
+        "key": "ctrl+shift+h",
+        "mac": "cmd+shift+h"
+      },
+      {
+        "command": "clipsync.saveSnippet",
+        "key": "ctrl+shift+s",
+        "mac": "cmd+shift+s"
+      },
+      {
+        "command": "clipsync.transformText",
+        "key": "ctrl+shift+t",
+        "mac": "cmd+shift+t"
+      }
+    ],
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "clipsync",
+          "title": "ClipSync",
+          "icon": "images/icon.svg"
+        }
+      ]
+    },
+    "views": {
+      "clipsync": [
+        {
+          "id": "clipsync.history",
+          "name": "Clipboard History"
+        },
+        {
+          "id": "clipsync.snippets",
+          "name": "Snippets"
+        },
+        {
+          "id": "clipsync.team",
+          "name": "Team Clips"
+        }
+      ]
+    },
+    "menus": {
+      "editor/context": [
+        {
+          "command": "clipsync.saveSnippet",
+          "when": "editorHasSelection",
+          "group": "clipsync@1"
+        },
+        {
+          "command": "clipsync.transformText",
+          "when": "editorHasSelection",
+          "group": "clipsync@2"
+        },
+        {
+          "command": "clipsync.shareWithTeam",
+          "when": "editorHasSelection",
+          "group": "clipsync@3"
+        },
+        {
+          "command": "clipsync.compareText",
+          "when": "editorHasSelection",
+          "group": "clipsync@4"
+        }
+      ],
+      "view/title": [
+        {
+          "command": "clipsync.openPanel",
+          "when": "view == clipsync.history",
+          "group": "navigation"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "ClipSync",
+      "properties": {
+        "clipsync.enabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable ClipSync extension"
+        },
+        "clipsync.autoCapture": {
+          "type": "boolean",
+          "default": true,
+          "description": "Automatically capture clipboard changes"
+        },
+        "clipsync.maxHistory": {
+          "type": "number",
+          "default": 100,
+          "description": "Maximum number of clipboard items to store"
+        },
+        "clipsync.syncEnabled": {
+          "type": "boolean",
+          "default": false,
+          "description": "Enable cloud sync (requires account)"
+        },
+        "clipsync.apiUrl": {
+          "type": "string",
+          "default": "http://localhost:3001",
+          "description": "ClipSync API URL"
+        },
+        "clipsync.showNotifications": {
+          "type": "boolean",
+          "default": true,
+          "description": "Show notifications for clipboard actions"
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "pretest": "npm run compile && npm run lint",
+    "lint": "eslint src --ext ts",
+    "test": "node ./out/test/runTest.js",
+    "package": "vsce package",
+    "publish": "vsce publish"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.80.0",
+    "@types/node": "^20.0.0",
+    "@typescript-eslint/eslint-plugin": "^6.0.0",
+    "@typescript-eslint/parser": "^6.0.0",
+    "eslint": "^8.0.0",
+    "typescript": "^5.0.0",
+    "@vscode/test-electron": "^2.3.0",
+    "vsce": "^2.15.0"
+  },
+  "dependencies": {
+    "axios": "^1.6.0",
+    "socket.io-client": "^4.6.0"
+  }
+}

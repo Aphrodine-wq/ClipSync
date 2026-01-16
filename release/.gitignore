@@ -1,0 +1,24 @@
+# Ignore all executable and installer files
+*.exe
+*.msi
+*.appx
+*.zip
+*.tar.gz
+*.dmg
+*.pkg
+
+# Ignore build artifacts
+*.blockmap
+*.yml
+!.gitignore
+
+# Ignore checksums (regenerated each build)
+checksums.txt
+SHA256SUMS
+
+# Keep folder structure
+!windows/.gitkeep
+!scripts/.gitkeep
+!CHANGELOG.md
+!RELEASE-NOTES.md
+!README.md
