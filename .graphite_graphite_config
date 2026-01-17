@@ -1,0 +1,8 @@
+{
+  "branchCreateMessage": "stacked with Graphite",
+  "continuousIntegrationService": "github",
+  "defaultPublicPRDescription": "👋 This PR is part of a stack of PRs managed by [Graphite](https://withgraphite.com).\n\n**This is an automated PR**, so please be patient as we work through any feedback or merge conflicts.",
+  "meta": {
+    "recentBranches": []
+  }
+}

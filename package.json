@@ -17,6 +17,7 @@
   "author": "",
   "license": "MIT",
   "devDependencies": {
+    "@withgraphite/graphite-cli": "^1.7.14",
     "pkg": "^5.8.1"
   }
 }
