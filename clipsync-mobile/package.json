@@ -8,7 +8,10 @@
     "ios": "react-native run-ios",
     "start": "react-native start",
     "test": "jest",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "detox:build:ios": "detox build --configuration ios.sim.release",
+    "detox:test:ios": "detox test --configuration ios.sim.release",
+    "detox:screenshots:ios": "detox test --configuration ios.sim.release e2e/screenshots.e2e.js --take-screenshots all --record-logs all"
   },
   "dependencies": {
     "react": "18.2.0",
@@ -45,7 +48,9 @@
     "metro-react-native-babel-preset": "0.76.8",
     "prettier": "^2.4.1",
     "react-test-renderer": "18.2.0",
-    "typescript": "4.8.4"
+    "typescript": "4.8.4",
+    "detox": "^20.14.0",
+    "detox-expo-helpers": "^0.6.0"
   },
   "engines": {
     "node": ">=18"
