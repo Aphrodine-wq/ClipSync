@@ -1,12 +1,20 @@
 /**
  * Paywall Modal Component
- * Shows upgrade prompt when device limit is exceeded
+ * Shows upgrade prompt when limits are exceeded (clips, devices, or storage)
  */
 
 import { useEffect } from 'react';
-import { X, Zap, Shield, Infinity, Check } from 'lucide-react';
+import { X, Zap, Shield, Infinity, Check, AlertCircle } from 'lucide-react';
 
-const PaywallModal = ({ isOpen, onClose, currentPlan = 'free', requiredPlan = 'pro', currentDevices = 1, maxDevices = 1 }) => {
+const PaywallModal = ({
+  isOpen,
+  onClose,
+  currentPlan = 'free',
+  limitType = 'device', // 'device', 'clip', 'storage'
+  currentValue = 1,
+  maxValue = 1,
+  resetDate = null,
+}) => {
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = 'hidden';
@@ -21,13 +29,38 @@ const PaywallModal = ({ isOpen, onClose, currentPlan = 'free', requiredPlan = 'p
   if (!isOpen) return null;
 
   const handleUpgrade = () => {
-    // Navigate to pricing or trigger upgrade flow
     window.location.href = '/pricing';
   };
 
+  const getLimitText = () => {
+    switch (limitType) {
+      case 'device':
+        return `Your ${currentPlan} plan allows ${maxValue} device${maxValue !== 1 ? 's' : ''}`;
+      case 'clip':
+        return `Your ${currentPlan} plan allows ${maxValue} clips per month`;
+      case 'storage':
+        return `Your ${currentPlan} plan allows ${maxValue}GB storage`;
+      default:
+        return `Limit reached`;
+    }
+  };
+
+  const getUpgradeText = () => {
+    switch (limitType) {
+      case 'device':
+        return 'Upgrade to use ClipSync on 3 devices or more';
+      case 'clip':
+        return 'Upgrade to create more clips this month';
+      case 'storage':
+        return 'Upgrade to get more storage space';
+      default:
+        return 'Upgrade to unlock more features';
+    }
+  };
+
   const features = [
-    { icon: Infinity, text: 'Unlimited devices' },
-    { icon: Zap, text: 'Advanced features' },
+    { icon: Zap, text: 'Increased usage limits' },
+    { icon: Infinity, text: 'More devices and storage' },
     { icon: Shield, text: 'Priority support' },
   ];
 
@@ -51,14 +84,18 @@ const PaywallModal = ({ isOpen, onClose, currentPlan = 'free', requiredPlan = 'p
             >
               <X className="w-5 h-5" />
             </button>
-            
+
             <div className="mt-4">
               <div className="flex items-center gap-3 mb-2">
                 <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center backdrop-blur-sm">
-                  <Shield className="w-6 h-6" />
+                  <AlertCircle className="w-6 h-6" />
                 </div>
                 <div>
-                  <h2 className="text-2xl font-bold">Device Limit Reached</h2>
+                  <h2 className="text-2xl font-bold">
+                    {limitType === 'device' && 'Device Limit Reached'}
+                    {limitType === 'clip' && 'Monthly Clip Limit Reached'}
+                    {limitType === 'storage' && 'Storage Limit Reached'}
+                  </h2>
                   <p className="text-white/80 text-sm">Upgrade to unlock more</p>
                 </div>
               </div>
@@ -77,9 +114,15 @@ const PaywallModal = ({ isOpen, onClose, currentPlan = 'free', requiredPlan = 'p
               </span>
             </div>
             <div className="flex items-center justify-between">
-              <span className="text-sm text-zinc-600">Devices Used</span>
+              <span className="text-sm text-zinc-600">
+                {limitType === 'device' && 'Devices Used'}
+                {limitType === 'clip' && 'Clips Created'}
+                {limitType === 'storage' && 'Storage Used'}
+              </span>
               <span className="text-lg font-bold text-zinc-900">
-                {currentDevices} / {maxDevices}
+                {currentValue} / {maxValue}
+                {limitType === 'clip' && ' (this month)'}
+                {limitType === 'storage' && 'GB'}
               </span>
             </div>
           </div>
@@ -87,22 +130,26 @@ const PaywallModal = ({ isOpen, onClose, currentPlan = 'free', requiredPlan = 'p
           {/* Message */}
           <div className="mb-6">
             <p className="text-zinc-700 leading-relaxed">
-              Your <span className="font-semibold">{currentPlan}</span> plan allows {maxDevices} device{maxDevices !== 1 ? 's' : ''}. 
-              You're currently using {currentDevices} device{currentDevices !== 1 ? 's' : ''}.
+              {getLimitText()}
             </p>
             <p className="text-zinc-600 text-sm mt-2">
-              Upgrade to <span className="font-semibold text-indigo-600">{requiredPlan}</span> to use ClipSync on unlimited devices.
+              {getUpgradeText()}
             </p>
+            {resetDate && limitType === 'clip' && (
+              <p className="text-zinc-500 text-xs mt-2">
+                Your limit resets on {new Date(resetDate).toLocaleDateString()}
+              </p>
+            )}
           </div>
 
           {/* Features */}
           <div className="mb-6">
-            <h3 className="text-sm font-semibold text-zinc-900 mb-3">What you'll get with {requiredPlan}:</h3>
+            <h3 className="text-sm font-semibold text-zinc-900 mb-3">Upgrade to Professional Plan:</h3>
             <div className="space-y-2">
               {features.map((feature, index) => {
                 const Icon = feature.icon;
                 return (
-                  <div 
+                  <div
                     key={index}
                     className="flex items-center gap-3 p-3 bg-gradient-to-r from-indigo-50 to-purple-50 rounded-lg border border-indigo-100 animate-fadeIn"
                     style={{ animationDelay: `${index * 100}ms` }}
