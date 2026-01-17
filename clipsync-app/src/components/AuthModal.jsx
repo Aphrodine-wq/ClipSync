@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react';
 import useAuthStore from '../store/useAuthStore';
 import PaywallModal from './PaywallModal';
+import { Github } from 'lucide-react';
 
 const AuthModal = ({ onClose }) => {
-  const { loginWithGoogle, error, clearError, paywallData, clearPaywall } = useAuthStore();
+  const { loginWithGoogle, loginWithGitHub, error, clearError, paywallData, clearPaywall } = useAuthStore();
   const [isLoading, setIsLoading] = useState(false);
   const [showPaywall, setShowPaywall] = useState(false);
 
@@ -43,16 +44,35 @@ const AuthModal = ({ onClose }) => {
     try {
       setIsLoading(true);
       clearError();
-      
+
       await loginWithGoogle(response.credential);
-      
+
       // Close modal on success
       onClose();
     } catch (error) {
       console.error('Google sign-in error:', error);
       setIsLoading(false);
-      
+
       // Show paywall if device limit exceeded
+      if (error.paywallData) {
+        setShowPaywall(true);
+      }
+    }
+  };
+
+  const handleGitHubLogin = async () => {
+    try {
+      setIsLoading(true);
+      clearError();
+
+      await loginWithGitHub();
+
+      // Close modal on success
+      onClose();
+    } catch (error) {
+      console.error('GitHub sign-in error:', error);
+      setIsLoading(false);
+
       if (error.paywallData) {
         setShowPaywall(true);
       }
@@ -103,9 +123,22 @@ const AuthModal = ({ onClose }) => {
           </div>
         )}
 
-        {/* Google Sign-In button */}
-        <div className="flex justify-center mb-6">
-          <div id="google-signin-button"></div>
+        {/* Sign-In buttons */}
+        <div className="space-y-3 mb-6">
+          {/* Google Sign-In button */}
+          <div className="flex justify-center">
+            <div id="google-signin-button"></div>
+          </div>
+
+          {/* GitHub Sign-In button */}
+          <button
+            onClick={handleGitHubLogin}
+            disabled={isLoading}
+            className="w-full py-3 px-4 bg-zinc-900 hover:bg-zinc-800 text-white rounded-lg font-medium transition-colors flex items-center justify-center gap-2 disabled:opacity-50"
+          >
+            <Github className="w-5 h-5" />
+            Continue with GitHub
+          </button>
         </div>
 
         {isLoading && (
