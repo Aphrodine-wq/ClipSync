@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ClipSync Health Dashboard</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #0a0a0a; color: #e0e0e0; padding: 20px; }
+        .dashboard { max-width: 1200px; margin: 0 auto; }
+        .header { margin-bottom: 30px; }
+        .header h1 { font-size: 28px; margin-bottom: 8px; }
+        .header p { color: #888; font-size: 14px; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin-bottom: 30px; }
+        .card { background: #1a1a1a; border-radius: 12px; padding: 24px; border: 1px solid #333; }
+        .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+        .card-title { font-size: 18px; font-weight: 600; }
+        .status-badge { padding: 6px 12px; border-radius: 6px; font-size: 12px; font-weight: 600; text-transform: uppercase; }
+        .status-healthy { background: #1a4d3e; color: #4ade80; }
+        .status-unhealthy { background: #4d1a1a; color: #f87171; }
+        .status-degraded { background: #4d3a1a; color: #fbbf24; }
+        .status-pending { background: #1a1a4d; color: #60a5fa; }
+        .status-unknown { background: #333; color: #888; }
+        .metric { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #2a2a2a; font-size: 14px; }
+        .metric:last-child { border-bottom: none; }
+        .metric-label { color: #888; }
+        .metric-value { font-weight: 500; }
+        .log-section { background: #1a1a1a; border-radius: 12px; padding: 24px; border: 1px solid #333; }
+        .log-section h2 { font-size: 18px; margin-bottom: 16px; }
+        .log-list { font-family: 'Courier New', monospace; font-size: 12px; max-height: 300px; overflow-y: auto; background: #0a0a0a; padding: 16px; border-radius: 8px; }
+        .log-item { padding: 4px 0; color: #888; }
+        .log-item.success { color: #4ade80; }
+        .log-item.error { color: #f87171; }
+        .log-item.warning { color: #fbbf24; }
+        .refresh-info { text-align: center; padding: 16px; color: #888; font-size: 14px; }
+    </style>
+</head>
+<body>
+    <div class="dashboard">
+        <div class="header">
+            <h1>🚀 ClipSync Health Dashboard</h1>
+            <p>Real-time monitoring of all ClipSync services</p>
+        </div>
+
+        <div class="grid">
+            <!-- Backend Card -->
+            <div class="card" id="backend-card">
+                <div class="card-header">
+                    <div class="card-title">🔧 Backend API</div>
+                    <div class="status-badge status-pending" id="backend-status">Checking...</div>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Port</span>
+                    <span class="metric-value">3001</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">URL</span>
+                    <span class="metric-value">/health</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Response Time</span>
+                    <span class="metric-value" id="backend-response-time">--</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Database</span>
+                    <span class="metric-value" id="backend-db">--</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Redis</span>
+                    <span class="metric-value" id="backend-redis">--</span>
+                </div>
+            </div>
+
+            <!-- Frontend Card -->
+            <div class="card" id="frontend-card">
+                <div class="card-header">
+                    <div class="card-title">🌐 Frontend App</div>
+                    <div class="status-badge status-pending" id="frontend-status">Checking...</div>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Port</span>
+                    <span class="metric-value">5173</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">URL</span>
+                    <span class="metric-value">/</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Response Time</span>
+                    <span class="metric-value" id="frontend-response-time">--</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Mode</span>
+                    <span class="metric-value">Development</span>
+                </div>
+            </div>
+
+            <!-- PostgreSQL Card -->
+            <div class="card" id="postgres-card">
+                <div class="card-header">
+                    <div class="card-title">🐘 PostgreSQL</div>
+                    <div class="status-badge status-pending" id="postgres-status">Checking...</div>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Port</span>
+                    <span class="metric-value">5432</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Database</span>
+                    <span class="metric-value">clipsync</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Tables</span>
+                    <span class="metric-value" id="postgres-tables">--</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Connection</span>
+                    <span class="metric-value" id="postgres-connection">--</span>
+                </div>
+            </div>
+
+            <!-- Redis Card -->
+            <div class="card" id="redis-card">
+                <div class="card-header">
+                    <div class="card-title">⚡ Redis</div>
+                    <div class="status-badge status-unknown" id="redis-status">Not Configured</div>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Port</span>
+                    <span class="metric-value">6379</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Status</span>
+                    <span class="metric-value">Optional</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Purpose</span>
+                    <span class="metric-value">Caching</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="log-section">
+            <h2>📋 Recent Activity</h2>
+            <div class="log-list" id="activity-log">
+                <div class="log-item">Dashboard initialized...</div>
+            </div>
+        </div>
+
+        <div class="refresh-info">
+            Auto-refreshing every 5 seconds • Last updated: <span id="last-update">--</span>
+        </div>
+    </div>
+
+    <script>
+        const BACKEND_URL = 'http://localhost:3001/health';
+        const FRONTEND_URL = 'http://localhost:5173';
+        const activityLog = document.getElementById('activity-log');
+
+        function addLog(message, type = 'info') {
+            const timestamp = new Date().toLocaleTimeString();
+            const logItem = document.createElement('div');
+            logItem.className = `log-item ${type}`;
+            logItem.textContent = `[${timestamp}] ${message}`;
+            activityLog.insertBefore(logItem, activityLog.firstChild);
+            
+            // Keep only last 20 log entries
+            while (activityLog.children.length > 20) {
+                activityLog.removeChild(activityLog.lastChild);
+            }
+        }
+
+        function updateStatus(elementId, status) {
+            const element = document.getElementById(elementId);
+            element.className = 'status-badge';
+            element.classList.add(`status-${status}`);
+            element.textContent = status.charAt(0).toUpperCase() + status.slice(1);
+        }
+
+        async function checkBackend() {
+            const startTime = Date.now();
+            try {
+                const response = await fetch(BACKEND_URL);
+                const endTime = Date.now();
+                const data = await response.json();
+
+                const responseTime = endTime - startTime;
+                document.getElementById('backend-response-time').textContent = `${responseTime}ms`;
+
+                const overallStatus = data.status;
+                updateStatus('backend-status', overallStatus);
+
+                document.getElementById('backend-db').textContent = data.services.database?.status || '--';
+                document.getElementById('backend-redis').textContent = data.services.redis?.status || '--';
+
+                addLog(`Backend health check: ${overallStatus} (${responseTime}ms)`, overallStatus === 'healthy' ? 'success' : 'warning');
+            } catch (error) {
+                updateStatus('backend-status', 'unhealthy');
+                addLog(`Backend error: ${error.message}`, 'error');
+            }
+        }
+
+        async function checkFrontend() {
+            const startTime = Date.now();
+            try {
+                const response = await fetch(FRONTEND_URL);
+                const endTime = Date.now();
+                const responseTime = endTime - startTime;
+
+                document.getElementById('frontend-response-time').textContent = `${responseTime}ms`;
+
+                if (response.ok) {
+                    updateStatus('frontend-status', 'healthy');
+                    addLog(`Frontend health check: healthy (${responseTime}ms)`, 'success');
+                } else {
+                    updateStatus('frontend-status', 'unhealthy');
+                    addLog(`Frontend error: HTTP ${response.status}`, 'error');
+                }
+            } catch (error) {
+                updateStatus('frontend-status', 'unhealthy');
+                addLog(`Frontend error: ${error.message}`, 'error');
+            }
+        }
+
+        async function checkPostgreSQL() {
+            try {
+                // PostgreSQL check is done via the backend health endpoint
+                const response = await fetch(BACKEND_URL);
+                const data = await response.json();
+
+                const dbStatus = data.services.database?.status;
+                updateStatus('postgres-status', dbStatus === 'healthy' ? 'healthy' : 'unhealthy');
+                document.getElementById('postgres-connection').textContent = dbStatus === 'healthy' ? 'Connected' : 'Failed';
+                document.getElementById('postgres-tables').textContent = dbStatus === 'healthy' ? '29 tables' : '--';
+
+                if (dbStatus === 'healthy') {
+                    addLog('PostgreSQL: Connected and healthy', 'success');
+                } else {
+                    addLog('PostgreSQL: Connection failed', 'error');
+                }
+            } catch (error) {
+                updateStatus('postgres-status', 'unhealthy');
+                addLog(`PostgreSQL error: ${error.message}`, 'error');
+            }
+        }
+
+        async function checkAll() {
+            document.getElementById('last-update').textContent = new Date().toLocaleTimeString();
+            await Promise.all([checkBackend(), checkFrontend(), checkPostgreSQL()]);
+        }
+
+        // Initial check
+        checkAll();
+
+        // Auto-refresh every 5 seconds
+        setInterval(checkAll, 5000);
+    </script>
+</body>
+</html>

@@ -272,7 +272,7 @@ const PricingScreen = ({ onClose, currentPlan = 'free' }) => {
               },
               {
                 q: 'What happens if I exceed my limit?',
-                a: 'You can still use ClipSync, but you'll be prompted to upgrade to continue creating new clips.',
+                a: "You can still use ClipSync, but you'll be prompted to upgrade to continue creating new clips.",
               },
               {
                 q: 'Do you offer a trial period?',

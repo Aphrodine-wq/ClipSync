@@ -3,10 +3,14 @@
  * Handles image upload, compression, and thumbnail generation
  */
 
+import crypto from 'crypto';
+import path from 'path';
+import { promises as fs } from 'fs';
+
+// Sharp is CommonJS, use createRequire
+import { createRequire } from 'module';
+const require = createRequire(import.meta.url);
 const sharp = require('sharp');
-const crypto = require('crypto');
-const path = require('path');
-const fs = require('fs').promises;
 
 class ImageProcessingService {
   constructor() {
@@ -167,5 +171,7 @@ class ImageProcessingService {
   }
 }
 
-module.exports = new ImageProcessingService();
+// Export as ESM
+const imageProcessingService = new ImageProcessingService();
+export default imageProcessingService;
 
