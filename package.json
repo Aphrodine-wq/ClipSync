@@ -17,6 +17,7 @@
   "author": "",
   "license": "MIT",
   "devDependencies": {
-    "pkg": "^5.8.1"
+    "pkg": "^5.8.1",
+    "puppeteer": "^24.35.0"
   }
 }
