@@ -4,17 +4,12 @@
  */
 
 import { Platform } from 'react-native';
+import * as ExpoClipboard from 'expo-clipboard';
 
-let Clipboard: any;
-if (Platform.OS !== 'web') {
-  Clipboard = require('@react-native-clipboard/clipboard').default;
-} else {
-  // Simple mock for web to prevent crash
-  Clipboard = {
-    getString: async () => '',
-    setString: () => { },
-  };
-}
+const Clipboard = {
+  getString: async () => await ExpoClipboard.getStringAsync(),
+  setString: async (text: string) => await ExpoClipboard.setStringAsync(text),
+};
 import { useClipStore } from '../store/useClipStore';
 
 class ClipboardService {

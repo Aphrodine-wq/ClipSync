@@ -5,7 +5,7 @@
 
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
-import Icon from 'react-native-vector-icons/MaterialIcons';
+import { MaterialIcons } from '@expo/vector-icons';
 import { useAuthStore } from '../store/useAuthStore';
 
 export default function SettingsScreen() {
@@ -33,11 +33,11 @@ export default function SettingsScreen() {
         <Text style={styles.sectionTitle}>Preferences</Text>
         <TouchableOpacity style={styles.settingItem}>
           <Text style={styles.settingLabel}>Notifications</Text>
-          <Icon name="chevron-right" size={24} color="#9ca3af" />
+          <MaterialIcons name="chevron-right" size={24} color="#9ca3af" />
         </TouchableOpacity>
         <TouchableOpacity style={styles.settingItem}>
           <Text style={styles.settingLabel}>Theme</Text>
-          <Icon name="chevron-right" size={24} color="#9ca3af" />
+          <MaterialIcons name="chevron-right" size={24} color="#9ca3af" />
         </TouchableOpacity>
       </View>
 

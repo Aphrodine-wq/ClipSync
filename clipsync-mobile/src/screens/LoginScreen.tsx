@@ -12,7 +12,7 @@ import {
   ActivityIndicator,
   Alert,
 } from 'react-native';
-import Icon from 'react-native-vector-icons/MaterialIcons';
+import { MaterialIcons } from '@expo/vector-icons';
 import { useAuthStore } from '../store/useAuthStore';
 import { apiClient } from '../services/api';
 
@@ -23,18 +23,13 @@ export default function LoginScreen() {
   const handleGoogleLogin = async () => {
     setIsLoading(true);
     try {
-      // In a real app, you would use react-native-google-signin
-      // For now, this is a placeholder
-      Alert.alert(
-        'Google Login',
-        'Google OAuth integration needed. Use react-native-google-signin package.',
-        [{ text: 'OK' }]
-      );
-      
-      // Placeholder: In production, implement actual Google OAuth
-      // const { idToken } = await GoogleSignin.signIn();
-      // const response = await apiClient.post('/auth/google', { token: idToken });
-      // await login(response.token, response.refreshToken, response.user);
+      // Mock login for development - bypasses real auth
+      await login('mock-token', 'mock-refresh-token', {
+        id: 'mock-user-1',
+        email: 'demo@clipsync.app',
+        name: 'Demo User',
+        plan: 'Pro',
+      });
     } catch (error) {
       console.error('Login error:', error);
       Alert.alert('Error', 'Failed to sign in. Please try again.');
@@ -65,7 +60,7 @@ export default function LoginScreen() {
             <ActivityIndicator color="#ffffff" />
           ) : (
             <>
-              <Icon name="account-circle" size={24} color="#ffffff" />
+              <MaterialIcons name="account-circle" size={24} color="#ffffff" />
               <Text style={styles.buttonText}>Sign in with Google</Text>
             </>
           )}
