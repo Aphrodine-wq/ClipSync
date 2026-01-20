@@ -102,3 +102,6 @@ storybook-static/
 
 # TypeScript
 *.tsbuildinfo
+
+win-unpacked/
+ClipSync Setup 1.0.0.exe.blockmap

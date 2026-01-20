@@ -13,11 +13,11 @@
  */
 
 import { useState } from 'react';
-import AuthModal from '../../modals/AuthModal';
-import PaywallModal from '../../modals/PaywallModal';
-import PricingScreen from '../../screens/PricingScreen';
+import AuthModal from '../modals/AuthModal';
+import PaywallModal from '../modals/PaywallModal';
+import PricingScreen from '../screens/PricingScreen';
 import DeviceManagement from './DeviceManagement';
-import UsageQuota from '../../features/billing/UsageQuota';
+import UsageQuota from '../features/billing/UsageQuota';
 
 const ScreenshotHelper = () => {
   const [currentView, setCurrentView] = useState('menu');
@@ -176,7 +176,7 @@ const ScreenshotHelper = () => {
               <li>1. Click a button to show the component</li>
               <li>2. Press F12 to open DevTools</li>
               <li>3. Press Ctrl+Shift+P (Windows) or Cmd+Shift+P (Mac)</li>
-              <li>4. Type "screenshot" and select "Capture screenshot"</li>
+              <li>4. Type &apos;screenshot&apos; and select &apos;Capture screenshot&apos;</li>
               <li>5. Save to <code className="bg-blue-100 px-1 rounded">screenshots/</code> folder</li>
             </ol>
           </div>
@@ -289,7 +289,7 @@ const ScreenshotHelper = () => {
           <h3 className="font-semibold text-zinc-900 mb-2">💡 Tips</h3>
           <ul className="text-sm text-zinc-600 space-y-1">
             <li>• For best quality, capture at 1920x1080 resolution</li>
-            <li>• Use "Capture full size screenshot" for scrollable content</li>
+            <li>• Use &quot;Capture full size screenshot&quot; for scrollable content</li>
             <li>• Make sure to capture modals with backdrop visible</li>
             <li>• Save files as PNG for best quality</li>
           </ul>

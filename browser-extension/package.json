@@ -1,0 +1,22 @@
+{
+  "name": "clipsync-browser-extension",
+  "version": "1.0.0",
+  "description": "ClipSync Browser Extension for Chrome and Firefox",
+  "private": true,
+  "scripts": {
+    "build": "echo 'Browser extension - no build step required'",
+    "dev": "echo 'Browser extension - load unpacked in browser for development'",
+    "lint": "eslint . --ext .js",
+    "lint:fix": "eslint . --ext .js --fix",
+    "format": "prettier --write \"**/*.{js,json,html,css,md}\"",
+    "format:check": "prettier --check \"**/*.{js,json,html,css,md}\""
+  },
+  "keywords": [
+    "clipboard",
+    "browser-extension",
+    "chrome",
+    "firefox"
+  ],
+  "author": "",
+  "license": "MIT"
+}

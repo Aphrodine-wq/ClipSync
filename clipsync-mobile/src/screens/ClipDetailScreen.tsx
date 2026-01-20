@@ -10,7 +10,8 @@ import { useClipStore } from '../store/useClipStore';
 import { clipboardService } from '../services/clipboard';
 import { format } from 'date-fns';
 
-export default function ClipDetailScreen({ route, navigation }: any) {
+type Props = { route: { params: { clipId: string } }; navigation: { goBack: () => void } };
+export default function ClipDetailScreen({ route, navigation }: Props) {
   const { clipId } = route.params;
   const { clips, deleteClip, pinClip } = useClipStore();
   const clip = clips.find(c => c.id === clipId);

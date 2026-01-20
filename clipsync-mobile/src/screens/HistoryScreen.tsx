@@ -17,13 +17,13 @@ import { useClipStore, Clip } from '../store/useClipStore';
 import { clipboardService } from '../services/clipboard';
 import { formatDistanceToNow } from 'date-fns';
 
-export default function HistoryScreen({ navigation }: any) {
+type Props = { navigation: { navigate: (screen: string, params?: { clipId: string }) => void } };
+export default function HistoryScreen({ navigation }: Props) {
   const {
     clips,
     searchQuery,
     activeFilter,
     isLoading,
-    syncStatus,
     setSelectedClip,
     syncWithServer,
   } = useClipStore();

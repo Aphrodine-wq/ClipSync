@@ -89,7 +89,9 @@ export class TeamManager {
             try {
                 JSON.parse(content);
                 return 'json';
-            } catch {}
+            } catch {
+                // Ignore JSON parse errors
+            }
         }
         if (/^https?:\/\//i.test(content)) return 'url';
         if (/\b(function|const|let|var|class)\b/.test(content)) return 'code';

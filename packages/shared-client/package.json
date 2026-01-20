@@ -1,0 +1,32 @@
+{
+  "name": "@clipsync/shared-client",
+  "version": "1.0.0",
+  "description": "Shared API and WebSocket client for ClipSync",
+  "type": "module",
+  "main": "./src/index.js",
+  "module": "./src/index.js",
+  "exports": {
+    ".": "./src/index.js",
+    "./api": "./src/api.js",
+    "./socket": "./src/socket.js"
+  },
+  "scripts": {
+    "build": "echo 'No build step required - using ESM directly'",
+    "typecheck": "tsc --noEmit"
+  },
+  "keywords": [
+    "clipsync",
+    "api-client",
+    "websocket",
+    "socket.io"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "socket.io-client": "^4.8.3"
+  },
+  "peerDependencies": {},
+  "devDependencies": {
+    "typescript": "^5.0.0"
+  }
+}

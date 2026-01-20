@@ -16,7 +16,7 @@ const TEST_USER = {
 
 let authToken;
 let userId;
-let testClips = [];
+const testClips = [];
 
 // ANSI color codes
 const colors = {

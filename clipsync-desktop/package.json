@@ -9,14 +9,21 @@
     "start": "electron .",
     "dev": "concurrently \"npm run dev:web\" \"wait-on http://localhost:5173 && electron .\"",
     "dev:web": "cd ../clipsync-app && npm run dev",
-    "build": "npm run build:web && electron-builder",
+    "build": "npm run build:web && npm run validate:web-build && electron-builder",
     "build:web": "cd ../clipsync-app && npm run build",
-    "build:win": "npm run build:web && electron-builder --win",
-    "build:mac": "npm run build:web && electron-builder --mac",
-    "build:linux": "npm run build:web && electron-builder --linux",
-    "build:all": "npm run build:web && electron-builder --win --mac --linux"
+    "validate:web-build": "node -e \"const fs=require('fs');const path=require('path');const dist=path.join(__dirname,'../clipsync-app/dist');if(!fs.existsSync(dist)||!fs.existsSync(path.join(dist,'index.html'))){console.error('ERROR: Web build output missing at clipsync-app/dist');process.exit(1);}\"",
+    "build:win": "npm run build:web && npm run validate:web-build && electron-builder --win",
+    "build:mac": "npm run build:web && npm run validate:web-build && electron-builder --mac",
+    "build:linux": "npm run build:web && npm run validate:web-build && electron-builder --linux",
+    "build:all": "npm run build:web && npm run validate:web-build && electron-builder --win --mac --linux",
+    "lint": "eslint . --ext .js",
+    "lint:fix": "eslint . --ext .js --fix",
+    "format": "prettier --write \"**/*.{js,json,md}\"",
+    "format:check": "prettier --check \"**/*.{js,json,md}\""
   },
   "build": {
+    "electronVersion": "35.7.0",
+    "forceCodeSigning": false,
     "appId": "com.clipsync.app",
     "productName": "ClipSync",
     "copyright": "Copyright © 2024 ClipSync",
@@ -27,11 +34,11 @@
     "files": [
       "main.js",
       "preload.js",
-      "renderer/**/*",
-      "assets/**/*",
+      "utils/**/*",
       "node_modules/**/*"
     ],
     "win": {
+      "signAndEditExecutable": false,
       "target": [
         {
           "target": "nsis",
@@ -108,8 +115,8 @@
   },
   "devDependencies": {
     "concurrently": "^8.2.2",
-    "electron": "^28.1.0",
-    "electron-builder": "^24.9.1",
+    "electron": "35.7.0",
+    "electron-builder": "^25.1.8",
     "wait-on": "^7.2.0"
   }
 }

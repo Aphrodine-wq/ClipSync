@@ -16,7 +16,7 @@ const DEFAULT_SHORTCUTS = {
 };
 
 let shortcuts = { ...DEFAULT_SHORTCUTS };
-let handlers = {};
+const handlers = {};
 
 /**
  * Initialize shortcuts
@@ -51,6 +51,27 @@ export function unregisterShortcut(name) {
 }
 
 /**
+ * Parse key combo from event
+ */
+export function parseKeyCombo(e) {
+  return getKeyString(e);
+}
+
+/**
+ * Validate shortcut
+ */
+export function validateShortcut(keyString, command) {
+  return checkConflicts(keyString, command);
+}
+
+/**
+ * Update shortcut
+ */
+export function updateShortcut(command, keyString) {
+  setShortcut(command, keyString);
+}
+
+/**
  * Handle keydown event
  */
 function handleKeyDown(e) {
@@ -66,7 +87,7 @@ function handleKeyDown(e) {
 /**
  * Get key string from event
  */
-function getKeyString(e) {
+export function getKeyString(e) {
   const parts = [];
 
   if (e.ctrlKey || e.metaKey) parts.push('Ctrl');
@@ -177,46 +198,3 @@ export function formatShortcut(shortcut) {
     })
     .join(' + ');
 }
-
-/**
- * Parse key combination from event
- */
-export function parseKeyCombo(e) {
-  return getKeyString(e);
-}
-
-/**
- * Validate shortcut string
- */
-export function validateShortcut(shortcut) {
-  if (!shortcut || typeof shortcut !== 'string') {
-    return { valid: false, error: 'Shortcut must be a string' };
-  }
-
-  const parts = shortcut.split('+').map(s => s.trim());
-
-  if (parts.length === 0) {
-    return { valid: false, error: 'Shortcut cannot be empty' };
-  }
-
-  return { valid: true };
-}
-
-/**
- * Update shortcut
- */
-export function updateShortcut(name, newShortcut) {
-  const validation = validateShortcut(newShortcut);
-  if (!validation.valid) {
-    return { success: false, error: validation.error };
-  }
-
-  const conflict = checkConflicts(newShortcut, name);
-  if (conflict.conflict) {
-    return { success: false, error: `Conflicts with ${conflict.with}` };
-  }
-
-  setShortcut(name, newShortcut);
-  return { success: true };
-}
-

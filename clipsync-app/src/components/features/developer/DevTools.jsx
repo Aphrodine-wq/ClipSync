@@ -308,7 +308,7 @@ const DevTools = ({ onClose }) => {
                     <div className="space-y-2">
                       {regexMatches.map((match, index) => (
                         <div key={index} className="p-2 bg-white rounded border border-green-200">
-                          <div className="font-mono text-sm text-green-700">"{match.match}"</div>
+                          <div className="font-mono text-sm text-green-700">&quot;{match.match}&quot;</div>
                           <div className="text-xs text-green-600 mt-1">
                             Index: {match.index}
                             {match.groups.length > 0 && ` | Groups: ${match.groups.join(', ')}`}

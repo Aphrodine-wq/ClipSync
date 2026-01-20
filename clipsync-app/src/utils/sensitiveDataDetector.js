@@ -6,20 +6,20 @@
 // Patterns for sensitive data detection
 const SENSITIVE_PATTERNS = {
   apiKey: [
-    /api[_-]?key\s*[:=]\s*['"]?([a-zA-Z0-9_\-]{20,})['"]?/i,
-    /apikey\s*[:=]\s*['"]?([a-zA-Z0-9_\-]{20,})['"]?/i,
+    /api[_-]?key\s*[:=]\s*['"]?([a-zA-Z0-9_-]{20,})['"]?/i,
+    /apikey\s*[:=]\s*['"]?([a-zA-Z0-9_-]{20,})['"]?/i,
   ],
   password: [
     /password\s*[:=]\s*['"]?([^\s'"]{8,})['"]?/i,
     /pwd\s*[:=]\s*['"]?([^\s'"]{8,})['"]?/i,
   ],
   token: [
-    /token\s*[:=]\s*['"]?([a-zA-Z0-9_\-\.]{20,})['"]?/i,
-    /access[_-]?token\s*[:=]\s*['"]?([a-zA-Z0-9_\-\.]{20,})['"]?/i,
+    /token\s*[:=]\s*['"]?([a-zA-Z0-9_\-.]{20,})['"]?/i,
+    /access[_-]?token\s*[:=]\s*['"]?([a-zA-Z0-9_\-.]{20,})['"]?/i,
   ],
   secret: [
-    /secret[_-]?key\s*[:=]\s*['"]?([a-zA-Z0-9_\-]{20,})['"]?/i,
-    /secret\s*[:=]\s*['"]?([a-zA-Z0-9_\-]{20,})['"]?/i,
+    /secret[_-]?key\s*[:=]\s*['"]?([a-zA-Z0-9_-]{20,})['"]?/i,
+    /secret\s*[:=]\s*['"]?([a-zA-Z0-9_-]{20,})['"]?/i,
   ],
   aws: [
     /aws[_-]?access[_-]?key[_-]?id\s*[:=]\s*['"]?([A-Z0-9]{20})['"]?/i,

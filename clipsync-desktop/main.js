@@ -41,36 +41,27 @@ function createWindow() {
   const isDev = process.env.NODE_ENV === 'development' || !app.isPackaged;
 
   if (isDev) {
+    // Development: load from Vite dev server
     mainWindow.loadURL('http://localhost:5173');
     mainWindow.webContents.openDevTools();
   } else {
-    // In production, load from the packaged resources
+    // Production: load from packaged web app build
     // extraResources copies clipsync-app/dist to resources/app
-    let indexPath;
+    const indexPath = path.join(process.resourcesPath, 'app', 'index.html');
     
-    if (process.resourcesPath) {
-      // Packaged app
-      indexPath = path.join(process.resourcesPath, 'app', 'index.html');
-    } else {
-      // Unpacked build (development build)
-      indexPath = path.join(__dirname, '..', 'resources', 'app', 'index.html');
+    // Validate that the build output exists
+    const fs = require('fs');
+    if (!fs.existsSync(indexPath)) {
+      console.error('ERROR: Web app build not found at:', indexPath);
+      console.error('Please run: npm run build:web in clipsync-app first');
+      app.quit();
+      return;
     }
     
     console.log('Loading production app from:', indexPath);
-    console.log('process.resourcesPath:', process.resourcesPath);
-    console.log('__dirname:', __dirname);
-    
     mainWindow.loadFile(indexPath).catch((error) => {
       console.error('Failed to load index.html:', error);
-      // Fallback: try using app.getAppPath()
-      try {
-        const appPath = app.getAppPath();
-        const fallbackPath = path.join(appPath, '..', 'resources', 'app', 'index.html');
-        console.log('Trying fallback path:', fallbackPath);
-        mainWindow.loadFile(fallbackPath);
-      } catch (err) {
-        console.error('All path attempts failed:', err);
-      }
+      app.quit();
     });
   }
 

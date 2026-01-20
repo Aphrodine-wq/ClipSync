@@ -35,28 +35,32 @@ export class ClipSyncPanel {
         this._panel.webview.onDidReceiveMessage(
             async (message) => {
                 switch (message.command) {
-                    case 'getClips':
+                    case 'getClips': {
                         const clips = await this.clipboardManager.getHistory();
                         this._panel.webview.postMessage({
                             command: 'clips',
                             data: clips,
                         });
                         break;
-                    case 'copyClip':
+                    }
+                    case 'copyClip': {
                         await vscode.env.clipboard.writeText(message.text);
                         vscode.window.showInformationMessage('Copied to clipboard!');
                         break;
-                    case 'deleteClip':
+                    }
+                    case 'deleteClip': {
                         // Implement delete functionality
                         break;
-                    case 'getSnippets':
+                    }
+                    case 'getSnippets': {
                         const snippets = await this.snippetManager.getSnippets();
                         this._panel.webview.postMessage({
                             command: 'snippets',
                             data: snippets,
                         });
                         break;
-                    case 'insertSnippet':
+                    }
+                    case 'insertSnippet': {
                         const editor = vscode.window.activeTextEditor;
                         if (editor) {
                             editor.edit(editBuilder => {
@@ -64,13 +68,15 @@ export class ClipSyncPanel {
                             });
                         }
                         break;
-                    case 'search':
+                    }
+                    case 'search': {
                         const searchResults = await this._searchClips(message.query);
                         this._panel.webview.postMessage({
                             command: 'searchResults',
                             data: searchResults,
                         });
                         break;
+                    }
                 }
             },
             null,
@@ -150,9 +156,8 @@ export class ClipSyncPanel {
     }
 
     private _getHtmlForWebview(webview: vscode.Webview): string {
-        // Get VS Code theme colors
-        const theme = vscode.window.activeColorTheme;
-        const isDark = theme.kind === vscode.ColorThemeKind.Dark;
+        // const theme = vscode.window.activeColorTheme;
+        // const isDark = theme.kind === vscode.ColorThemeKind.Dark;
 
         return `<!DOCTYPE html>
 <html lang="en">

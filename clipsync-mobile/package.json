@@ -10,8 +10,11 @@
     "android": "expo run:android",
     "ios": "expo run:ios",
     "web": "expo start --web",
-    "test": "jest",
+    "test": "jest --passWithNoTests",
     "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,md}\"",
+    "format:check": "prettier --check \"**/*.{js,jsx,ts,tsx,json,md}\"",
     "detox:build:ios": "detox build --configuration ios.sim.release",
     "detox:test:ios": "detox test --configuration ios.sim.release",
     "detox:screenshots:ios": "detox test --configuration ios.sim.release e2e/screenshots.e2e.js --take-screenshots all --record-logs all"
