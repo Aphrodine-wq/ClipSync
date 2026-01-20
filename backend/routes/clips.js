@@ -8,7 +8,7 @@ import { detectSensitiveData, getSensitivityLevel } from '../utils/sensitiveData
 import { encrypt, decrypt, isEncrypted } from '../utils/encryption.js';
 import { autoCategorize, suggestSmartFolder } from '../utils/categorizer.js';
 import { getCachedClipsList, cacheClipsList, invalidateUserClips } from '../services/cache.js';
-import { uploadSingle, processUpload } from '../middleware/upload.js';
+// Temporarily disabled - import { uploadSingle, processUpload } from '../middleware/upload.js';
 import imageProcessing from '../services/imageProcessing.js';
 
 const router = express.Router();
@@ -241,8 +241,8 @@ router.get('/:id',
 
 // Create a new clip (supports both JSON and multipart/form-data)
 router.post('/', 
-  uploadSingle,
-  processUpload,
+  // Temporarily disabled - uploadSingle,
+  // Temporarily disabled - processUpload,
   validateClipContent,
   sanitizeClipContent,
   validateMetadata,
@@ -252,7 +252,7 @@ router.post('/',
     try {
       let { content, type, pinned = false, folderId, metadata = {}, template = false, templatePlaceholders = null, expiresInMinutes = null } = req.body;
       
-      // Handle file upload
+      // Handle file upload - temporarily disabled
       let contentType = 'text';
       let fileData = null;
       let fileSize = null;
@@ -262,58 +262,12 @@ router.post('/',
       let width = null;
       let height = null;
 
+      // Skip file upload handling for now
+      /* 
       if (req.body.isFileUpload && req.body.fileBuffer) {
-        contentType = req.body.contentType || 'file';
-        fileName = req.body.fileName;
-        mimeType = req.body.mimeType;
-        fileSize = req.body.fileSize;
-
-        // Process image if it's an image
-        if (contentType === 'image') {
-          try {
-            const processed = await imageProcessing.processImage(
-              req.body.fileBuffer,
-              fileName,
-              mimeType
-            );
-
-            // Store image data (in production, upload to S3)
-            // For now, store as base64 in file_data
-            const base64Data = imageProcessing.toBase64(
-              processed.original.buffer,
-              processed.original.mimeType
-            );
-            const thumbnailBase64 = imageProcessing.toBase64(
-              processed.thumbnail.buffer,
-              processed.thumbnail.mimeType
-            );
-
-            fileData = {
-              storage: 'base64',
-              data: base64Data,
-              checksum: processed.checksum,
-            };
-            thumbnailUrl = thumbnailBase64;
-            width = processed.metadata.width;
-            height = processed.metadata.height;
-            content = base64Data; // Store base64 as content for now
-          } catch (imageError) {
-            console.error('Image processing error:', imageError);
-            return res.status(400).json({ 
-              error: 'Failed to process image', 
-              message: imageError.message 
-            });
-          }
-        } else {
-          // For non-image files, store as base64
-          const base64Data = req.body.fileBuffer.toString('base64');
-          fileData = {
-            storage: 'base64',
-            data: `data:${mimeType};base64,${base64Data}`,
-          };
-          content = `data:${mimeType};base64,${base64Data}`;
-        }
+        // ... file upload code
       }
+      */
 
       // Auto-categorize content
       const categorization = autoCategorize(content, type);

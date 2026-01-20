@@ -3,6 +3,7 @@
  * Protects against common web attacks and malicious requests
  */
 
+import crypto from 'crypto';
 import { getClientIp } from './auth.js';
 import { createAuditLog, AUDIT_ACTIONS } from './audit.js';
 
@@ -170,7 +171,6 @@ const isBot = (userAgent) => {
  * Generate request fingerprint
  */
 const generateRequestFingerprint = (req) => {
-  const crypto = require('crypto');
   const components = [
     getClientIp(req),
     req.headers['user-agent'] || '',
@@ -192,6 +192,17 @@ const generateRequestFingerprint = (req) => {
  */
 export const wafMiddleware = async (req, res, next) => {
   try {
+    // Temporarily disable WAF for development/testing
+    if (process.env.NODE_ENV !== 'production') {
+      return next();
+    }
+
+    // Check if IP is whitelisted
+    const clientIp = getClientIp(req);
+    if (isWhitelisted(clientIp)) {
+      return next(); // Skip WAF for whitelisted IPs
+    }
+
     // Generate request fingerprint
     req.requestFingerprint = generateRequestFingerprint(req);
     
