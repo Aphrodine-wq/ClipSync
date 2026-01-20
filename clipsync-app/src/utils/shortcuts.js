@@ -152,13 +152,13 @@ export function resetShortcuts() {
  */
 export function checkConflicts(newShortcut, excludeName = null) {
   const normalized = normalizeShortcut(newShortcut);
-  
+
   for (const [name, shortcut] of Object.entries(shortcuts)) {
     if (name !== excludeName && normalizeShortcut(shortcut) === normalized) {
       return { conflict: true, with: name };
     }
   }
-  
+
   return { conflict: false };
 }
 
@@ -177,3 +177,46 @@ export function formatShortcut(shortcut) {
     })
     .join(' + ');
 }
+
+/**
+ * Parse key combination from event
+ */
+export function parseKeyCombo(e) {
+  return getKeyString(e);
+}
+
+/**
+ * Validate shortcut string
+ */
+export function validateShortcut(shortcut) {
+  if (!shortcut || typeof shortcut !== 'string') {
+    return { valid: false, error: 'Shortcut must be a string' };
+  }
+
+  const parts = shortcut.split('+').map(s => s.trim());
+
+  if (parts.length === 0) {
+    return { valid: false, error: 'Shortcut cannot be empty' };
+  }
+
+  return { valid: true };
+}
+
+/**
+ * Update shortcut
+ */
+export function updateShortcut(name, newShortcut) {
+  const validation = validateShortcut(newShortcut);
+  if (!validation.valid) {
+    return { success: false, error: validation.error };
+  }
+
+  const conflict = checkConflicts(newShortcut, name);
+  if (conflict.conflict) {
+    return { success: false, error: `Conflicts with ${conflict.with}` };
+  }
+
+  setShortcut(name, newShortcut);
+  return { success: true };
+}
+

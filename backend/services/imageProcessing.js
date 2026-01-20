@@ -3,10 +3,10 @@
  * Handles image upload, compression, and thumbnail generation
  */
 
-const sharp = require('sharp');
-const crypto = require('crypto');
-const path = require('path');
-const fs = require('fs').promises;
+import sharp from 'sharp';
+import crypto from 'crypto';
+import path from 'path';
+import { promises as fs } from 'fs';
 
 class ImageProcessingService {
   constructor() {
@@ -167,5 +167,5 @@ class ImageProcessingService {
   }
 }
 
-module.exports = new ImageProcessingService();
+export default new ImageProcessingService();
 

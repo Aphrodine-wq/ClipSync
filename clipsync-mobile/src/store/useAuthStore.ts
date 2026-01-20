@@ -55,6 +55,9 @@ export const useAuthStore = create<AuthState>((set, get) => ({
       } else {
         set({ isLoading: false });
       }
+
+      // Set refresh callback
+      apiClient.setRefreshAuthCallback(() => get().refreshAuth());
     } catch (error) {
       console.error('Auth initialization error:', error);
       set({ isLoading: false });

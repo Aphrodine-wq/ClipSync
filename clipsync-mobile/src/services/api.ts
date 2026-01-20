@@ -3,11 +3,14 @@
  * Handles all API communication
  */
 
+// import { useAuthStore } from '../store/useAuthStore';
+
 const API_URL = process.env.API_URL || 'http://localhost:3001/api';
 
 class ApiClient {
   private token: string | null = null;
   private baseURL: string;
+  private refreshAuthCallback: (() => Promise<boolean>) | null = null;
 
   constructor(baseURL: string = API_URL) {
     this.baseURL = baseURL;
@@ -15,6 +18,10 @@ class ApiClient {
 
   setToken(token: string | null) {
     this.token = token;
+  }
+
+  setRefreshAuthCallback(callback: () => Promise<boolean>) {
+    this.refreshAuthCallback = callback;
   }
 
   private async request(
@@ -38,11 +45,15 @@ class ApiClient {
       });
 
       if (!response.ok) {
-        if (response.status === 401) {
+        if (response.status === 401 && this.refreshAuthCallback) {
           // Token expired, try to refresh
-          const refreshed = await useAuthStore.getState().refreshAuth();
+          const refreshed = await this.refreshAuthCallback();
           if (refreshed) {
-            // Retry request
+            // Update token from store/callback if needed, 
+            // but the store should have called setToken already during refresh
+
+            // Retry request - we need to make sure we use the NEW token
+            // The recursed call will pick up 'this.token' which should be updated
             return this.request(endpoint, options);
           }
           throw new Error('Authentication failed');
@@ -82,6 +93,4 @@ class ApiClient {
 
 export const apiClient = new ApiClient();
 
-// Import useAuthStore for token refresh
-import { useAuthStore } from '../store/useAuthStore';
 

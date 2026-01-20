@@ -24,6 +24,27 @@ router.use(authenticateToken);
  */
 router.get('/', async (req, res) => {
   try {
+    if (process.env.MOCK_DATA === 'true') {
+        return res.json({ 
+            devices: [
+                {
+                    id: 'device-1',
+                    name: 'Chrome on Windows',
+                    type: 'web',
+                    last_active: new Date(),
+                    current: true
+                },
+                {
+                    id: 'device-2',
+                    name: 'iPhone 13',
+                    type: 'mobile',
+                    last_active: new Date(Date.now() - 86400000),
+                    current: false
+                }
+            ]
+        });
+    }
+
     const devices = await getUserDevices(req.user.id);
     res.json({ devices });
   } catch (error) {

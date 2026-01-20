@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ClipSync Component Screenshots</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      margin: 0;
+      padding: 40px;
+      background: linear-gradient(to bottom right, #f4f4f5, #ffffff, #f4f4f5);
+      min-height: 100vh;
+    }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script type="module">
+    // Import React components here
+    // Example: import PaywallModal from './src/components/PaywallModal.jsx';
+
+    // Render components with different props for screenshots
+    console.log('Component screenshot page loaded');
+    console.log('Open browser DevTools to trigger component renders');
+
+    // Example functions to trigger modals
+    window.showDeviceLimitPaywall = function() {
+      // Render PaywallModal with device limit props
+      console.log('Device limit paywall triggered');
+    };
+
+    window.showClipLimitPaywall = function() {
+      // Render PaywallModal with clip limit props
+      console.log('Clip limit paywall triggered');
+    };
+
+    window.showStorageLimitPaywall = function() {
+      // Render PaywallModal with storage limit props
+      console.log('Storage limit paywall triggered');
+    };
+
+    console.log('Available functions:');
+    console.log('- window.showDeviceLimitPaywall()');
+    console.log('- window.showClipLimitPaywall()');
+    console.log('- window.showStorageLimitPaywall()');
+  </script>
+</body>
+</html>

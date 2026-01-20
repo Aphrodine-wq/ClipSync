@@ -17,6 +17,11 @@
   "author": "",
   "license": "MIT",
   "devDependencies": {
-    "pkg": "^5.8.1"
+    "@types/react": "~19.1.10",
+    "pkg": "^5.8.1",
+    "typescript": "~5.9.2"
+  },
+  "dependencies": {
+    "puppeteer": "^24.35.0"
   }
 }

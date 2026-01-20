@@ -3,9 +3,9 @@
  * Handles multipart/form-data for image and file uploads
  */
 
-const multer = require('multer');
-const path = require('path');
-const fs = require('fs').promises;
+import multer from 'multer';
+import path from 'path';
+import { promises as fs } from 'fs';
 
 // Configure storage
 const storage = multer.memoryStorage();
@@ -86,7 +86,7 @@ const processUpload = async (req, res, next) => {
   }
 };
 
-module.exports = {
+export {
   uploadSingle,
   uploadMultiple,
   processUpload,
