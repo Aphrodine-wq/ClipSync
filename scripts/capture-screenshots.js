@@ -29,12 +29,12 @@ async function captureWebScreenshots() {
   console.log('🚀 Starting screenshot capture...\n');
 
   const browser = await puppeteer.launch({
-    headless: false, // Set to true for production
+    headless: 'new',
     defaultViewport: {
       width: 1920,
       height: 1080,
     },
-    args: ['--start-maximized'],
+    args: ['--start-maximized', '--no-sandbox', '--disable-setuid-sandbox'],
   });
 
   const page = await browser.newPage();
@@ -43,27 +43,20 @@ async function captureWebScreenshots() {
     // 1. Auth Modal
     console.log('📸 Capturing: Auth Modal...');
     await page.goto('http://localhost:5173', { waitUntil: 'networkidle2' });
-    await page.waitForTimeout(2000); // Wait for animations
+    await new Promise(resolve => setTimeout(resolve, 2000)); // Wait for animations
     await page.screenshot({
       path: path.join(screenshotsDir, 'web', '01-auth-modal.png'),
       fullPage: false,
     });
     console.log('✅ Saved: screenshots/web/01-auth-modal.png\n');
 
-    // Note: You'll need to manually login for subsequent screenshots
-    // Or implement OAuth automation (not recommended for security)
-    console.log('⚠️  Manual step: Please login with Google/GitHub in the browser window');
-    console.log('   Press Enter when logged in...');
-
-    // Wait for manual login
-    await new Promise(resolve => {
-      process.stdin.once('data', () => resolve());
-    });
+    // Skip login step for now - capture what we can
+    console.log('⚠️  Skipping login step (would require manual OAuth)');
 
     // 2. Pricing Screen
     console.log('📸 Capturing: Pricing Screen...');
     await page.goto('http://localhost:5173/pricing', { waitUntil: 'networkidle2' });
-    await page.waitForTimeout(1000);
+    await new Promise(resolve => setTimeout(resolve, 1000));
     await page.screenshot({
       path: path.join(screenshotsDir, 'web', '02-pricing-screen.png'),
       fullPage: true,
@@ -73,7 +66,7 @@ async function captureWebScreenshots() {
     // 3. Dashboard/History Screen
     console.log('📸 Capturing: History Screen...');
     await page.goto('http://localhost:5173/', { waitUntil: 'networkidle2' });
-    await page.waitForTimeout(1000);
+    await new Promise(resolve => setTimeout(resolve, 1000));
     await page.screenshot({
       path: path.join(screenshotsDir, 'web', '03-history-screen.png'),
       fullPage: false,
@@ -83,16 +76,7 @@ async function captureWebScreenshots() {
     // 4. Settings - Device Management
     console.log('📸 Capturing: Device Management...');
     await page.goto('http://localhost:5173/settings', { waitUntil: 'networkidle2' });
-    await page.waitForTimeout(1000);
-
-    // Scroll to device management section
-    await page.evaluate(() => {
-      const element = document.querySelector('[data-section="devices"]') ||
-                      document.querySelector('h2:contains("Device Management")');
-      if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    });
-
-    await page.waitForTimeout(500);
+    await new Promise(resolve => setTimeout(resolve, 1000));
     await page.screenshot({
       path: path.join(screenshotsDir, 'web', '04-device-management.png'),
       fullPage: false,
@@ -101,13 +85,8 @@ async function captureWebScreenshots() {
 
     // 5. Settings - Usage Quota
     console.log('📸 Capturing: Usage Quota...');
-    await page.evaluate(() => {
-      const element = document.querySelector('[data-section="quota"]') ||
-                      document.querySelector('h2:contains("Usage Quota")');
-      if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    });
-
-    await page.waitForTimeout(500);
+    await page.evaluate(() => window.scrollBy(0, 500));
+    await new Promise(resolve => setTimeout(resolve, 500));
     await page.screenshot({
       path: path.join(screenshotsDir, 'web', '05-usage-quota.png'),
       fullPage: false,
