@@ -12,7 +12,7 @@ import {
   StyleSheet,
   RefreshControl,
 } from 'react-native';
-import Icon from 'react-native-vector-icons/MaterialIcons';
+import { MaterialIcons } from '@expo/vector-icons';
 import { useClipStore, Clip } from '../store/useClipStore';
 import { clipboardService } from '../services/clipboard';
 import { formatDistanceToNow } from 'date-fns';
@@ -73,7 +73,7 @@ export default function HistoryScreen({ navigation }: Props) {
           <Text style={styles.clipTypeText}>{item.type}</Text>
         </View>
         {item.pinned && (
-          <Icon name="push-pin" size={16} color="#6366f1" />
+          <MaterialIcons name="push-pin" size={16} color="#6366f1" />
         )}
       </View>
       <Text style={styles.clipContent} numberOfLines={3}>
@@ -110,7 +110,7 @@ export default function HistoryScreen({ navigation }: Props) {
         }
         ListEmptyComponent={
           <View style={styles.emptyState}>
-            <Icon name="content-copy" size={64} color="#9ca3af" />
+            <MaterialIcons name="content-copy" size={64} color="#9ca3af" />
             <Text style={styles.emptyText}>No clips yet</Text>
             <Text style={styles.emptySubtext}>
               Copy something to get started!

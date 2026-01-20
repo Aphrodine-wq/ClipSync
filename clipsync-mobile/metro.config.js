@@ -4,14 +4,6 @@ const { getDefaultConfig } = require('expo/metro-config');
 /** @type {import('expo/metro-config').MetroConfig} */
 const config = getDefaultConfig(__dirname);
 
-config.resolver.resolveRequest = (context, moduleName, platform) => {
-    if (moduleName === 'zustand') {
-        return {
-            filePath: require.resolve('zustand/index.js'),
-            type: 'sourceFile',
-        };
-    }
-    return context.resolveRequest(context, moduleName, platform);
-};
+// config.resolver.resolveRequest removed as it is no longer needed with correct dependencies
 
 module.exports = config;

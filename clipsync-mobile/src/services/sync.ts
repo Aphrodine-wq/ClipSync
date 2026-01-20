@@ -7,7 +7,11 @@ import { io, Socket } from 'socket.io-client';
 import { useAuthStore } from '../store/useAuthStore';
 import { useClipStore } from '../store/useClipStore';
 import { Platform } from 'react-native';
-import DeviceInfo from 'react-native-device-info';
+import * as Device from 'expo-device';
+
+// WebSocket server URL configuration
+const WEBSOCKET_URL = process.env.API_URL || 'http://localhost:3001';
+console.log('[Sync Service] Initializing WebSocket with URL:', WEBSOCKET_URL);
 
 class SyncServiceClass {
   private socket: Socket | null = null;
@@ -31,22 +35,32 @@ class SyncServiceClass {
       return;
     }
 
-    const deviceName = Platform.OS === 'web' ? 'Web Browser' : await DeviceInfo.getDeviceName();
-    const deviceType = Platform.OS;
+    try {
+      const deviceName = Platform.OS === 'web' ? 'Web Browser' : (Device.deviceName || 'Unknown Device');
+      const deviceType = Platform.OS;
 
-    this.socket = io(process.env.API_URL || 'http://localhost:3001', {
-      auth: {
-        token,
+      console.log('[Sync] Attempting to connect...', {
+        url: WEBSOCKET_URL,
         deviceName,
-        deviceType: `${deviceType}-mobile`,
-      },
-      reconnection: true,
-      reconnectionDelay: 1000,
-      reconnectionDelayMax: 5000,
-      reconnectionAttempts: this.maxReconnectAttempts,
-    });
+        deviceType,
+      });
 
-    this.setupEventHandlers();
+      this.socket = io(WEBSOCKET_URL, {
+        auth: {
+          token,
+          deviceName,
+          deviceType: `${deviceType}-mobile`,
+        },
+        reconnection: true,
+        reconnectionDelay: 1000,
+        reconnectionDelayMax: 5000,
+        reconnectionAttempts: this.maxReconnectAttempts,
+      });
+
+      this.setupEventHandlers();
+    } catch (error) {
+      console.error('[Sync] Connection initialization failed:', error);
+    }
   }
 
   /**
@@ -73,8 +87,20 @@ class SyncServiceClass {
     });
 
     this.socket.on('connect_error', (error) => {
-      console.error('Sync connection error:', error);
       this.reconnectAttempts++;
+      console.error(
+        '[Sync] Connection error (attempt ' + this.reconnectAttempts + '/' + this.maxReconnectAttempts + '):', error
+      );
+
+      // Helpful diagnostics for Expo Go
+      if (error.message && error.message.includes('ECONNREFUSED')) {
+        console.error(
+          '[Sync] ⚠️  Cannot reach backend. Make sure:',
+          '1) Backend is running (npm run dev in backend/)',
+          '2) Use your computer IP address in .env, NOT localhost',
+          '3) iPhone and computer are on same Wi-Fi'
+        );
+      }
 
       if (this.reconnectAttempts >= this.maxReconnectAttempts) {
         const { setSyncStatus } = useClipStore.getState();

@@ -5,7 +5,12 @@
 
 // import { useAuthStore } from '../store/useAuthStore';
 
-const API_URL = process.env.API_URL || 'http://localhost:3001/api';
+const API_URL = process.env.API_URL
+  ? `${process.env.API_URL}/api`
+  : 'http://localhost:3001/api';
+
+// Log API configuration for debugging Expo Go issues
+console.log('[API Client] Initializing with URL:', API_URL);
 
 class ApiClient {
   private token: string | null = null;
@@ -49,7 +54,7 @@ class ApiClient {
           // Token expired, try to refresh
           const refreshed = await this.refreshAuthCallback();
           if (refreshed) {
-            // Update token from store/callback if needed, 
+            // Update token from store/callback if needed,
             // but the store should have called setToken already during refresh
 
             // Retry request - we need to make sure we use the NEW token
@@ -63,7 +68,16 @@ class ApiClient {
 
       return await response.json();
     } catch (error) {
-      console.error('API request error:', error);
+      // Enhanced error logging for Expo Go debugging
+      if (error instanceof TypeError && error.message.includes('Network request failed')) {
+        console.error(
+          '[API Error] Network connection failed.',
+          'Verify backend is running and use your computer IP address (not localhost) in .env',
+          'Error:', error
+        );
+      } else {
+        console.error('[API Error]', `${options.method || 'GET'} ${endpoint}`, error);
+      }
       throw error;
     }
   }

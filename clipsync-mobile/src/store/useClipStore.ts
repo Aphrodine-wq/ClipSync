@@ -6,6 +6,7 @@
 import { create } from 'zustand';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { apiClient } from '../services/api';
+import { useAuthStore } from './useAuthStore';
 
 interface AddClipOptions {
   type?: string;
@@ -61,7 +62,7 @@ export const useClipStore = create<ClipState>((set, get) => ({
   initialize: async () => {
     try {
       set({ isLoading: true });
-      
+
       // Load from local storage
       const localClips = await AsyncStorage.getItem('clipsync_clips');
       if (localClips) {
@@ -70,7 +71,7 @@ export const useClipStore = create<ClipState>((set, get) => ({
 
       // Sync with server
       await get().syncWithServer();
-      
+
       set({ isLoading: false });
     } catch (error) {
       console.error('Clip store initialization error:', error);
@@ -97,7 +98,7 @@ export const useClipStore = create<ClipState>((set, get) => ({
       const { clips } = get();
       const newClips = [clip, ...clips];
       set({ clips: newClips });
-      
+
       // Save to local storage
       await AsyncStorage.setItem('clipsync_clips', JSON.stringify(newClips));
 
@@ -131,7 +132,7 @@ export const useClipStore = create<ClipState>((set, get) => ({
     const updatedClips = clips.map(clip =>
       clip.id === id ? { ...clip, ...updates, updatedAt: new Date().toISOString() } : clip
     );
-    
+
     set({ clips: updatedClips });
     await AsyncStorage.setItem('clipsync_clips', JSON.stringify(updatedClips));
 
@@ -146,7 +147,7 @@ export const useClipStore = create<ClipState>((set, get) => ({
   deleteClip: async (id: string) => {
     const { clips } = get();
     const updatedClips = clips.filter(clip => clip.id !== id);
-    
+
     set({ clips: updatedClips });
     await AsyncStorage.setItem('clipsync_clips', JSON.stringify(updatedClips));
 
@@ -188,7 +189,7 @@ export const useClipStore = create<ClipState>((set, get) => ({
 
     try {
       set({ syncStatus: 'syncing' });
-      
+
       const response = await apiClient.get('/clips?limit=1000');
       const serverClips = response.clips || [];
 
@@ -206,7 +207,7 @@ export const useClipStore = create<ClipState>((set, get) => ({
       }, [] as Clip[]);
 
       // Sort by created date
-      mergedClips.sort((a, b) => 
+      mergedClips.sort((a, b) =>
         new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
       );
 

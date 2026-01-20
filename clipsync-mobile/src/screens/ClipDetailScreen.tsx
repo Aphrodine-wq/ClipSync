@@ -5,7 +5,7 @@
 
 import React from 'react';
 import { View, Text, ScrollView, TouchableOpacity, StyleSheet } from 'react-native';
-import Icon from 'react-native-vector-icons/MaterialIcons';
+import { MaterialIcons } from '@expo/vector-icons';
 import { useClipStore } from '../store/useClipStore';
 import { clipboardService } from '../services/clipboard';
 import { format } from 'date-fns';
@@ -44,7 +44,7 @@ export default function ClipDetailScreen({ route, navigation }: Props) {
         <View style={styles.typeBadge}>
           <Text style={styles.typeText}>{clip.type}</Text>
         </View>
-        {clip.pinned && <Icon name="push-pin" size={20} color="#6366f1" />}
+        {clip.pinned && <MaterialIcons name="push-pin" size={20} color="#6366f1" />}
       </View>
 
       <View style={styles.content}>
@@ -73,11 +73,11 @@ export default function ClipDetailScreen({ route, navigation }: Props) {
 
       <View style={styles.actions}>
         <TouchableOpacity style={styles.actionButton} onPress={handleCopy}>
-          <Icon name="content-copy" size={24} color="#6366f1" />
+          <MaterialIcons name="content-copy" size={24} color="#6366f1" />
           <Text style={styles.actionText}>Copy</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.actionButton} onPress={handlePin}>
-          <Icon
+          <MaterialIcons
             name={clip.pinned ? 'push-pin' : 'push-pin'}
             size={24}
             color={clip.pinned ? '#6366f1' : '#9ca3af'}
@@ -90,7 +90,7 @@ export default function ClipDetailScreen({ route, navigation }: Props) {
           style={[styles.actionButton, styles.deleteButton]}
           onPress={handleDelete}
         >
-          <Icon name="delete" size={24} color="#ef4444" />
+          <MaterialIcons name="delete" size={24} color="#ef4444" />
           <Text style={[styles.actionText, styles.deleteText]}>Delete</Text>
         </TouchableOpacity>
       </View>
