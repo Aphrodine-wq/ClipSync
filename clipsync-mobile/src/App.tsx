@@ -7,17 +7,22 @@ import React, { useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
-import { StatusBar, Platform, View, Text } from 'react-native';
-// import Icon from 'react-native-vector-icons/MaterialIcons';
+import { StatusBar, Platform } from 'react-native';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
 import { useAuthStore } from './store/useAuthStore';
 import { useClipStore } from './store/useClipStore';
 import { clipboardService as ClipboardService } from './services/clipboard';
 import { SyncService } from './services/sync';
+import LoginScreen from './screens/LoginScreen';
+import ClipDetailScreen from './screens/ClipDetailScreen';
+import HistoryScreen from './screens/HistoryScreen';
+import SnippetsScreen from './screens/SnippetsScreen';
+import TeamsScreen from './screens/TeamsScreen';
+import SettingsScreen from './screens/SettingsScreen';
 
-// ...
 const Stack = createStackNavigator();
-<<<<<<< HEAD
+const Tab = createBottomTabNavigator();
 
 function MainTabs() {
   return (
@@ -55,17 +60,11 @@ function MainTabs() {
     </Tab.Navigator>
   );
 }
-=======
-const LoginScreen = () => <View><Text>Login Placeholder</Text></View>;
-const MainTabs = () => <View><Text>Main Tabs Placeholder</Text></View>;
-const ClipDetailScreen = () => <View><Text>Clip Detail</Text></View>;
->>>>>>> c08ee652ace294a6e1118abde8db7ace4f070ce3
 
 export default function App() {
   console.log('App: Rendering start');
   const { isAuthenticated, initialize: initAuth } = useAuthStore();
   const { initialize: initClips } = useClipStore();
-  // const isAuthenticated = false; // Hardcoded for debug
 
   useEffect(() => {
     // Initialize services
