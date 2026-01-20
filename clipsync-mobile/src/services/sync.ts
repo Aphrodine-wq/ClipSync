@@ -9,7 +9,7 @@ import { useClipStore } from '../store/useClipStore';
 import { Platform } from 'react-native';
 import DeviceInfo from 'react-native-device-info';
 
-class SyncService {
+class SyncServiceClass {
   private socket: Socket | null = null;
   private isConnected: boolean = false;
   private reconnectAttempts: number = 0;
@@ -20,7 +20,7 @@ class SyncService {
    */
   async connect() {
     const { token, user } = useAuthStore.getState();
-    
+
     if (!token || !user) {
       console.warn('Cannot connect: Not authenticated');
       return;
@@ -31,7 +31,7 @@ class SyncService {
       return;
     }
 
-    const deviceName = await DeviceInfo.getDeviceName();
+    const deviceName = Platform.OS === 'web' ? 'Web Browser' : await DeviceInfo.getDeviceName();
     const deviceType = Platform.OS;
 
     this.socket = io(process.env.API_URL || 'http://localhost:3001', {
@@ -59,7 +59,7 @@ class SyncService {
       console.log('✅ Sync connected');
       this.isConnected = true;
       this.reconnectAttempts = 0;
-      
+
       const { setSyncStatus } = useClipStore.getState();
       setSyncStatus('synced');
     });
@@ -67,7 +67,7 @@ class SyncService {
     this.socket.on('disconnect', (reason) => {
       console.log('❌ Sync disconnected:', reason);
       this.isConnected = false;
-      
+
       const { setSyncStatus } = useClipStore.getState();
       setSyncStatus('offline');
     });
@@ -75,7 +75,7 @@ class SyncService {
     this.socket.on('connect_error', (error) => {
       console.error('Sync connection error:', error);
       this.reconnectAttempts++;
-      
+
       if (this.reconnectAttempts >= this.maxReconnectAttempts) {
         const { setSyncStatus } = useClipStore.getState();
         setSyncStatus('offline');
@@ -149,5 +149,5 @@ class SyncService {
   }
 }
 
-export const SyncService = new SyncService();
+export const SyncService = new SyncServiceClass();
 

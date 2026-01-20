@@ -1,0 +1,2 @@
+1.  **Install Missing Dependency**: Run `npm install react-native-worklets` to explicitly add the missing package required by Reanimated v4.
+2.  **Verify Fix**: Clear the Metro cache and restart the server to confirm the error is resolved.

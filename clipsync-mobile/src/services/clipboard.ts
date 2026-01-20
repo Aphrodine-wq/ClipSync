@@ -3,8 +3,18 @@
  * Handles clipboard monitoring and management on mobile
  */
 
-import Clipboard from '@react-native-clipboard/clipboard';
 import { Platform } from 'react-native';
+
+let Clipboard: any;
+if (Platform.OS !== 'web') {
+  Clipboard = require('@react-native-clipboard/clipboard').default;
+} else {
+  // Simple mock for web to prevent crash
+  Clipboard = {
+    getString: async () => '',
+    setString: () => { },
+  };
+}
 import { useClipStore } from '../store/useClipStore';
 
 class ClipboardService {
@@ -21,17 +31,17 @@ class ClipboardService {
     }
 
     this.isMonitoring = true;
-    
+
     // Check clipboard every 500ms (iOS) or 300ms (Android)
     const interval = Platform.OS === 'ios' ? 500 : 300;
-    
+
     this.monitoringInterval = setInterval(async () => {
       try {
         const content = await Clipboard.getString();
-        
+
         if (content && content !== this.lastClipboardContent) {
           this.lastClipboardContent = content;
-          
+
           // Add clip to store
           const { addClip } = useClipStore.getState();
           await addClip(content, {

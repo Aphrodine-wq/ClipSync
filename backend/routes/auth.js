@@ -126,6 +126,22 @@ router.get('/me', async (req, res) => {
       return res.status(401).json({ error: 'Access token required' });
     }
 
+    if (process.env.MOCK_DATA === 'true') {
+        // If token matches our mock token, or just allow any token in mock mode
+        // For consistency with middleware, we return the same mock user
+        return res.json({ 
+            user: {
+                id: 'mock-user-id',
+                google_id: 'mock-google-id',
+                email: 'mock@example.com',
+                name: 'Mock User',
+                picture: 'https://via.placeholder.com/150',
+                plan: 'pro',
+                created_at: new Date()
+            }
+        });
+    }
+
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     
     const result = await query(

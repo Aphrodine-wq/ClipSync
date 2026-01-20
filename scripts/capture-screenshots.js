@@ -12,7 +12,10 @@ const puppeteer = require('puppeteer');
 const fs = require('fs');
 const path = require('path');
 
-// Create screenshots directory
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
 const screenshotsDir = path.join(__dirname, '..', 'screenshots');
 if (!fs.existsSync(screenshotsDir)) {
   fs.mkdirSync(screenshotsDir, { recursive: true });
@@ -29,12 +32,12 @@ async function captureWebScreenshots() {
   console.log('🚀 Starting screenshot capture...\n');
 
   const browser = await puppeteer.launch({
-    headless: 'new',
+    headless: false, // Set to true for production
     defaultViewport: {
       width: 1920,
       height: 1080,
     },
-    args: ['--start-maximized', '--no-sandbox', '--disable-setuid-sandbox'],
+    args: ['--start-maximized'],
   });
 
   const page = await browser.newPage();
@@ -43,20 +46,56 @@ async function captureWebScreenshots() {
     // 1. Auth Modal
     console.log('📸 Capturing: Auth Modal...');
     await page.goto('http://localhost:5173', { waitUntil: 'networkidle2' });
-    await new Promise(resolve => setTimeout(resolve, 2000)); // Wait for animations
+    await sleep(2000);
+    
+    // Ensure we are logged out first to see the auth modal if we were logged in
+    await page.evaluate(() => {
+        localStorage.removeItem('clipsync_token');
+    });
+    
     await page.screenshot({
       path: path.join(screenshotsDir, 'web', '01-auth-modal.png'),
       fullPage: false,
     });
     console.log('✅ Saved: screenshots/web/01-auth-modal.png\n');
 
-    // Skip login step for now - capture what we can
-    console.log('⚠️  Skipping login step (would require manual OAuth)');
+    // Automate Login using Mock Token
+    console.log('🔄 Automating Login...');
+    
+    // Generate Mock Token (using hardcoded secret from backend/.env)
+    // We can't easily require backend modules here if they are ESM, but we can try to use jsonwebtoken if available
+    // OR just manually construct a simple JWT if we don't want to depend on the library
+    // But since backend has jsonwebtoken, we can try to require it from there
+    
+    try {
+        const jwt = require('../backend/node_modules/jsonwebtoken');
+        const mockToken = jwt.sign(
+            { userId: 'mock-user-id' },
+            'development_secret_key_12345',
+            { expiresIn: '7d' }
+        );
+        
+        await page.evaluate((token) => {
+            localStorage.setItem('clipsync_token', token);
+        }, mockToken);
+        
+        console.log('✅ Injected mock token');
+    } catch (e) {
+        console.log('⚠️ Could not load jsonwebtoken, using hardcoded mock token (might fail if secret mismatch)');
+        // Fallback or just hope the backend accepts 'mock-token' if we configured it to
+        await page.evaluate(() => {
+            localStorage.setItem('clipsync_token', 'mock-token');
+        });
+    }
+
+    // Reload to apply login
+    await page.reload({ waitUntil: 'networkidle2' });
+    await sleep(2000);
 
     // 2. Pricing Screen
     console.log('📸 Capturing: Pricing Screen...');
     await page.goto('http://localhost:5173/pricing', { waitUntil: 'networkidle2' });
-    await new Promise(resolve => setTimeout(resolve, 1000));
+    await sleep(1000);
     await page.screenshot({
       path: path.join(screenshotsDir, 'web', '02-pricing-screen.png'),
       fullPage: true,
@@ -66,7 +105,7 @@ async function captureWebScreenshots() {
     // 3. Dashboard/History Screen
     console.log('📸 Capturing: History Screen...');
     await page.goto('http://localhost:5173/', { waitUntil: 'networkidle2' });
-    await new Promise(resolve => setTimeout(resolve, 1000));
+    await sleep(1000);
     await page.screenshot({
       path: path.join(screenshotsDir, 'web', '03-history-screen.png'),
       fullPage: false,
@@ -76,7 +115,19 @@ async function captureWebScreenshots() {
     // 4. Settings - Device Management
     console.log('📸 Capturing: Device Management...');
     await page.goto('http://localhost:5173/settings', { waitUntil: 'networkidle2' });
-    await new Promise(resolve => setTimeout(resolve, 1000));
+    await sleep(1000);
+
+    // Scroll to device management section
+    await page.evaluate(() => {
+      let element = document.querySelector('[data-section="devices"]');
+      if (!element) {
+        const headings = Array.from(document.querySelectorAll('h1, h2, h3'));
+        element = headings.find(h => h.textContent && h.textContent.includes('Device Management'));
+      }
+      if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+
+    await sleep(500);
     await page.screenshot({
       path: path.join(screenshotsDir, 'web', '04-device-management.png'),
       fullPage: false,
@@ -85,8 +136,16 @@ async function captureWebScreenshots() {
 
     // 5. Settings - Usage Quota
     console.log('📸 Capturing: Usage Quota...');
-    await page.evaluate(() => window.scrollBy(0, 500));
-    await new Promise(resolve => setTimeout(resolve, 500));
+    await page.evaluate(() => {
+      let element = document.querySelector('[data-section="quota"]');
+      if (!element) {
+        const headings = Array.from(document.querySelectorAll('h1, h2, h3'));
+        element = headings.find(h => h.textContent && h.textContent.includes('Usage Quota'));
+      }
+      if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+
+    await sleep(500);
     await page.screenshot({
       path: path.join(screenshotsDir, 'web', '05-usage-quota.png'),
       fullPage: false,

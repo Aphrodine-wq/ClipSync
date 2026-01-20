@@ -32,6 +32,39 @@ router.get('/', async (req, res) => {
   try {
     const { limit = 100, offset = 0, type, pinned, search } = req.query;
     
+    if (process.env.MOCK_DATA === 'true') {
+        const mockClips = [
+            {
+                id: 'clip-1',
+                content: 'https://github.com/clipsync/clipsync',
+                type: 'url',
+                pinned: true,
+                created_at: new Date().toISOString(),
+                tags: [{ id: 'tag-1', name: 'dev', color: '#3b82f6' }],
+                folder_name: 'Work'
+            },
+            {
+                id: 'clip-2',
+                content: 'Mock clip content for screenshot automation',
+                type: 'text',
+                pinned: false,
+                created_at: new Date(Date.now() - 3600000).toISOString(),
+                tags: [],
+                folder_name: null
+            },
+            {
+                id: 'clip-3',
+                content: 'function hello() { console.log("world"); }',
+                type: 'code',
+                pinned: false,
+                created_at: new Date(Date.now() - 7200000).toISOString(),
+                tags: [{ id: 'tag-2', name: 'js', color: '#ef4444' }],
+                folder_name: null
+            }
+        ];
+        return res.json(mockClips);
+    }
+
     // Try to get from cache (only if no search/filters that change results)
     const cacheKey = { limit, offset, type, pinned, search };
     if (!search && (!type || type === 'all') && pinned !== 'true') {

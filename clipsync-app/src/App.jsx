@@ -4,26 +4,28 @@ import useAuthStore from './store/useAuthStore';
 import useTeamStore from './store/useTeamStore';
 import wsClient from './services/websocket';
 import { ToastProvider, useToast } from './components/ui/Toast';
-import LandingPage from './components/LandingPage';
+import LandingPage from './components/screens/LandingPage';
+import ErrorBoundary from './components/common/ErrorBoundary';
 
 // Lazy load heavy components
-const Navigation = lazy(() => import('./components/Navigation'));
-const ClipList = lazy(() => import('./components/ClipList'));
-const DetailSidebar = lazy(() => import('./components/DetailSidebar'));
-const FilterBar = lazy(() => import('./components/FilterBar'));
-const FloatingActionButton = lazy(() => import('./components/FloatingActionButton'));
-const KeyboardShortcutHint = lazy(() => import('./components/KeyboardShortcutHint'));
-const ShareModal = lazy(() => import('./components/ShareModal'));
-const SettingsScreen = lazy(() => import('./components/SettingsScreen'));
-const PricingScreen = lazy(() => import('./components/PricingScreen'));
-const AuthModal = lazy(() => import('./components/AuthModal'));
-const TeamsListScreen = lazy(() => import('./components/TeamsListScreen'));
-const CommandPalette = lazy(() => import('./components/CommandPalette'));
-const SnippetLibrary = lazy(() => import('./components/SnippetLibrary'));
-const DevTools = lazy(() => import('./components/DevTools'));
-const GitHelper = lazy(() => import('./components/GitHelper'));
-const WorkflowAutomation = lazy(() => import('./components/WorkflowAutomation'));
-const StatsDashboard = lazy(() => import('./components/StatsDashboard'));
+const Navigation = lazy(() => import('./components/layout/Navigation'));
+const ClipList = lazy(() => import('./components/clips/ClipList'));
+const DetailSidebar = lazy(() => import('./components/clips/DetailSidebar'));
+const FilterBar = lazy(() => import('./components/clips/FilterBar'));
+const FloatingActionButton = lazy(() => import('./components/layout/FloatingActionButton'));
+const KeyboardShortcutHint = lazy(() => import('./components/layout/KeyboardShortcutHint'));
+const ShareModal = lazy(() => import('./components/modals/ShareModal'));
+const SettingsScreen = lazy(() => import('./components/screens/SettingsScreen'));
+const PricingScreen = lazy(() => import('./components/screens/PricingScreen'));
+const AuthModal = lazy(() => import('./components/modals/AuthModal'));
+const TeamsListScreen = lazy(() => import('./components/screens/TeamsListScreen'));
+const CommandPalette = lazy(() => import('./components/features/developer/CommandPalette'));
+const SnippetLibrary = lazy(() => import('./components/features/developer/SnippetLibrary'));
+const DevTools = lazy(() => import('./components/features/developer/DevTools'));
+const GitHelper = lazy(() => import('./components/features/developer/GitHelper'));
+const WorkflowAutomation = lazy(() => import('./components/features/developer/WorkflowAutomation'));
+const StatsDashboard = lazy(() => import('./components/screens/StatsDashboard'));
+const BillingPortal = lazy(() => import('./components/features/billing/BillingPortal'));
 
 // Loading fallback
 const LoadingFallback = () => (
@@ -48,6 +50,7 @@ const App = memo(() => {
   const [showGitHelper, setShowGitHelper] = useState(false);
   const [showWorkflowAutomation, setShowWorkflowAutomation] = useState(false);
   const [showStatsDashboard, setShowStatsDashboard] = useState(false);
+  const [showBilling, setShowBilling] = useState(false);
   const [syncStatus, setSyncStatus] = useState('disconnected');
 
   // Memoized callbacks
@@ -81,7 +84,7 @@ const App = memo(() => {
         duration: 2000
       });
     };
-    
+
     window.addEventListener('clipCopiedAgain', handleCopiedAgain);
     return () => {
       window.removeEventListener('clipCopiedAgain', handleCopiedAgain);
@@ -172,7 +175,7 @@ const App = memo(() => {
     // Check if running in Electron
     if (typeof window !== 'undefined' && window.electronAPI) {
       console.log('Electron detected - setting up clipboard monitoring');
-      
+
       // Listen for clipboard changes from Electron
       const cleanup = window.electronAPI.onClipboardChanged(async (text) => {
         console.log('Clipboard changed (Electron):', text?.substring(0, 50));
@@ -319,44 +322,85 @@ const App = memo(() => {
 
   // Show different screens based on state
   if (showSettings) {
-    return <SettingsScreen onClose={() => setShowSettings(false)} />;
+    return (
+      <ErrorBoundary onReset={() => setShowSettings(false)}>
+        <Suspense fallback={<LoadingFallback />}>
+          <SettingsScreen onClose={() => setShowSettings(false)} />
+        </Suspense>
+      </ErrorBoundary>
+    );
   }
 
   if (showSnippetLibrary) {
-    return <SnippetLibrary onClose={() => setShowSnippetLibrary(false)} />;
+    return (
+      <ErrorBoundary onReset={() => setShowSnippetLibrary(false)}>
+        <Suspense fallback={<LoadingFallback />}>
+          <SnippetLibrary onClose={() => setShowSnippetLibrary(false)} />
+        </Suspense>
+      </ErrorBoundary>
+    );
   }
 
   if (showDevTools) {
-    return <DevTools onClose={() => setShowDevTools(false)} />;
+    return (
+      <ErrorBoundary onReset={() => setShowDevTools(false)}>
+        <Suspense fallback={<LoadingFallback />}>
+          <DevTools onClose={() => setShowDevTools(false)} />
+        </Suspense>
+      </ErrorBoundary>
+    );
   }
 
   if (showGitHelper) {
-    return <GitHelper onClose={() => setShowGitHelper(false)} />;
+    return (
+      <ErrorBoundary onReset={() => setShowGitHelper(false)}>
+        <Suspense fallback={<LoadingFallback />}>
+          <GitHelper onClose={() => setShowGitHelper(false)} />
+        </Suspense>
+      </ErrorBoundary>
+    );
   }
 
   if (showWorkflowAutomation) {
-    return <WorkflowAutomation onClose={() => setShowWorkflowAutomation(false)} />;
+    return (
+      <ErrorBoundary onReset={() => setShowWorkflowAutomation(false)}>
+        <Suspense fallback={<LoadingFallback />}>
+          <WorkflowAutomation onClose={() => setShowWorkflowAutomation(false)} />
+        </Suspense>
+      </ErrorBoundary>
+    );
+  }
+
+  if (showBilling) {
+    return (
+      <ErrorBoundary onReset={() => setShowBilling(false)}>
+        <Suspense fallback={<LoadingFallback />}>
+          <BillingPortal onClose={() => setShowBilling(false)} />
+        </Suspense>
+      </ErrorBoundary>
+    );
   }
 
   // Show Teams screen if team tab is active
   if (activeTab === 'team') {
     return (
       <>
-        <Navigation 
+        <Navigation
           onSettingsClick={() => setShowSettings(true)}
           onPricingClick={() => setShowPricing(true)}
           onLoginClick={() => setShowAuthModal(true)}
           onSnippetsClick={() => setShowSnippetLibrary(true)}
+          onBillingClick={() => setShowBilling(true)}
           syncStatus={syncStatus}
         />
         <TeamsListScreen />
-        
+
         {/* Command Palette */}
-        <CommandPalette 
-          isOpen={showCommandPalette} 
-          onClose={() => setShowCommandPalette(false)} 
+        <CommandPalette
+          isOpen={showCommandPalette}
+          onClose={() => setShowCommandPalette(false)}
         />
-        
+
         {/* Auth Modal */}
         {showAuthModal && (
           <AuthModal onClose={() => setShowAuthModal(false)} />
@@ -369,11 +413,12 @@ const App = memo(() => {
   if (activeTab === 'stats') {
     return (
       <>
-        <Navigation 
+        <Navigation
           onSettingsClick={() => setShowSettings(true)}
           onPricingClick={() => setShowPricing(true)}
           onLoginClick={() => setShowAuthModal(true)}
           onSnippetsClick={() => setShowSnippetLibrary(true)}
+          onBillingClick={() => setShowBilling(true)}
           syncStatus={syncStatus}
         />
         <Suspense fallback={<LoadingFallback />}>
@@ -386,10 +431,11 @@ const App = memo(() => {
   return (
     <div className="min-h-screen bg-zinc-100">
       <Suspense fallback={<LoadingFallback />}>
-        <Navigation 
+        <Navigation
           onSettingsClick={handleSettingsClick}
           onPricingClick={handlePricingClick}
           onLoginClick={handleLoginClick}
+          onBillingClick={() => setShowBilling(true)}
           syncStatus={syncStatus}
         />
 
@@ -429,9 +475,9 @@ const App = memo(() => {
 
         {/* Command Palette */}
         <Suspense fallback={null}>
-          <CommandPalette 
-            isOpen={showCommandPalette} 
-            onClose={handleCloseCommandPalette} 
+          <CommandPalette
+            isOpen={showCommandPalette}
+            onClose={handleCloseCommandPalette}
           />
         </Suspense>
 

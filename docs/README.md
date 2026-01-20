@@ -78,6 +78,18 @@ Archived and legacy documentation.
 
 - Historical documents and legacy guides
 
+### 📂 Root Documents
+Important documents moved from the project root.
+
+- **[TESTING_GUIDE.md](./TESTING_GUIDE.md)** - Testing guide
+- **[SCREENSHOT_GUIDE.md](./SCREENSHOT_GUIDE.md)** - Screenshot guide
+- **[SCREENSHOT_CAPTURE_WORKFLOW.md](./SCREENSHOT_CAPTURE_WORKFLOW.md)** - Screenshot capture workflow
+- **[RELEASE_READY.md](./RELEASE_READY.md)** - Release readiness checklist
+- **[PLATFORM_VERIFICATION.md](./PLATFORM_VERIFICATION.md)** - Platform verification
+- **[IMPLEMENTATION_SUMMARY.md](./IMPLEMENTATION_SUMMARY.md)** - Implementation summary
+- **[FINAL_RELEASE_SIGNOFF.md](./FINAL_RELEASE_SIGNOFF.md)** - Final release signoff
+- **[COMPLETION_SUMMARY.md](./COMPLETION_SUMMARY.md)** - Completion summary
+
 ## 🚀 Quick Start
 
 1. **New to ClipSync?** Start with [Setup/QUICK-START.md](./setup/QUICK-START.md)

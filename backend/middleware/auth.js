@@ -105,15 +105,43 @@ export const authenticateToken = async (req, res, next) => {
     try {
       decoded = jwt.verify(token, process.env.JWT_SECRET);
     } catch (jwtError) {
-      if (jwtError.name === 'TokenExpiredError') {
-        return res.status(403).json({ error: 'Token expired' });
+      if (process.env.MOCK_DATA === 'true') {
+         // In mock mode, if token is invalid (or dummy), we can still proceed with a mock user
+         // But better to allow jwt.verify to succeed if we generate valid tokens in mock auth
+         // For now, let's just proceed with mock user if verify fails ONLY IF it's a specific mock token
+         if (token === 'mock-token') {
+            decoded = { userId: 'mock-user-id' };
+         } else {
+            throw jwtError;
+         }
+      } else {
+        if (jwtError.name === 'TokenExpiredError') {
+            return res.status(403).json({ error: 'Token expired' });
+        }
+        if (jwtError.name === 'JsonWebTokenError') {
+            return res.status(403).json({ error: 'Invalid token' });
+        }
+        throw jwtError;
       }
-      if (jwtError.name === 'JsonWebTokenError') {
-        return res.status(403).json({ error: 'Invalid token' });
-      }
-      throw jwtError;
     }
     
+    if (process.env.MOCK_DATA === 'true') {
+      req.user = {
+        id: decoded.userId || 'mock-user-id',
+        google_id: 'mock-google-id',
+        email: 'mock@example.com',
+        name: 'Mock User',
+        picture: 'https://via.placeholder.com/150',
+        plan: 'pro',
+        account_locked_until: null,
+        created_at: new Date(),
+        last_login: new Date()
+      };
+      req.deviceFingerprint = 'mock-fingerprint';
+      req.clientIp = '127.0.0.1';
+      return next();
+    }
+
     // Get user from database
     const result = await query(
       `SELECT id, google_id, email, name, picture, plan, account_locked_until

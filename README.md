@@ -102,11 +102,15 @@ npm run ios    # or npm run android
 
 ## 📚 Documentation
 
-- **[System Overview](docs/SYSTEM-OVERVIEW.md)** - Comprehensive system documentation
-- **[API Documentation](docs/api/PUBLIC-API.md)** - Public API reference
-- **[Features](docs/FEATURES-COMPLETE.md)** - Complete feature list
-- **[Security](docs/security/)** - Security documentation
-- **[Architecture](docs/architecture/)** - Architecture documentation
+For complete documentation, please see the **[Documentation Index](docs/README.md)**.
+
+Key documents:
+- **[System Overview](docs/architecture/SYSTEM-OVERVIEW.md)**
+- **[API Documentation](docs/api/PUBLIC-API.md)**
+- **[Features](docs/FEATURES-COMPLETE.md)**
+- **[Security](docs/security/README.md)**
+- **[Testing Guide](docs/TESTING_GUIDE.md)**
+- **[Screenshot Guide](docs/SCREENSHOT_GUIDE.md)**
 
 ## 🏗️ Architecture
 

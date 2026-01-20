@@ -1,0 +1,3 @@
+1.  **Uninstall Conflicting Package**: Remove `react-native-worklets` (version 0.7.2) as it conflicts with the built-in Reanimated logic in Expo SDK 54 and causes the `PlatformConstants` crash.
+2.  **Downgrade Reanimated**: Install `react-native-reanimated@4.1.1` strictly, as this is the specific version tested and supported by Expo SDK 54 (your current version 4.1.6 is too new and requires the conflicting package).
+3.  **Clean Start**: Clear the Metro bundler cache to ensure the correct native module resolution.

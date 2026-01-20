@@ -8,14 +8,15 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 // Lazy load components for code splitting
 const App = lazy(() => import('./App'));
-const SettingsScreen = lazy(() => import('./components/SettingsScreen'));
-const PricingScreen = lazy(() => import('./components/PricingScreen'));
-const TeamsListScreen = lazy(() => import('./components/TeamsListScreen'));
-const SnippetLibrary = lazy(() => import('./components/SnippetLibrary'));
-const DevTools = lazy(() => import('./components/DevTools'));
-const GitHelper = lazy(() => import('./components/GitHelper'));
-const WorkflowAutomation = lazy(() => import('./components/WorkflowAutomation'));
-const HistoryScreen = lazy(() => import('./components/HistoryScreen'));
+const SettingsScreen = lazy(() => import('./components/screens/SettingsScreen'));
+const PricingScreen = lazy(() => import('./components/screens/PricingScreen'));
+const TeamsListScreen = lazy(() => import('./components/screens/TeamsListScreen'));
+const SnippetLibrary = lazy(() => import('./components/features/developer/SnippetLibrary'));
+const DevTools = lazy(() => import('./components/features/developer/DevTools'));
+const GitHelper = lazy(() => import('./components/features/developer/GitHelper'));
+const WorkflowAutomation = lazy(() => import('./components/features/developer/WorkflowAutomation'));
+const HistoryScreen = lazy(() => import('./components/screens/HistoryScreen'));
+const ScreenshotHelper = lazy(() => import('./components/common/ScreenshotHelper'));
 
 // Loading component
 const LoadingFallback = () => (
@@ -47,6 +48,7 @@ export const AppRouter = () => {
           <Route path="/dev-tools" element={<DevTools onClose={() => window.history.back()} />} />
           <Route path="/git-helper" element={<GitHelper onClose={() => window.history.back()} />} />
           <Route path="/workflows" element={<WorkflowAutomation onClose={() => window.history.back()} />} />
+          <Route path="/screenshots" element={<ScreenshotHelper />} />
         </Routes>
       </Suspense>
     </BrowserRouter>
