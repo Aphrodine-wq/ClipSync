@@ -22,6 +22,8 @@
     "format:check": "prettier --check \"**/*.{js,json,md}\""
   },
   "build": {
+    "electronVersion": "35.7.0",
+    "forceCodeSigning": false,
     "appId": "com.clipsync.app",
     "productName": "ClipSync",
     "copyright": "Copyright © 2024 ClipSync",
@@ -36,6 +38,7 @@
       "node_modules/**/*"
     ],
     "win": {
+      "signAndEditExecutable": false,
       "target": [
         {
           "target": "nsis",
@@ -112,7 +115,7 @@
   },
   "devDependencies": {
     "concurrently": "^8.2.2",
-    "electron": "^35.7.0",
+    "electron": "35.7.0",
     "electron-builder": "^25.1.8",
     "wait-on": "^7.2.0"
   }

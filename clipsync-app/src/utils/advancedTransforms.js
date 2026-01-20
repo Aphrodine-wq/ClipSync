@@ -2,6 +2,7 @@
 
 // Import common utilities from transforms.js to avoid duplication
 import { removeEmptyLines } from './transforms.js';
+export { removeEmptyLines };
 
 // ============================================
 // CODE FORMATTERS

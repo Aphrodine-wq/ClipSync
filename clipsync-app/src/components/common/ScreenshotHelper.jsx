@@ -13,11 +13,11 @@
  */
 
 import { useState } from 'react';
-import AuthModal from '../../modals/AuthModal';
-import PaywallModal from '../../modals/PaywallModal';
-import PricingScreen from '../../screens/PricingScreen';
+import AuthModal from '../modals/AuthModal';
+import PaywallModal from '../modals/PaywallModal';
+import PricingScreen from '../screens/PricingScreen';
 import DeviceManagement from './DeviceManagement';
-import UsageQuota from '../../features/billing/UsageQuota';
+import UsageQuota from '../features/billing/UsageQuota';
 
 const ScreenshotHelper = () => {
   const [currentView, setCurrentView] = useState('menu');
