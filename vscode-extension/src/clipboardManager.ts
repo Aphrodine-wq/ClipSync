@@ -5,6 +5,13 @@ export interface ClipItem {
     content: string;
     type: string;
     timestamp: number;
+    template?: boolean;
+}
+
+export interface SaveClipOptions {
+    content: string;
+    type?: string;
+    template?: boolean;
 }
 
 export class ClipboardManager {
@@ -37,6 +44,24 @@ export class ClipboardManager {
             clearInterval(this.monitoringInterval);
             this.monitoringInterval = null;
         }
+    }
+
+    async saveClip(opts: SaveClipOptions): Promise<void> {
+        const item: ClipItem = {
+            id: Date.now().toString(),
+            content: opts.content,
+            type: opts.type || this.detectType(opts.content),
+            timestamp: Date.now(),
+            template: opts.template || false
+        };
+
+        this.history.unshift(item);
+
+        if (this.history.length > this.maxHistory) {
+            this.history = this.history.slice(0, this.maxHistory);
+        }
+
+        await this.saveHistory();
     }
 
     async addToHistory(content: string) {

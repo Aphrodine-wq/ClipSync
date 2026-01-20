@@ -51,6 +51,27 @@ export function unregisterShortcut(name) {
 }
 
 /**
+ * Parse key combo from event
+ */
+export function parseKeyCombo(e) {
+  return getKeyString(e);
+}
+
+/**
+ * Validate shortcut
+ */
+export function validateShortcut(keyString, command) {
+  return checkConflicts(keyString, command);
+}
+
+/**
+ * Update shortcut
+ */
+export function updateShortcut(command, keyString) {
+  setShortcut(command, keyString);
+}
+
+/**
  * Handle keydown event
  */
 function handleKeyDown(e) {
@@ -66,7 +87,7 @@ function handleKeyDown(e) {
 /**
  * Get key string from event
  */
-function getKeyString(e) {
+export function getKeyString(e) {
   const parts = [];
 
   if (e.ctrlKey || e.metaKey) parts.push('Ctrl');
