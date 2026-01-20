@@ -16,7 +16,7 @@ const DEFAULT_SHORTCUTS = {
 };
 
 let shortcuts = { ...DEFAULT_SHORTCUTS };
-let handlers = {};
+const handlers = {};
 
 /**
  * Initialize shortcuts

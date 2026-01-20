@@ -20,11 +20,11 @@ class ApiClient {
   private async request(
     endpoint: string,
     options: RequestInit = {}
-  ): Promise<any> {
+  ): Promise<unknown> {
     const url = `${this.baseURL}${endpoint}`;
-    const headers: HeadersInit = {
+    const headers: Record<string, string> = {
       'Content-Type': 'application/json',
-      ...options.headers,
+      ...(options.headers as Record<string, string>),
     };
 
     if (this.token) {
@@ -57,25 +57,25 @@ class ApiClient {
     }
   }
 
-  async get(endpoint: string): Promise<any> {
+  async get(endpoint: string): Promise<unknown> {
     return this.request(endpoint, { method: 'GET' });
   }
 
-  async post(endpoint: string, data?: any): Promise<any> {
+  async post(endpoint: string, data?: Record<string, unknown>): Promise<unknown> {
     return this.request(endpoint, {
       method: 'POST',
       body: JSON.stringify(data),
     });
   }
 
-  async put(endpoint: string, data?: any): Promise<any> {
+  async put(endpoint: string, data?: Record<string, unknown>): Promise<unknown> {
     return this.request(endpoint, {
       method: 'PUT',
       body: JSON.stringify(data),
     });
   }
 
-  async delete(endpoint: string): Promise<any> {
+  async delete(endpoint: string): Promise<unknown> {
     return this.request(endpoint, { method: 'DELETE' });
   }
 }

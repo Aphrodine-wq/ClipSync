@@ -10,7 +10,7 @@ import { removeEmptyLines } from './transforms.js';
 export const formatSQL = (text) => {
   try {
     // Basic SQL formatting
-    let formatted = text
+    const formatted = text
       .replace(/\bSELECT\b/gi, '\nSELECT')
       .replace(/\bFROM\b/gi, '\nFROM')
       .replace(/\bWHERE\b/gi, '\nWHERE')
@@ -47,7 +47,7 @@ export const formatXML = (text) => {
         if (pad !== 0) {
           pad -= 1;
         }
-      } else if (node.match(/^<\w([^>]*[^\/])?>.*$/)) {
+      } else if (node.match(/^<\w([^>]*[^/])?>.*$/)) {
         indent = 1;
       } else {
         indent = 0;
@@ -71,7 +71,7 @@ export const formatHTML = (text) => {
 
 export const formatCSS = (text) => {
   try {
-    let formatted = text
+    const formatted = text
       .replace(/\{/g, ' {\n  ')
       .replace(/\}/g, '\n}\n')
       .replace(/;/g, ';\n  ')
@@ -85,7 +85,7 @@ export const formatCSS = (text) => {
 
 export const formatGraphQL = (text) => {
   try {
-    let formatted = text
+    const formatted = text
       .replace(/\{/g, ' {\n  ')
       .replace(/\}/g, '\n}')
       .replace(/,/g, ',\n  ')
@@ -127,7 +127,7 @@ export const formatYAML = (text) => {
 
 export const markdownToHTML = (text) => {
   try {
-    let html = text
+    const html = text
       // Headers
       .replace(/^### (.*$)/gim, '<h3>$1</h3>')
       .replace(/^## (.*$)/gim, '<h2>$1</h2>')
@@ -149,7 +149,7 @@ export const markdownToHTML = (text) => {
 
 export const htmlToMarkdown = (text) => {
   try {
-    let markdown = text
+    const markdown = text
       // Headers
       .replace(/<h1>(.*?)<\/h1>/gim, '# $1\n')
       .replace(/<h2>(.*?)<\/h2>/gim, '## $1\n')
@@ -212,7 +212,7 @@ export const yamlToJSON = (text) => {
     // Basic YAML to JSON conversion
     const lines = text.split('\n');
     const obj = {};
-    let currentKey = null;
+    const currentKey = null;
     
     lines.forEach(line => {
       const trimmed = line.trim();
@@ -315,7 +315,8 @@ export const hexToHSL = (text) => {
     
     const max = Math.max(r, g, b);
     const min = Math.min(r, g, b);
-    let h, s, l = (max + min) / 2;
+    let h, s; 
+    const l = (max + min) / 2;
     
     if (max === min) {
       h = s = 0;
@@ -512,7 +513,7 @@ export const addLineNumbers = (text) => {
 
 export const wrapText = (text, width = 80) => {
   const words = text.split(' ');
-  let lines = [];
+  const lines = [];
   let currentLine = '';
   
   words.forEach(word => {

@@ -123,7 +123,7 @@ export const autoCategorize = (content, type) => {
   }
   
   // Detect dates (common formats)
-  const datePattern = /\d{1,2}[-\/]\d{1,2}[-\/]\d{2,4}|\d{4}-\d{2}-\d{2}|(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[a-z]*\s+\d{1,2},?\s+\d{4}/i;
+  const datePattern = /\d{1,2}[-/]\d{1,2}[-/]\d{2,4}|\d{4}-\d{2}-\d{2}|(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[a-z]*\s+\d{1,2},?\s+\d{4}/i;
   if (datePattern.test(content)) {
     result.suggestedTags.push('date', 'time');
   }

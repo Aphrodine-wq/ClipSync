@@ -129,7 +129,7 @@ function detectContentType(content) {
   }
   
   // JSON
-  if (/^[\s\n]*[\{\[].*[\}\]]/.test(content.trim())) {
+  if (/^[\s\n]*[{[].*[}]]/.test(content.trim())) {
     try {
       JSON.parse(content);
       return 'json';
@@ -153,14 +153,14 @@ function ensureCodeFormatting(content) {
     const trimmed = line.trim();
     
     // Decrease indent for closing braces
-    if (trimmed.match(/^[\}\]\)]/)) {
+    if (trimmed.match(/^[})\]]/)) {
       indentLevel = Math.max(0, indentLevel - 1);
     }
     
     const indented = '  '.repeat(indentLevel) + trimmed;
     
     // Increase indent for opening braces
-    if (trimmed.match(/[{\[\(]$/)) {
+    if (trimmed.match(/[{[(]$/)) {
       indentLevel++;
     }
     

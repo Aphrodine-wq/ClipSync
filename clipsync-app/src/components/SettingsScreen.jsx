@@ -463,10 +463,11 @@ const SettingsScreen = ({ onClose }) => {
     </>
   );
 
+  const [editingCommand, setEditingCommand] = useState(null);
+  const [tempShortcut, setTempShortcut] = useState('');
+
   const renderKeyboardShortcutsTab = () => {
     const shortcuts = getAllShortcuts();
-    const [editingCommand, setEditingCommand] = useState(null);
-    const [tempShortcut, setTempShortcut] = useState('');
     
     const handleKeyDown = (command, event) => {
       event.preventDefault();

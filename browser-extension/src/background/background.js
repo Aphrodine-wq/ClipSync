@@ -5,7 +5,7 @@
 
 const API_URL = 'http://localhost:3001'; // Update for production
 let monitoringInterval = null;
-let lastClipboardContent = '';
+const lastClipboardContent = '';
 let isMonitoring = false;
 
 // Initialize

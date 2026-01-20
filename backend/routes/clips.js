@@ -217,17 +217,17 @@ router.post('/',
   auditClipOperation(AUDIT_ACTIONS.CLIP_CREATED),
   async (req, res) => {
     try {
-      let { content, type, pinned = false, folderId, metadata = {}, template = false, templatePlaceholders = null, expiresInMinutes = null } = req.body;
+      const { content, type, pinned = false, folderId, metadata = {}, template = false, templatePlaceholders = null, expiresInMinutes = null } = req.body;
       
       // Handle file upload - temporarily disabled
-      let contentType = 'text';
-      let fileData = null;
-      let fileSize = null;
-      let fileName = null;
-      let mimeType = null;
-      let thumbnailUrl = null;
-      let width = null;
-      let height = null;
+      const contentType = 'text';
+      const fileData = null;
+      const fileSize = null;
+      const fileName = null;
+      const mimeType = null;
+      const thumbnailUrl = null;
+      const width = null;
+      const height = null;
 
       // Skip file upload handling for now
       /* 
@@ -362,7 +362,7 @@ router.post('/',
         const tagsToCreate = tagNames.filter(name => !existingTags.has(name));
         
         // Batch create new tags
-        let newTagIds = [];
+        const newTagIds = [];
         if (tagsToCreate.length > 0) {
           const values = tagsToCreate.map((_, i) => `($1, $${i + 2})`).join(', ');
           const params = [req.user.id, ...tagsToCreate];

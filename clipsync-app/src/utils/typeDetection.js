@@ -50,7 +50,7 @@ const isJSON = (str) => {
 };
 
 const isURL = (str) => {
-  const urlPattern = /^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/i;
+  const urlPattern = /^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,6})([/\w .-]*)*\/?$/i;
   return urlPattern.test(str) || str.startsWith('http://') || str.startsWith('https://');
 };
 

@@ -7,9 +7,9 @@
 const SENSITIVE_PATTERNS = {
   // API Keys
   apiKey: [
-    /api[_-]?key\s*[:=]\s*['"]?([a-zA-Z0-9_\-]{20,})['"]?/i,
-    /apikey\s*[:=]\s*['"]?([a-zA-Z0-9_\-]{20,})['"]?/i,
-    /api_key\s*[:=]\s*['"]?([a-zA-Z0-9_\-]{20,})['"]?/i,
+    /api[_-]?key\s*[:=]\s*['"]?([a-zA-Z0-9_-]{20,})['"]?/i,
+    /apikey\s*[:=]\s*['"]?([a-zA-Z0-9_-]{20,})['"]?/i,
+    /api_key\s*[:=]\s*['"]?([a-zA-Z0-9_-]{20,})['"]?/i,
   ],
   
   // Passwords
@@ -22,17 +22,17 @@ const SENSITIVE_PATTERNS = {
   
   // Tokens
   token: [
-    /token\s*[:=]\s*['"]?([a-zA-Z0-9_\-\.]{20,})['"]?/i,
-    /access[_-]?token\s*[:=]\s*['"]?([a-zA-Z0-9_\-\.]{20,})['"]?/i,
-    /bearer\s+([a-zA-Z0-9_\-\.]{20,})/i,
-    /auth[_-]?token\s*[:=]\s*['"]?([a-zA-Z0-9_\-\.]{20,})['"]?/i,
+    /token\s*[:=]\s*['"]?([a-zA-Z0-9_-.]{20,})['"]?/i,
+    /access[_-]?token\s*[:=]\s*['"]?([a-zA-Z0-9_-.]{20,})['"]?/i,
+    /bearer\s+([a-zA-Z0-9_-.]{20,})/i,
+    /auth[_-]?token\s*[:=]\s*['"]?([a-zA-Z0-9_-.]{20,})['"]?/i,
   ],
   
   // Secret keys
   secret: [
-    /secret[_-]?key\s*[:=]\s*['"]?([a-zA-Z0-9_\-]{20,})['"]?/i,
-    /secret\s*[:=]\s*['"]?([a-zA-Z0-9_\-]{20,})['"]?/i,
-    /private[_-]?key\s*[:=]\s*['"]?([a-zA-Z0-9_\-]{40,})['"]?/i,
+    /secret[_-]?key\s*[:=]\s*['"]?([a-zA-Z0-9_-]{20,})['"]?/i,
+    /secret\s*[:=]\s*['"]?([a-zA-Z0-9_-]{20,})['"]?/i,
+    /private[_-]?key\s*[:=]\s*['"]?([a-zA-Z0-9_-]{40,})['"]?/i,
   ],
   
   // AWS credentials
@@ -50,8 +50,8 @@ const SENSITIVE_PATTERNS = {
   
   // OAuth credentials
   oauth: [
-    /client[_-]?secret\s*[:=]\s*['"]?([a-zA-Z0-9_\-]{20,})['"]?/i,
-    /oauth[_-]?secret\s*[:=]\s*['"]?([a-zA-Z0-9_\-]{20,})['"]?/i,
+    /client[_-]?secret\s*[:=]\s*['"]?([a-zA-Z0-9_-]{20,})['"]?/i,
+    /oauth[_-]?secret\s*[:=]\s*['"]?([a-zA-Z0-9_-]{20,})['"]?/i,
   ],
   
   // Credit card numbers (basic pattern)
@@ -97,7 +97,7 @@ export const detectSensitiveData = (content) => {
   }
 
   // Check for long random strings (might be tokens/keys)
-  const randomStringPattern = /^[a-zA-Z0-9_\-]{32,}$/;
+  const randomStringPattern = /^[a-zA-Z0-9_-]{32,}$/;
   if (randomStringPattern.test(content.trim()) && !content.includes(' ')) {
     detectedTypes.push('potential_token');
     maxConfidence = Math.max(maxConfidence, 0.5);
@@ -119,7 +119,7 @@ export const maskSensitiveData = (content, maskChar = '*') => {
   let masked = content;
 
   // Mask detected sensitive patterns
-  for (const [type, patterns] of Object.entries(SENSITIVE_PATTERNS)) {
+  for (const [, patterns] of Object.entries(SENSITIVE_PATTERNS)) {
     for (const pattern of patterns) {
       masked = masked.replace(pattern, (match, value) => {
         if (value) {

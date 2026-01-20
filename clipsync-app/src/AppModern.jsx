@@ -290,7 +290,9 @@ function AppContent() {
         else if (showDevTools) setShowDevTools(false);
         else if (showGitHelper) setShowGitHelper(false);
         else if (showWorkflowAutomation) setShowWorkflowAutomation(false);
-        else useClipStore.getState().clearSelection();
+        else { 
+          useClipStore.getState().clearSelection();
+        }
       }
     };
 

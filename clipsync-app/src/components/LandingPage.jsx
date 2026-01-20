@@ -396,7 +396,7 @@ const LandingPage = ({ onGetStarted, onDevMode }) => {
                 ))}
               </div>
               <p className="text-zinc-700 mb-6 leading-relaxed italic">
-                "{testimonial.text}"
+                {'"'}{testimonial.text}{'"'}
               </p>
               <div>
                 <p className="font-semibold text-zinc-900">{testimonial.name}</p>

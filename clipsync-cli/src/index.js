@@ -102,27 +102,32 @@ program
       // Execute action
       try {
         switch (action) {
-          case 'list':
+          case 'list': {
             await listCommand({ limit: '20' });
             break;
-          case 'search':
+          }
+          case 'search': {
             const { query } = await inquirer.prompt([
               { type: 'input', name: 'query', message: 'Search query:' },
             ]);
             await searchCommand(query, {});
             break;
-          case 'copy':
+          }
+          case 'copy': {
             const { content } = await inquirer.prompt([
               { type: 'input', name: 'content', message: 'Content to copy:' },
             ]);
             await copyCommand(content, {});
             break;
-          case 'paste':
+          }
+          case 'paste': {
             await pasteCommand(undefined, { interactive: true });
             break;
-          case 'sync':
+          }
+          case 'sync': {
             await syncCommand();
             break;
+          }
         }
       } catch (error) {
         console.error(chalk.red('Error:'), error.message);

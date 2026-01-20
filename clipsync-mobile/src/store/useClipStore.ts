@@ -7,6 +7,16 @@ import { create } from 'zustand';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { apiClient } from '../services/api';
 
+interface AddClipOptions {
+  type?: string;
+  pinned?: boolean;
+  folderId?: string;
+  tags?: string[];
+  encrypted?: boolean;
+  metadata?: Record<string, unknown>;
+  manual?: boolean;
+}
+
 export interface Clip {
   id: string;
   content: string;
@@ -15,7 +25,7 @@ export interface Clip {
   folderId?: string;
   tags: string[];
   encrypted: boolean;
-  metadata?: any;
+  metadata?: Record<string, unknown>;
   createdAt: string;
   updatedAt: string;
 }
@@ -28,7 +38,7 @@ interface ClipState {
   isLoading: boolean;
   syncStatus: 'synced' | 'syncing' | 'offline';
   initialize: () => Promise<void>;
-  addClip: (content: string, options?: any) => Promise<Clip | null>;
+  addClip: (content: string, options?: AddClipOptions) => Promise<Clip | null>;
   updateClip: (id: string, updates: Partial<Clip>) => Promise<void>;
   deleteClip: (id: string) => Promise<void>;
   pinClip: (id: string) => Promise<void>;
@@ -208,7 +218,7 @@ export const useClipStore = create<ClipState>((set, get) => ({
     }
   },
 
-  addTeamClip: (teamId: string, clip: Clip) => {
+  addTeamClip: (_teamId: string, _clip: Clip) => {
     // Handle team clip addition
     // This would be managed by a separate team store
   },

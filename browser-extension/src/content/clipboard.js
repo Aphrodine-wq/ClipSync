@@ -37,7 +37,7 @@
 
   // Handle paste event
   function handlePaste(event) {
-    const clipboardData = event.clipboardData || (window as any).clipboardData;
+    const clipboardData = event.clipboardData || window.clipboardData;
     if (clipboardData) {
       const text = clipboardData.getData('text/plain');
       if (text && text !== lastClipboardContent) {

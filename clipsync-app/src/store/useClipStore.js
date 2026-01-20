@@ -309,6 +309,7 @@ const useClipStore = create((set, get) => ({
   // Clear selection
   clearSelection: () => {
     set({ selectedClip: null });
+    set({ selectedClips: [] });
   },
 
   // Set search query
@@ -544,11 +545,6 @@ const useClipStore = create((set, get) => ({
     } else {
       set({ selectedClips: [...selectedClips, clipId] });
     }
-  },
-  
-  // Clear selection
-  clearSelection: () => {
-    set({ selectedClips: [] });
   },
   
   // Merge selected clips

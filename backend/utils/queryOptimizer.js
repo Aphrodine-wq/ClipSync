@@ -3,8 +3,8 @@
  * Monitors and optimizes database query performance
  */
 
-import { query } from '../config/database.js';
-import { createAuditLog, AUDIT_ACTIONS } from '../middleware/audit.js';
+import pool, { query } from '../config/database.js';
+import { createAuditLog } from '../middleware/audit.js';
 
 // Slow query threshold (in milliseconds)
 const SLOW_QUERY_THRESHOLD = parseInt(process.env.SLOW_QUERY_THRESHOLD || '1000');
@@ -17,7 +17,6 @@ const queryStats = new Map();
  */
 export const executeQuery = async (queryText, params = []) => {
   const startTime = Date.now();
-  const queryId = `${queryText.substring(0, 50)}_${Date.now()}`;
   
   try {
     const result = await query(queryText, params);

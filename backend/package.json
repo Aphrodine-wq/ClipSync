@@ -10,7 +10,11 @@
     "db:migrate": "node db/migrate.js",
     "test": "jest",
     "test:integration": "jest __tests__/integration",
-    "test:unit": "jest __tests__/unit"
+    "test:unit": "jest __tests__/unit",
+    "lint": "eslint . --ext .js",
+    "lint:fix": "eslint . --ext .js --fix",
+    "format": "prettier --write \"**/*.{js,json,md}\"",
+    "format:check": "prettier --check \"**/*.{js,json,md}\""
   },
   "keywords": [
     "clipboard",
@@ -36,7 +40,6 @@
     "nanoid": "^5.0.4",
     "pg": "^8.11.3",
     "qrcode": "^1.5.4",
-    "react-router-dom": "^7.12.0",
     "redis": "^5.10.0",
     "sharp": "^0.33.0",
     "socket.io": "^4.6.2",

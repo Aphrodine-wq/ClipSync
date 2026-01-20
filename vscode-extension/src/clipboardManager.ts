@@ -75,7 +75,9 @@ export class ClipboardManager {
             try {
                 JSON.parse(content);
                 return 'json';
-            } catch {}
+            } catch {
+                // Ignore JSON parse errors
+            }
         }
 
         // URL

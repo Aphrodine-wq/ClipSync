@@ -14,11 +14,9 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useAuthStore } from '../store/useAuthStore';
-import { apiClient } from '../services/api';
 
 export default function LoginScreen() {
   const [isLoading, setIsLoading] = useState(false);
-  const { login } = useAuthStore();
 
   const handleGoogleLogin = async () => {
     setIsLoading(true);

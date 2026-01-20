@@ -31,7 +31,7 @@ const TEST_CLIPS = [
   },
 ];
 
-let createdClips = [];
+const createdClips = [];
 let pinnedClipId;
 
 describe('Clips API', () => {

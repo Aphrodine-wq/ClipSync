@@ -14,9 +14,8 @@ import { createAuditLog, AUDIT_ACTIONS } from '../middleware/audit.js';
 export const rotateToken = async (userId, oldToken, req) => {
   try {
     // Verify old token
-    let decoded;
     try {
-      decoded = jwt.verify(oldToken, process.env.JWT_SECRET);
+      jwt.verify(oldToken, process.env.JWT_SECRET);
     } catch (error) {
       throw new Error('Invalid token');
     }

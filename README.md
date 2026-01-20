@@ -72,11 +72,26 @@ npm run dev
 ```
 
 4. **Desktop App**
-```bash
-cd clipsync-desktop
-npm install
-npm start
-```
+
+   **Development:**
+   ```bash
+   # From root directory
+   npm run dev:desktop
+   
+   # Or from clipsync-desktop directory
+   cd clipsync-desktop
+   npm run dev  # Starts web dev server + Electron
+   ```
+
+   **Production Build:**
+   ```bash
+   # From root directory (recommended - builds web app first)
+   npm run build:desktop
+   
+   # Or from clipsync-desktop directory
+   cd clipsync-desktop
+   npm run build  # Builds web app, then packages Electron app
+   ```
 
 5. **Mobile App**
 ```bash
@@ -129,6 +144,28 @@ npm run test:integration
 # E2E tests
 npm run test:e2e
 ```
+
+## 🏗️ Building
+
+### Web App
+```bash
+npm run build:app
+```
+
+### Desktop App
+```bash
+# Builds web app first, then packages Electron app
+npm run build:desktop
+
+# Platform-specific builds
+cd clipsync-desktop
+npm run build:win    # Windows
+npm run build:mac    # macOS
+npm run build:linux  # Linux
+npm run build:all    # All platforms
+```
+
+**Note:** The desktop build automatically validates that the web app build output exists before packaging. If the build fails, ensure `clipsync-app/dist` contains the built web application.
 
 ## 📦 Deployment
 

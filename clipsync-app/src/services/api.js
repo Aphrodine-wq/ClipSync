@@ -1,310 +1,221 @@
-// API client for ClipSync backend
+// API client adapter for ClipSync web app
+// Uses shared client with browser-specific token storage
+
+import { ApiClient } from '@clipsync/shared-client';
 
 const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001/api';
 
-class ApiClient {
-  constructor() {
-    this.baseURL = API_BASE_URL;
-    this.token = localStorage.getItem('clipsync_token');
-  }
-
-  setToken(token) {
-    this.token = token;
+// Create API client instance with browser-specific adapters
+const apiClient = new ApiClient({
+  baseURL: API_BASE_URL,
+  getToken: () => {
+    return localStorage.getItem('clipsync_token');
+  },
+  setToken: (token) => {
     if (token) {
       localStorage.setItem('clipsync_token', token);
     } else {
       localStorage.removeItem('clipsync_token');
     }
+  },
+  onTokenExpired: async () => {
+    // Token refresh logic can be added here if needed
+    return false;
+  },
+});
+
+// Add convenience methods that were in the original API client
+apiClient.setToken = (token) => {
+  if (token) {
+    localStorage.setItem('clipsync_token', token);
+  } else {
+    localStorage.removeItem('clipsync_token');
   }
+};
 
-  getToken() {
-    return this.token;
+apiClient.getToken = () => {
+  return localStorage.getItem('clipsync_token');
+};
+
+// Auth endpoints
+apiClient.loginWithGoogle = async (credential) => {
+  const data = await apiClient.post('/auth/google', { credential });
+  if (data.token) {
+    apiClient.setToken(data.token);
   }
+  return data;
+};
 
-  async request(endpoint, options = {}) {
-    let response;
-    const url = `${this.baseURL}${endpoint}`;
-    const headers = {
-      'Content-Type': 'application/json',
-      ...options.headers,
-    };
+apiClient.getCurrentUser = async () => {
+  return apiClient.get('/auth/me');
+};
 
-    if (this.token) {
-      headers['Authorization'] = `Bearer ${this.token}`;
-    }
+apiClient.logout = async () => {
+  const data = await apiClient.post('/auth/logout');
+  apiClient.setToken(null);
+  return data;
+};
 
-    const config = {
-      ...options,
-      headers,
-    };
+apiClient.deleteAccount = async () => {
+  const data = await apiClient.delete('/auth/account');
+  apiClient.setToken(null);
+  return data;
+};
 
-    try {
-      const response = await fetch(url, config);
-      const data = await response.json();
+apiClient.updateProfile = async (name, email) => {
+  return apiClient.put('/auth/profile', { name, email });
+};
 
-      if (!response.ok) {
-        const error = new Error(data.error || 'Request failed');
-        error.response = {
-          status: response.status,
-          data: data,
-        };
-        throw error;
-      }
+apiClient.updatePassword = async (currentPassword, newPassword) => {
+  return apiClient.put('/auth/password', { currentPassword, newPassword });
+};
 
-      return data;
-    } catch (error) {
-      console.error('API request error:', error);
-      // Preserve response data if it exists
-      if (error.response) {
-        throw error;
-      }
-      // If it's a network error, wrap it
-      const wrappedError = new Error(error.message || 'Network error');
-      wrappedError.originalError = error;
-      throw wrappedError;
-    }
-  }
+// Clips endpoints
+apiClient.getClips = async (params = {}) => {
+  const queryString = new URLSearchParams(params).toString();
+  return apiClient.get(`/clips?${queryString}`);
+};
 
-  // Auth endpoints
-  async loginWithGoogle(credential) {
-    const data = await this.request('/auth/google', {
-      method: 'POST',
-      body: JSON.stringify({ credential }),
-    });
-    
-    if (data.token) {
-      this.setToken(data.token);
-    }
-    
-    return data;
-  }
+apiClient.getClip = async (id) => {
+  return apiClient.get(`/clips/${id}`);
+};
 
-  async getCurrentUser() {
-    return this.request('/auth/me');
-  }
+apiClient.createClip = async (clipData) => {
+  return apiClient.post('/clips', clipData);
+};
 
-  async logout() {
-    const data = await this.request('/auth/logout', { method: 'POST' });
-    this.setToken(null);
-    return data;
-  }
+apiClient.updateClip = async (id, clipData) => {
+  return apiClient.put(`/clips/${id}`, clipData);
+};
 
-  async deleteAccount() {
-    const data = await this.request('/auth/account', { method: 'DELETE' });
-    this.setToken(null);
-    return data;
-  }
+apiClient.togglePin = async (id) => {
+  return apiClient.patch(`/clips/${id}/pin`);
+};
 
-  async updateProfile(name, email) {
-    return this.request('/auth/profile', {
-      method: 'PUT',
-      body: JSON.stringify({ name, email }),
-    });
-  }
+apiClient.deleteClip = async (id) => {
+  return apiClient.delete(`/clips/${id}`);
+};
 
-  async updatePassword(currentPassword, newPassword) {
-    return this.request('/auth/password', {
-      method: 'PUT',
-      body: JSON.stringify({ currentPassword, newPassword }),
-    });
-  }
+apiClient.bulkDeleteClips = async (clipIds) => {
+  return apiClient.post('/clips/bulk-delete', { clipIds });
+};
 
-  // Clips endpoints
-  async getClips(params = {}) {
-    const queryString = new URLSearchParams(params).toString();
-    return this.request(`/clips?${queryString}`);
-  }
+apiClient.clearAllClips = async () => {
+  return apiClient.delete('/clips');
+};
 
-  async getClip(id) {
-    return this.request(`/clips/${id}`);
-  }
+apiClient.getClipStats = async () => {
+  return apiClient.get('/clips/stats/summary');
+};
 
-  async createClip(clipData) {
-    return this.request('/clips', {
-      method: 'POST',
-      body: JSON.stringify(clipData),
-    });
-  }
+apiClient.getDashboardStats = async (days = 30) => {
+  return apiClient.get(`/clips/stats/dashboard?days=${days}`);
+};
 
-  async updateClip(id, clipData) {
-    return this.request(`/clips/${id}`, {
-      method: 'PUT',
-      body: JSON.stringify(clipData),
-    });
-  }
+apiClient.expandTemplate = async (clipId, placeholders) => {
+  return apiClient.post(`/clips/${clipId}/expand-template`, { placeholders });
+};
 
-  async togglePin(id) {
-    return this.request(`/clips/${id}/pin`, { method: 'PATCH' });
-  }
+apiClient.setClipExpiration = async (clipId, expiresInMinutes) => {
+  return apiClient.patch(`/clips/${clipId}/expire`, { expiresInMinutes });
+};
 
-  async deleteClip(id) {
-    return this.request(`/clips/${id}`, { method: 'DELETE' });
-  }
+apiClient.splitClip = async (clipId, delimiter) => {
+  return apiClient.post(`/clips/${clipId}/split`, { delimiter });
+};
 
-  async bulkDeleteClips(clipIds) {
-    return this.request('/clips/bulk-delete', {
-      method: 'POST',
-      body: JSON.stringify({ clipIds }),
-    });
-  }
+// Teams endpoints
+apiClient.getTeams = async () => {
+  return apiClient.get('/teams');
+};
 
-  async clearAllClips() {
-    return this.request('/clips', { method: 'DELETE' });
-  }
+apiClient.getTeam = async (teamId) => {
+  return apiClient.get(`/teams/${teamId}`);
+};
 
-  async getClipStats() {
-    return this.request('/clips/stats/summary');
-  }
+apiClient.createTeam = async (teamData) => {
+  return apiClient.post('/teams', teamData);
+};
 
-  async getDashboardStats(days = 30) {
-    return this.request(`/clips/stats/dashboard?days=${days}`);
-  }
+apiClient.updateTeam = async (teamId, teamData) => {
+  return apiClient.put(`/teams/${teamId}`, teamData);
+};
 
-  async expandTemplate(clipId, placeholders) {
-    return this.request(`/clips/${clipId}/expand-template`, {
-      method: 'POST',
-      body: JSON.stringify({ placeholders }),
-    });
-  }
+apiClient.deleteTeam = async (teamId) => {
+  return apiClient.delete(`/teams/${teamId}`);
+};
 
-  async setClipExpiration(clipId, expiresInMinutes) {
-    return this.request(`/clips/${clipId}/expire`, {
-      method: 'PATCH',
-      body: JSON.stringify({ expiresInMinutes }),
-    });
-  }
+apiClient.inviteTeamMember = async (teamId, memberData) => {
+  return apiClient.post(`/teams/${teamId}/members`, memberData);
+};
 
-  async splitClip(clipId, delimiter) {
-    return this.request(`/clips/${clipId}/split`, {
-      method: 'POST',
-      body: JSON.stringify({ delimiter }),
-    });
-  }
+apiClient.updateTeamMemberRole = async (teamId, memberId, role) => {
+  return apiClient.put(`/teams/${teamId}/members/${memberId}`, { role });
+};
 
-  // Teams endpoints
-  async getTeams() {
-    return this.request('/teams');
-  }
+apiClient.removeTeamMember = async (teamId, memberId) => {
+  return apiClient.delete(`/teams/${teamId}/members/${memberId}`);
+};
 
-  async getTeam(teamId) {
-    return this.request(`/teams/${teamId}`);
-  }
+apiClient.leaveTeam = async (teamId) => {
+  return apiClient.post(`/teams/${teamId}/leave`);
+};
 
-  async createTeam(teamData) {
-    return this.request('/teams', {
-      method: 'POST',
-      body: JSON.stringify(teamData),
-    });
-  }
+apiClient.getTeamActivity = async (teamId, params = {}) => {
+  const queryString = new URLSearchParams(params).toString();
+  return apiClient.get(`/teams/${teamId}/activity?${queryString}`);
+};
 
-  async updateTeam(teamId, teamData) {
-    return this.request(`/teams/${teamId}`, {
-      method: 'PUT',
-      body: JSON.stringify(teamData),
-    });
-  }
+// Team clips endpoints
+apiClient.getTeamClips = async (teamId, params = {}) => {
+  const queryString = new URLSearchParams(params).toString();
+  return apiClient.get(`/teams/${teamId}/clips?${queryString}`);
+};
 
-  async deleteTeam(teamId) {
-    return this.request(`/teams/${teamId}`, { method: 'DELETE' });
-  }
+apiClient.getTeamClip = async (teamId, clipId) => {
+  return apiClient.get(`/teams/${teamId}/clips/${clipId}`);
+};
 
-  async inviteTeamMember(teamId, memberData) {
-    return this.request(`/teams/${teamId}/members`, {
-      method: 'POST',
-      body: JSON.stringify(memberData),
-    });
-  }
+apiClient.createTeamClip = async (teamId, clipData) => {
+  return apiClient.post(`/teams/${teamId}/clips`, clipData);
+};
 
-  async updateTeamMemberRole(teamId, memberId, role) {
-    return this.request(`/teams/${teamId}/members/${memberId}`, {
-      method: 'PUT',
-      body: JSON.stringify({ role }),
-    });
-  }
+apiClient.updateTeamClip = async (teamId, clipId, clipData) => {
+  return apiClient.put(`/teams/${teamId}/clips/${clipId}`, clipData);
+};
 
-  async removeTeamMember(teamId, memberId) {
-    return this.request(`/teams/${teamId}/members/${memberId}`, {
-      method: 'DELETE',
-    });
-  }
+apiClient.deleteTeamClip = async (teamId, clipId) => {
+  return apiClient.delete(`/teams/${teamId}/clips/${clipId}`);
+};
 
-  async leaveTeam(teamId) {
-    return this.request(`/teams/${teamId}/leave`, { method: 'POST' });
-  }
+apiClient.getTeamClipStats = async (teamId) => {
+  return apiClient.get(`/teams/${teamId}/clips/stats/summary`);
+};
 
-  async getTeamActivity(teamId, params = {}) {
-    const queryString = new URLSearchParams(params).toString();
-    return this.request(`/teams/${teamId}/activity?${queryString}`);
-  }
+// Share links endpoints
+apiClient.createShareLink = async (shareData) => {
+  return apiClient.post('/shares', shareData);
+};
 
-  // Team clips endpoints
-  async getTeamClips(teamId, params = {}) {
-    const queryString = new URLSearchParams(params).toString();
-    return this.request(`/teams/${teamId}/clips?${queryString}`);
-  }
+apiClient.getShareLink = async (shareId) => {
+  return apiClient.get(`/shares/${shareId}`);
+};
 
-  async getTeamClip(teamId, clipId) {
-    return this.request(`/teams/${teamId}/clips/${clipId}`);
-  }
+apiClient.verifySharePassword = async (shareId, password) => {
+  return apiClient.post(`/shares/${shareId}/verify`, { password });
+};
 
-  async createTeamClip(teamId, clipData) {
-    return this.request(`/teams/${teamId}/clips`, {
-      method: 'POST',
-      body: JSON.stringify(clipData),
-    });
-  }
+apiClient.getUserShareLinks = async (params = {}) => {
+  const queryString = new URLSearchParams(params).toString();
+  return apiClient.get(`/shares/user/list?${queryString}`);
+};
 
-  async updateTeamClip(teamId, clipId, clipData) {
-    return this.request(`/teams/${teamId}/clips/${clipId}`, {
-      method: 'PUT',
-      body: JSON.stringify(clipData),
-    });
-  }
+apiClient.deleteShareLink = async (shareId) => {
+  return apiClient.delete(`/shares/${shareId}`);
+};
 
-  async deleteTeamClip(teamId, clipId) {
-    return this.request(`/teams/${teamId}/clips/${clipId}`, {
-      method: 'DELETE',
-    });
-  }
-
-  async getTeamClipStats(teamId) {
-    return this.request(`/teams/${teamId}/clips/stats/summary`);
-  }
-
-  // Share links endpoints
-  async createShareLink(shareData) {
-    return this.request('/shares', {
-      method: 'POST',
-      body: JSON.stringify(shareData),
-    });
-  }
-
-  async getShareLink(shareId) {
-    return this.request(`/shares/${shareId}`);
-  }
-
-  async verifySharePassword(shareId, password) {
-    return this.request(`/shares/${shareId}/verify`, {
-      method: 'POST',
-      body: JSON.stringify({ password }),
-    });
-  }
-
-  async getUserShareLinks(params = {}) {
-    const queryString = new URLSearchParams(params).toString();
-    return this.request(`/shares/user/list?${queryString}`);
-  }
-
-  async deleteShareLink(shareId) {
-    return this.request(`/shares/${shareId}`, { method: 'DELETE' });
-  }
-
-  async getShareQRCode(shareId) {
-    return this.request(`/shares/${shareId}/qr`);
-  }
-}
-
-// Create singleton instance
-const apiClient = new ApiClient();
+apiClient.getShareQRCode = async (shareId) => {
+  return apiClient.get(`/shares/${shareId}/qr`);
+};
 
 export default apiClient;
