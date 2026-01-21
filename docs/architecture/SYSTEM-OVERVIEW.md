@@ -168,6 +168,45 @@ The application has undergone a major design overhaul to move away from generic 
 - **Premium Animations**: Fluid transitions, hover effects, and skeleton loaders.
 - **Human-Centric Copy**: Conversational and friendly tone rather than robotic system messages.
 
+### Visual Architecture
+
+The visual system is engineered to deliver a consistent, premium experience through a strict hierarchy of tokens and components.
+
+```mermaid
+classDiagram
+    class DesignTokens {
+        +Colors: Retro Earth / Aurora
+        +Typography: Outfit / Inter
+        +Spacing: 4px grid
+        +Effects: Glass / Blur
+    }
+
+    class ThemeProvider {
+        +CurrentTheme: Theme
+        +Mode: Light / Dark
+        +injectVariables()
+    }
+
+    class BaseComponents {
+        +GlassCard
+        +GradientButton
+        +BlurBackground
+        +AnimatedInput
+    }
+
+    class FeatureComponents {
+        +ClipCard
+        +TeamSpace
+        +SettingsPanel
+    }
+
+    DesignTokens --> ThemeProvider : "Defines"
+    ThemeProvider --> BaseComponents : "Styles"
+    BaseComponents --> FeatureComponents : "Composes"
+    
+    note for BaseComponents "Premium Primitives:\n- Glassmorphism\n- Micro-interactions\n- Fluid Motion"
+```
+
 ### Backend Stack
 
 | Technology | Purpose | Version | Rationale |
