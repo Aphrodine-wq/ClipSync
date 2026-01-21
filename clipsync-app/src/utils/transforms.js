@@ -69,10 +69,10 @@ export const trimWhitespace = (text) => text.trim();
 export const stripFormatting = (text) => {
   // Remove HTML tags
   const withoutHTML = text.replace(/<[^>]*>/g, '');
-  // Decode HTML entities
-  const div = document.createElement('div');
-  div.innerHTML = withoutHTML;
-  const decoded = div.textContent || div.innerText || '';
+  // Decode HTML entities safely using DOMParser
+  const parser = new DOMParser();
+  const doc = parser.parseFromString(withoutHTML, 'text/html');
+  const decoded = doc.body.textContent || '';
   // Collapse whitespace
   return decoded.replace(/\s+/g, ' ').trim();
 };
@@ -195,9 +195,10 @@ export const htmlEscape = (text) => {
 };
 
 export const htmlUnescape = (text) => {
-  const div = document.createElement('div');
-  div.innerHTML = text;
-  return div.textContent || div.innerText || '';
+  // Safely decode HTML entities using DOMParser to prevent XSS
+  const parser = new DOMParser();
+  const doc = parser.parseFromString(text, 'text/html');
+  return doc.body.textContent || '';
 };
 
 // JSON escape/unescape

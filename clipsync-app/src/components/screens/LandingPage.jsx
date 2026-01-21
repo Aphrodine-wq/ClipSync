@@ -41,11 +41,30 @@ const LandingPage = ({ onGetStarted, onDevMode }) => {
   const [activeFeature, setActiveFeature] = useState(0);
   const [openFaq, setOpenFaq] = useState(null);
   const [scrollY, setScrollY] = useState(0);
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const [isVideoPlaying, setIsVideoPlaying] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => setScrollY(window.scrollY);
+    const handleMouseMove = (e) => {
+      setMousePosition({ x: e.clientX, y: e.clientY });
+    };
+
     window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    window.addEventListener('mousemove', handleMouseMove);
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('mousemove', handleMouseMove);
+    };
+  }, []);
+
+  // Auto-rotate features
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setActiveFeature((prev) => (prev + 1) % features.length);
+    }, 5000);
+    return () => clearInterval(interval);
   }, []);
 
   const features = [
@@ -334,23 +353,72 @@ const LandingPage = ({ onGetStarted, onDevMode }) => {
       {/* Video Demo */}
       <div className="max-w-7xl mx-auto px-6 mb-32">
         <div className="mb-12" style={{ textAlign: 'left', maxWidth: '600px' }}>
-          <h2 className="text-5xl font-bold mb-4" style={{ color: 'var(--color-text-primary)' }}>
+          <h2 className="text-5xl font-bold mb-4 animate-fadeIn" style={{ color: 'var(--color-text-primary)' }}>
             See it in action
           </h2>
-          <p className="text-xl" style={{ color: 'var(--color-text-secondary)' }}>
+          <p className="text-xl animate-fadeIn" style={{ color: 'var(--color-text-secondary)', animationDelay: '0.1s' }}>
             Watch how ClipSync makes your workflow smoother (under 2 min, promise)
           </p>
         </div>
-        <div className="relative rounded-3xl overflow-hidden shadow-2xl glass-strong" style={{ paddingBottom: '56.25%', transform: 'rotate(-0.5deg)' }}>
+        <div
+          className="relative rounded-3xl overflow-hidden shadow-2xl glass-strong hover:scale-[1.02] transition-all duration-500"
+          style={{ paddingBottom: '56.25%', transform: `rotate(-0.5deg)` }}
+        >
           <div className="absolute inset-0 flex items-center justify-center" style={{ background: 'var(--color-bg-tertiary)' }}>
             <div className="text-center">
-              <div className="w-24 h-24 rounded-full glass-strong flex items-center justify-center mx-auto mb-4 hover:scale-110 transition-transform cursor-pointer">
-                <Play className="w-12 h-12" style={{ color: 'var(--color-accent-primary)' }} />
-              </div>
+              <button
+                onClick={() => setIsVideoPlaying(true)}
+                className="w-24 h-24 rounded-full glass-strong flex items-center justify-center mx-auto mb-4 hover:scale-110 transition-all duration-300 cursor-pointer group"
+                aria-label="Play demo video"
+              >
+                <Play className="w-12 h-12 group-hover:scale-125 transition-transform" style={{ color: 'var(--color-accent-primary)' }} />
+              </button>
               <p className="text-lg font-semibold" style={{ color: 'var(--color-text-secondary)' }}>
                 Click to watch demo
               </p>
             </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Trust Indicators */}
+      <div className="max-w-7xl mx-auto px-6 mb-32">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+          <div className="glass-strong rounded-2xl p-6 text-center hover:scale-105 transition-all">
+            <Shield className="w-12 h-12 mx-auto mb-4 text-emerald-500" />
+            <div className="text-3xl font-bold mb-2" style={{ color: 'var(--color-text-primary)' }}>
+              SOC 2
+            </div>
+            <p className="text-sm" style={{ color: 'var(--color-text-secondary)' }}>
+              Type II Certified
+            </p>
+          </div>
+          <div className="glass-strong rounded-2xl p-6 text-center hover:scale-105 transition-all">
+            <Lock className="w-12 h-12 mx-auto mb-4 text-blue-500" />
+            <div className="text-3xl font-bold mb-2" style={{ color: 'var(--color-text-primary)' }}>
+              256-bit
+            </div>
+            <p className="text-sm" style={{ color: 'var(--color-text-secondary)' }}>
+              AES Encryption
+            </p>
+          </div>
+          <div className="glass-strong rounded-2xl p-6 text-center hover:scale-105 transition-all">
+            <Award className="w-12 h-12 mx-auto mb-4 text-amber-500" />
+            <div className="text-3xl font-bold mb-2" style={{ color: 'var(--color-text-primary)' }}>
+              99.9%
+            </div>
+            <p className="text-sm" style={{ color: 'var(--color-text-secondary)' }}>
+              Uptime SLA
+            </p>
+          </div>
+          <div className="glass-strong rounded-2xl p-6 text-center hover:scale-105 transition-all">
+            <Globe className="w-12 h-12 mx-auto mb-4 text-purple-500" />
+            <div className="text-3xl font-bold mb-2" style={{ color: 'var(--color-text-primary)' }}>
+              Global
+            </div>
+            <p className="text-sm" style={{ color: 'var(--color-text-secondary)' }}>
+              CDN Network
+            </p>
           </div>
         </div>
       </div>
