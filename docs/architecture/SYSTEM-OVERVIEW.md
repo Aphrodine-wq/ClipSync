@@ -776,6 +776,8 @@ React Native application (via Expo) providing a native mobile experience for iOS
 - **Biometric Auth**: FaceID/TouchID integration for secure access.
 - **Offline Mode**: Full access to local clips without internet connection.
 - **Push Notifications**: Real-time alerts for team updates and shared clips.
+- **Command Palette**: Quick access to transformation tools (`transforms.ts`) via FAB.
+- **Offline Tools**: Local text processing (Case, JSON, Formatting) sharing code with Web.
 
 ---
 
@@ -2097,6 +2099,11 @@ Production Infrastructure
 4. Health checks
 5. Rollback on failure
 
+**Production Pipelines** (`.github/workflows/`):
+- **Backend**: Docker build & push to GHCR (`cd.yml`).
+- **Desktop**: Electron build & release drafts (`cd.yml`).
+- **Mobile**: Expo EAS Update (`mobile-release.yml`).
+
 ### Rollback Strategy
 
 **Automatic Rollback**:
@@ -2108,6 +2115,17 @@ Production Infrastructure
 - Git tag-based rollback
 - Database migration rollback scripts
 - Configuration rollback
+
+### Security & Compliance
+
+**Audit Logging** (`backend/middleware/audit.js`):
+- **User Actions**: Login, Clip Access, Sharing (SOC 2 Type I ready)
+- **Admin Actions**: System Config, User Role Changes, Data Exports
+- **Infrastructure**: Capture IP, User-Agent, and detailed metadata for all privileged operations.
+
+**Compliance Standards**:
+- **SOC 2**: Audit trails for all state changes.
+- **GDPR**: PII masking in all logs.
 
 ---
 
@@ -2151,7 +2169,7 @@ Production Infrastructure
 
 **End-to-End Tests**:
 - Playwright for web application
-- Desktop app automation (planned)
+- Desktop app automation (Playwright/Electron)
 
 ### Code Quality
 

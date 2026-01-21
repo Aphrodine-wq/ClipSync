@@ -13,30 +13,37 @@ export const AUDIT_ACTIONS = {
   CLIP_READ: 'clip_read',
   CLIP_UPDATED: 'clip_updated',
   CLIP_DELETED: 'clip_deleted',
-  
+
   // Authentication
   LOGIN_SUCCESS: 'login_success',
   LOGIN_FAILED: 'login_failed',
   LOGOUT: 'logout',
   TOKEN_REFRESHED: 'token_refreshed',
-  
+
   // Security events
   UNAUTHORIZED_ACCESS: 'unauthorized_access',
   RATE_LIMIT_EXCEEDED: 'rate_limit_exceeded',
   SUSPICIOUS_ACTIVITY: 'suspicious_activity',
   PASSWORD_CHANGE: 'password_change',
-  
+
   // Team operations
   TEAM_CREATED: 'team_created',
   TEAM_UPDATED: 'team_updated',
   TEAM_DELETED: 'team_deleted',
   MEMBER_ADDED: 'member_added',
   MEMBER_REMOVED: 'member_removed',
-  
+
   // Share operations
   SHARE_CREATED: 'share_created',
   SHARE_ACCESSED: 'share_accessed',
   SHARE_DELETED: 'share_deleted',
+
+  // Admin operations
+  SYSTEM_CONFIG_CHANGE: 'system_config_change',
+  USER_ROLE_CHANGE: 'user_role_change',
+  USER_BAN: 'user_ban',
+  DATA_EXPORT_ADMIN: 'data_export_admin',
+  FEATURE_FLAG_CHANGE: 'feature_flag_change',
 };
 
 // Create audit log entry
@@ -55,7 +62,7 @@ export const createAuditLog = async (data) => {
 
     // Mask PII before storing
     const maskedMetadata = maskPII(metadata);
-    const maskedIpAddress = ipAddress && ipAddress !== 'unknown' 
+    const maskedIpAddress = ipAddress && ipAddress !== 'unknown'
       ? ipAddress.replace(/\d+\.\d+$/, '*.*')
       : ipAddress;
     const maskedUserAgent = userAgent && userAgent !== 'unknown'
@@ -206,6 +213,34 @@ export const audit = (action, resourceType = 'general') => {
         ipAddress: getClientIp(req),
         userAgent: getUserAgent(req),
         teamId: req.params.teamId || null,
+      });
+
+      return originalJson.call(this, data);
+    };
+
+    next();
+  };
+};
+
+// Audit middleware for admin operations
+export const auditAdmin = (action) => {
+  return async (req, res, next) => {
+    const originalJson = res.json;
+
+    res.json = function (data) {
+      createAuditLog({
+        userId: req.user?.id || null,
+        action,
+        resourceType: 'admin',
+        resourceId: req.params.id || data?.id || null,
+        metadata: {
+          method: req.method,
+          path: req.path,
+          statusCode: res.statusCode,
+          changes: req.body, // Log the changes attempted
+        },
+        ipAddress: getClientIp(req),
+        userAgent: getUserAgent(req),
       });
 
       return originalJson.call(this, data);
