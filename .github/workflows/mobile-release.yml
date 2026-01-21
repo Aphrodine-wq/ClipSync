@@ -1,0 +1,43 @@
+name: Mobile Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      channel:
+        description: 'Update Channel (preview | production)'
+        required: true
+        default: 'preview'
+      message:
+        description: 'Update Message'
+        required: true
+        default: 'Routine update'
+
+jobs:
+  publish-update:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+          cache-dependency-path: clipsync-mobile/package-lock.json
+
+      - name: Setup Expo
+        uses: expo/expo-github-action@v8
+        with:
+          expo-version: latest
+          token: ${{ secrets.EXPO_TOKEN }}
+
+      - name: Install Dependencies
+        run: |
+          cd clipsync-mobile
+          npm ci
+
+      - name: Publish Update
+        run: |
+          cd clipsync-mobile
+          npx eas-cli update --channel ${{ github.event.inputs.channel }} --message "${{ github.event.inputs.message }}"
