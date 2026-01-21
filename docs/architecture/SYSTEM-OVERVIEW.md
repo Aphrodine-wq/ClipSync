@@ -145,7 +145,7 @@ sequenceDiagram
 | Technology | Purpose | Version | Rationale |
 |------------|---------|---------|-----------|
 | **React** | UI Framework | 18.3+ | Industry standard, excellent ecosystem, component reusability |
-| **Vite** | Build Tool & Dev Server | 5.0+ | Fast HMR, optimized builds, modern ESM support |
+| **Vite** | Build Tool & Dev Server | 6.0+ | Fast HMR, optimized builds, modern ESM support |
 | **Tailwind CSS** | Styling Framework | 3.4+ | Utility-first, rapid development, consistent design system |
 | **Zustand** | State Management | 4.5+ | Lightweight, simple API, no boilerplate, excellent TypeScript support |
 | **React Router** | Client-side Routing | 7.12+ | Declarative routing, code splitting support |
@@ -153,6 +153,20 @@ sequenceDiagram
 | **Socket.IO Client** | Real-time Communication | 4.8+ | Reliable WebSocket abstraction, automatic reconnection |
 | **IndexedDB** | Client-side Storage | Native | Large storage capacity, async API, offline support |
 | **Workbox** | Service Worker | Latest | Offline caching, background sync, push notifications |
+
+### UI/UX & Design Philosophy
+
+The application has undergone a major design overhaul to move away from generic "AI-generated" interfaces to a more **organic, human-crafted aesthetic**.
+
+**Themes**:
+- **Retro Earth** (Default): Warm, organic tones (Sandy Brown, Rich Mahogany, Blue Slate, Beige) evoking a retro-modern feel.
+- **Ethereal Aurora**: Cool, vibrant gradients for a digital-native look.
+
+**Design Principles**:
+- **Glassmorphism**: Extensive use of blur, transparency, and layered depth.
+- **Organic Feel**: Asymmetry, textured backgrounds, and playful micro-interactions.
+- **Premium Animations**: Fluid transitions, hover effects, and skeleton loaders.
+- **Human-Centric Copy**: Conversational and friendly tone rather than robotic system messages.
 
 ### Backend Stack
 
@@ -170,7 +184,19 @@ sequenceDiagram
 | **Bull** | Job Queue | 4.12+ | Redis-based job queue, reliable job processing |
 | **crypto** | Encryption | Native | Node.js built-in, AES-256-GCM encryption |
 
+### Mobile Stack
+
+| Technology | Purpose | Version | Rationale |
+|------------|---------|---------|-----------|
+| **React Native** | Mobile Framework | 0.81+ | Native rendering with React, cross-platform |
+| **Expo** | Development Platform | 54+ | Rapid development, OTA updates, easy build system |
+| **React** | UI Engine | 19.1+ | Latest React features for mobile |
+| **Expo Clipboard** | Clipboard Access | 5.0+ | Native clipboard integration |
+| **@react-navigation**| Navigation | 6.x | Standard navigation library for RN |
+| **Urql** | GraphQL/API | 6.x | Lightweight GraphQL/API client |
+
 ### Infrastructure & DevOps
+
 
 | Technology | Purpose | Version | Rationale |
 |------------|---------|---------|-----------|
@@ -689,6 +715,28 @@ VS Code extension providing clipboard management, snippet library, and developer
 - Member indicators
 - Real-time sync indicators
 - Share actions
+
+---
+
+### 5. Mobile Application (`clipsync-mobile/`)
+
+#### Purpose
+React Native application (via Expo) providing a native mobile experience for iOS and Android, focusing on seamless clipboard synchronization and quick access to clips on the go.
+
+#### Component Architecture
+
+**Core Stack**:
+- **Expo SDK 54**: Provides a robust set of native APIs and development tools.
+- **React Native 0.81**: The underlying framework for native rendering.
+- **React 19.1**: Leveraging the latest React features and concurrent rendering.
+- **Zustand**: Shared state management pattern with the web app.
+
+**Key Features**:
+- **Background Sync**: Keeps clipboard in sync even when the app is backgrounded (limited by OS constraints).
+- **Share Sheet Integration**: Allows sharing content from other apps directly to ClipSync.
+- **Biometric Auth**: FaceID/TouchID integration for secure access.
+- **Offline Mode**: Full access to local clips without internet connection.
+- **Push Notifications**: Real-time alerts for team updates and shared clips.
 
 ---
 
@@ -2092,7 +2140,7 @@ MIT License - See LICENSE file for details.
 
 ---
 
-**Last Updated**: December 2024  
+**Last Updated**: January 2026  
 **Version**: 1.0.0  
 **Status**: Production Ready  
 **Maintainer**: ClipSync Team
