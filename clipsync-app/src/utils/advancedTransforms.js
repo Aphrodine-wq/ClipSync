@@ -435,9 +435,10 @@ export const htmlEncode = (text) => {
 };
 
 export const htmlDecode = (text) => {
-  const div = document.createElement('div');
-  div.innerHTML = text;
-  return div.textContent || div.innerText || '';
+  // Safely decode HTML entities using DOMParser to prevent XSS
+  const parser = new DOMParser();
+  const doc = parser.parseFromString(text, 'text/html');
+  return doc.body.textContent || '';
 };
 
 export const unicodeEscape = (text) => {
