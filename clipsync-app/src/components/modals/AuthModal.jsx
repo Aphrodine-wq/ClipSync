@@ -4,9 +4,14 @@ import PaywallModal from './PaywallModal';
 import { Github } from 'lucide-react';
 
 const AuthModal = ({ onClose }) => {
-  const { loginWithGoogle, loginWithGitHub, error, clearError, paywallData, clearPaywall } = useAuthStore();
+  const { loginWithGoogle, loginWithGitHub, error, clearError, paywallData, clearPaywall, register, login } = useAuthStore();
   const [isLoading, setIsLoading] = useState(false);
   const [showPaywall, setShowPaywall] = useState(false);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [name, setName] = useState('');
+  const [authMode, setAuthMode] = useState('login');
+  const [localError, setLocalError] = useState(null);
 
   useEffect(() => {
     // Load Google Sign-In script
@@ -78,6 +83,23 @@ const AuthModal = ({ onClose }) => {
       }
     }
   };
+
+  const handleAuthAction = async (e) => {
+    e.preventDefault();
+    try {
+      setIsLoading(true);
+      clearError();
+      if (authMode === 'login') {
+        await login(email, password);
+      } else if (authMode === 'register') {
+        await register(email, name, password);
+      }
+      onClose();
+    } catch (err) {
+      setLocalError(err.response?.data?.error || 'Something went wrong. Please try again.');
+      setIsLoading(false);
+    }
+  };
   
   // Show paywall when paywallData is set
   useEffect(() => {
@@ -123,30 +145,69 @@ const AuthModal = ({ onClose }) => {
           </div>
         )}
 
-        {/* Sign-In buttons */}
-        <div className="space-y-3 mb-6">
-          {/* Google Sign-In button */}
-          <div className="flex justify-center">
-            <div id="google-signin-button"></div>
-          </div>
+        {/* Authentication Form */}
+        <form onSubmit={handleAuthAction} className="space-y-4 mb-6">
+        
+          <input
+            type="email"
+            placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+            className="w-full py-3 px-4 text-zinc-900 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
+          />
+          {authMode === 'register' && (
+            <input
+              type="text"
+              placeholder="Name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              required
+              className="w-full py-3 px-4 text-zinc-900 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
+            />          
+          )}
+          <input
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+            className="w-full py-3 px-4 text-zinc-900 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
+          />
+          <button
+            type="submit"
+            disabled={isLoading}
+            className="w-full py-3 px-4 bg-zinc-900 hover:bg-zinc-800 text-white rounded-lg flex items-center justify-center gap-2 disabled:opacity-50"
+          >
+            {authMode === 'login' ? 'Sign in' : 'Register'}
+          </button>
+        </form>
 
-          {/* GitHub Sign-In button */}
+        {/* Social Sign-In buttons */}
+        <div className="space-y-3 mb-6">
+          <div className="flex justify-center" id="google-signin-button"></div>
           <button
             onClick={handleGitHubLogin}
             disabled={isLoading}
-            className="w-full py-3 px-4 bg-zinc-900 hover:bg-zinc-800 text-white rounded-lg font-medium transition-colors flex items-center justify-center gap-2 disabled:opacity-50"
+            className="w-full py-3 px-4 bg-zinc-900 hover:bg-zinc-800 text-white rounded-lg flex items-center justify-center gap-2 disabled:opacity-50"
           >
             <Github className="w-5 h-5" />
             Continue with GitHub
           </button>
         </div>
-
         {isLoading && (
           <div className="text-center">
             <div className="inline-block w-6 h-6 border-2 border-zinc-300 border-t-zinc-900 rounded-full animate-spin"></div>
             <p className="text-sm text-zinc-600 mt-2">Signing in...</p>
           </div>
         )}
+
+        <p 
+          className="text-sm text-center text-zinc-500 hover:cursor-pointer underline"
+          onClick={() => setAuthMode(authMode === 'login' ? 'register' : 'login')}
+        >
+          {authMode === 'login' ? 'Need an account? Register' : 'Already have an account? Sign in'}
+        </p>
 
         {/* Features */}
         <div className="mt-8 pt-6 border-t border-zinc-200">

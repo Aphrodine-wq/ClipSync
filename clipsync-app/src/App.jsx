@@ -302,6 +302,8 @@ const App = memo(() => {
     return <PricingScreen onClose={() => setShowPricing(false)} />;
   }
 
+
+  console.log('isAuthenticated', isAuthenticated, 'showAuthModal', showAuthModal);
   // Require authentication before using the service
   // Show landing page when not authenticated
   if (!isAuthenticated) {

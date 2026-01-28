@@ -54,6 +54,38 @@ router.get('/', async (req, res) => {
 });
 
 /**
+ * POST /devices/register
+ * Register a device for the logged-in user
+ */
+router.post('/register', async (req, res) => {
+  const { userId, deviceName, deviceType } = req.body;
+
+  if (!userId || !deviceName || !deviceType) {
+    return res.status(400).json({ error: 'All fields are required' });
+  }
+
+  try {
+    const existingDevice = await pool.query('SELECT id FROM devices WHERE user_id = $1 and device_name = $2', [userId, deviceName]);
+  
+    if (existingDevice.rowCount > 0) {
+      return res.status(200).json({ message: 'Device already registered' });
+    }
+
+    const newDevice = await pool.query('INSERT INTO devices (id, user_id, device_name, device_type, last_sync, created_at) VALUES (uuid_generate_v4(), $1, $2, $3, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP) RETURNING id, device_name, device_type',
+      [userId, deviceName, deviceType]
+    );
+
+    return res.status(201).json({ 
+      message: 'Device registered successfully',
+      device: newDevice.rows[0],
+    });
+  } catch (error) {
+    console.error('Error during device registration: ', error);
+    return res.status(500).json({ error: 'Internal server error'});
+  }
+});
+
+/**
  * DELETE /api/devices/:id
  * Revoke a specific device
  */

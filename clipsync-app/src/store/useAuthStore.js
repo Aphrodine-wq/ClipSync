@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+import axios from 'axios';
 import apiClient from '../services/api';
 import wsClient from '../services/websocket';
 
@@ -92,6 +93,44 @@ const useAuthStore = create((set, get) => ({
   // Clear paywall data
   clearPaywall: () => {
     set({ paywallData: null });
+  },
+
+  /**
+   *  Register a new user with email and password
+   */
+  register: async (email, name, password) => {
+    set({ isLoading: true });
+    try {
+      const response = await apiClient.post('/auth/register', { email, name, password });
+      apiClient.setToken(response.token);
+      set({ user: response.user, isAuthenticated: true });
+      wsClient.connect(response.token);
+      return response.data;
+    } catch (error) {
+      console.error('Error during registration: ', error.response.data.error || error.message);
+      throw error;
+    } finally {
+      set({ isLoading: false });
+    }
+  },
+
+  /**
+   *  Login an existing user with email and password
+   */
+  login: async (email, password) => {
+    set({ isLoading: true });
+    try {
+      const response = await apiClient.post('/auth/login', { email, password });
+      apiClient.setToken(response.token);
+      set({ user: response.user, isAuthenticated: true });
+      wsClient.connect(response.token);
+      return response.data;
+    } catch (error) {
+      console.error('Login error:', error.response.data.error || error.message);
+      throw error;
+    } finally {
+      set({ isLoading: false });
+    }
   },
 
   // Logout

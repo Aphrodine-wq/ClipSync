@@ -3,7 +3,7 @@ import { OAuth2Client } from 'google-auth-library';
 import crypto from 'crypto';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
-import { query } from '../config/database.js';
+import { query, pool } from '../config/database.js';
 import { 
   generateToken, 
   generateRefreshToken, 
@@ -113,6 +113,69 @@ router.post('/google', auditAuth(AUDIT_ACTIONS.LOGIN_SUCCESS), async (req, res) 
     }
     
     res.status(500).json({ error: 'Authentication failed' });
+  }
+});
+
+// Email/password registration
+router.post('/register', async (req, res) => {
+  const { email, name, password } = req.body;
+
+  if (!email || !name || !password) {
+    return res.status(400).json({ error: 'All fields are required' });
+  }
+
+  try {
+    // Check if user already exists
+    const existingUser = await pool.query('SELECT id FROM users WHERE email = $1', [email]);
+    if (existingUser.rowCount > 0) {
+      return res.status(400).json({ error: 'User already exists' });
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    const newUser = await pool.query(
+      'INSERT INTO users (id, email, name, password_hash, plan, created_at, updated_at) VALUES (uuid_generate_v4(), $1, $2, $3, $4, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP) RETURNING id, email, name',
+      [email, name, hashedPassword, 'free']
+    );
+
+    return res.status(201).json({ user: newUser.rows[0] });
+  } catch (error) {
+    console.error('Error during registration: ', error);
+    return res.status(500).json({ error: 'Failed to register user' });
+  }
+});
+
+// Email/password login
+router.post('/login', async (req, res) => {
+  const { email, password } = req.body;
+
+  if (!email || !password) {
+    return res.status(400).json({ error: 'Email and password are required' });
+  }
+
+  try {
+    const userQuery = await pool.query('SELECT * FROM users WHERE email = $1', [email]);
+    if (userQuery.rowCount === 0) {
+      return res.status(401).json({ error: 'Invalid email or password' });
+    }
+
+    const user = userQuery.rows[0];
+
+    const validPassword = await bcrypt.compare(password, user.password_hash);
+    if (!validPassword) {
+      return res.status(401).json({ error: 'Invalid email or password' });
+    }
+
+    const token = jwt.sign({ id: user.id, email: user.email }, process.env.JWT_SECRET, { expiresIn: '1h' });
+
+    return res.status(200).json({
+      message: 'Login successful',
+      token,
+      user: { id: user.id, name: user.name, email: user.email, plan: user.plan },
+    });
+  } catch (error) {
+    console.error('Error during login: ', error);
+    return res.status(500).json({ error: 'Internal server error' });
   }
 });
 
