@@ -13,7 +13,14 @@ export default defineConfig({
   base: './',
   server: {
     port: 5173,
-    open: false
+    open: false,
+    proxy: {
+      '/api': {
+        target: 'http://localhost:3001',
+        changeOrigin: true,
+        secure: false,
+      }
+    }
   },
   build: {
     outDir: 'dist',

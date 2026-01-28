@@ -22,10 +22,10 @@ const SENSITIVE_PATTERNS = {
   
   // Tokens
   token: [
-    /token\s*[:=]\s*['"]?([a-zA-Z0-9_-.]{20,})['"]?/i,
-    /access[_-]?token\s*[:=]\s*['"]?([a-zA-Z0-9_-.]{20,})['"]?/i,
-    /bearer\s+([a-zA-Z0-9_-.]{20,})/i,
-    /auth[_-]?token\s*[:=]\s*['"]?([a-zA-Z0-9_-.]{20,})['"]?/i,
+    /token\s*[:=]\s*['"]?([a-zA-Z0-9_\-.]{20,})['"]?/i,
+    /access[_-]?token\s*[:=]\s*['"]?([a-zA-Z0-9_\-.]{20,})['"]?/i,
+    /bearer\s+([a-zA-Z0-9_\-.]{20,})/i,
+    /auth[_-]?token\s*[:=]\s*['"]?([a-zA-Z0-9_\-.]{20,})['"]?/i,
   ],
   
   // Secret keys

@@ -144,4 +144,5 @@ export const closePool = async () => {
   console.log('Database pool closed');
 };
 
+export { pool }
 export default pool;

@@ -101,8 +101,10 @@ const useAuthStore = create((set, get) => ({
   register: async (email, name, password) => {
     set({ isLoading: true });
     try {
-      const response = await axios.post('/api/auth/register', { email, name, password });
-      set({ user: response.data.user, isAuthenticated: true });
+      const response = await apiClient.post('/auth/register', { email, name, password });
+      apiClient.setToken(response.token);
+      set({ user: response.user, isAuthenticated: true });
+      wsClient.connect(response.token);
       return response.data;
     } catch (error) {
       console.error('Error during registration: ', error.response.data.error || error.message);
@@ -118,9 +120,10 @@ const useAuthStore = create((set, get) => ({
   login: async (email, password) => {
     set({ isLoading: true });
     try {
-      const response = await axios.post('/api/auth/login', { email, password });
-      localStorage.setItem('token', response.data.token);
-      set({ user: response.data.user, isAuthenticated: true });
+      const response = await apiClient.post('/auth/login', { email, password });
+      apiClient.setToken(response.token);
+      set({ user: response.user, isAuthenticated: true });
+      wsClient.connect(response.token);
       return response.data;
     } catch (error) {
       console.error('Login error:', error.response.data.error || error.message);

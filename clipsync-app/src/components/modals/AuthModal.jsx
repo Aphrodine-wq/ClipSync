@@ -11,7 +11,7 @@ const AuthModal = ({ onClose }) => {
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
   const [authMode, setAuthMode] = useState('login');
-  const [setError] = useState(null);
+  const [localError, setLocalError] = useState(null);
 
   useEffect(() => {
     // Load Google Sign-In script
@@ -87,15 +87,17 @@ const AuthModal = ({ onClose }) => {
   const handleAuthAction = async (e) => {
     e.preventDefault();
     try {
+      setIsLoading(true);
+      clearError();
       if (authMode === 'login') {
         await login(email, password);
-        alert('Login Successful');
       } else if (authMode === 'register') {
         await register(email, name, password);
-        alert('Registration Successful');
       }
+      onClose();
     } catch (err) {
-      setError(err.response?.data?.error || 'Something went wrong. Please try again.');
+      setLocalError(err.response?.data?.error || 'Something went wrong. Please try again.');
+      setIsLoading(false);
     }
   };
   
