@@ -31,6 +31,21 @@ export function activate(context: vscode.ExtensionContext) {
     vscode.window.registerTreeDataProvider('clipsync.snippets', snippetProvider);
     vscode.window.registerTreeDataProvider('clipsync.team', teamProvider);
 
+    // Status Bar Item
+    const statusBarItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Right, 100);
+    statusBarItem.text = "$(clippy) ClipSync";
+    statusBarItem.tooltip = "Click to open ClipSync Dashboard";
+    statusBarItem.command = "clipsync.openDashboard";
+    statusBarItem.show();
+    context.subscriptions.push(statusBarItem);
+
+    // Open Dashboard
+    context.subscriptions.push(
+        vscode.commands.registerCommand('clipsync.openDashboard', () => {
+            vscode.env.openExternal(vscode.Uri.parse('http://localhost:5173'));
+        })
+    );
+
     // Register commands
     
     // Open Panel

@@ -15,25 +15,16 @@ import {
   Sparkles,
   CheckCircle2,
   Star,
-  TrendingUp,
-  Clock,
-  Globe,
-  Lock,
+  Play,
   ArrowRight,
   ChevronDown,
-  Play,
-  Download,
-  Github,
   Twitter,
+  Github,
   Linkedin,
   Moon,
   Sun,
-  Layers,
-  Rocket,
-  Award,
   Coffee,
-  Heart,
-  Smile
+  Heart
 } from 'lucide-react';
 
 const LandingPage = ({ onGetStarted, onDevMode }) => {
@@ -72,57 +63,49 @@ const LandingPage = ({ onGetStarted, onDevMode }) => {
       icon: ClipboardList,
       title: 'Never Lose Anything',
       description: 'Your entire clipboard history, always there when you need it. Search through everything you\'ve ever copied.',
-      color: 'from-blue-500 to-blue-600',
-      rotation: '-2deg'
+      color: 'text-blue-500 bg-blue-500/10'
     },
     {
       icon: RefreshCw,
-      title: 'Sync Like Magic ✨',
+      title: 'Sync Like Magic',
       description: 'Copy on your laptop, paste on your phone. It just works. No setup, no hassle.',
-      color: 'from-purple-500 to-purple-600',
-      rotation: '1deg'
+      color: 'text-purple-500 bg-purple-500/10'
     },
     {
       icon: Users,
       title: 'Share with Your Team',
       description: 'Stop sending code snippets through Slack. Share clips instantly with your teammates.',
-      color: 'from-emerald-500 to-emerald-600',
-      rotation: '-1deg'
+      color: 'text-emerald-500 bg-emerald-500/10'
     },
     {
       icon: Zap,
       title: '50+ Quick Transforms',
       description: 'Format JSON, convert cases, encode stuff. All the utilities you actually use, built right in.',
-      color: 'from-amber-500 to-amber-600',
-      rotation: '2deg'
+      color: 'text-amber-500 bg-amber-500/10'
     },
     {
       icon: Brain,
-      title: 'Smart AI (Runs Locally)',
-      description: 'Auto-categorize clips and catch duplicates. Powered by Ollama, runs on your machine.',
-      color: 'from-pink-500 to-pink-600',
-      rotation: '-1.5deg'
+      title: 'Smart AI (Local)',
+      description: 'Auto-categorize clips and catch duplicates. Powered by Ollama, runs 100% on your machine.',
+      color: 'text-pink-500 bg-pink-500/10'
     },
     {
       icon: Shield,
-      title: 'Your Data Stays Yours',
-      description: 'End-to-end encryption. We can\'t see your clips even if we wanted to. Privacy first, always.',
-      color: 'from-red-500 to-red-600',
-      rotation: '1.5deg'
+      title: 'Privacy First',
+      description: 'End-to-end encryption. We can\'t see your clips even if we wanted to. Your data stays yours.',
+      color: 'text-red-500 bg-red-500/10'
     },
     {
       icon: Command,
-      title: 'Keyboard Ninja Mode',
+      title: 'Keyboard First',
       description: 'Hit Ctrl+K and go. Search, transform, manage—all without touching your mouse.',
-      color: 'from-indigo-500 to-indigo-600',
-      rotation: '-2deg'
+      color: 'text-indigo-500 bg-indigo-500/10'
     },
     {
       icon: BookOpen,
-      title: 'Your Snippet Library',
+      title: 'Snippet Library',
       description: 'Keep your favorite code snippets organized. Syntax highlighting, tags, the works.',
-      color: 'from-cyan-500 to-cyan-600',
-      rotation: '1deg'
+      color: 'text-cyan-500 bg-cyan-500/10'
     }
   ];
 
@@ -180,11 +163,11 @@ const LandingPage = ({ onGetStarted, onDevMode }) => {
     },
     {
       q: 'Is my data really secure?',
-      a: 'Absolutely. All synced clips are encrypted end-to-end. For local AI features, data never leaves your machine. We use industry-standard encryption and can\'t access your clipboard data even if we wanted to.'
+      a: 'Absolutely. All synced clips are encrypted end-to-end. For local AI features, data never leaves your machine. We use industry-standard encryption.'
     },
     {
       q: 'Can I use this offline?',
-      a: 'Yep! ClipSync works perfectly offline with full functionality. When you reconnect, everything syncs automatically. No internet? No problem.'
+      a: 'Yep! ClipSync works perfectly offline with full functionality. When you reconnect, everything syncs automatically.'
     },
     {
       q: 'What platforms do you support?',
@@ -239,144 +222,137 @@ const LandingPage = ({ onGetStarted, onDevMode }) => {
   ];
 
   return (
-    <div className="min-h-screen transition-theme" style={{ background: 'var(--gradient-hero)' }}>
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-900 transition-colors duration-300">
       {/* Floating Theme Toggle */}
       <button
         onClick={toggleTheme}
-        className="fixed top-6 right-6 z-50 w-14 h-14 rounded-full glass-strong flex items-center justify-center hover:scale-110 transition-all shadow-xl group"
-        style={{ transform: 'rotate(-5deg)' }}
+        className="fixed top-6 right-6 z-50 p-3 rounded-full bg-white/80 dark:bg-slate-800/80 backdrop-blur-md shadow-lg border border-slate-200 dark:border-slate-700 hover:scale-105 transition-all"
         aria-label="Toggle theme"
       >
         {theme === 'dark' ? (
-          <Sun className="w-6 h-6 text-amber-400 group-hover:rotate-180 transition-transform duration-500" />
+          <Sun className="w-5 h-5 text-amber-400" />
         ) : (
-          <Moon className="w-6 h-6 text-indigo-600 group-hover:-rotate-12 transition-transform duration-500" />
+          <Moon className="w-5 h-5 text-indigo-600" />
         )}
       </button>
 
       {/* Hero Section */}
-      <div className="relative overflow-hidden">
-        {/* Organic background blobs */}
-        <div className="absolute inset-0 opacity-30">
-          <div className="absolute top-20 left-10 w-96 h-96 bg-purple-400 rounded-full mix-blend-multiply filter blur-3xl animate-pulse" style={{ borderRadius: '63% 37% 54% 46% / 55% 48% 52% 45%' }}></div>
-          <div className="absolute top-40 right-10 w-96 h-96 bg-blue-400 rounded-full mix-blend-multiply filter blur-3xl animate-pulse" style={{ animationDelay: '1s', borderRadius: '38% 62% 63% 37% / 41% 44% 56% 59%' }}></div>
-          <div className="absolute bottom-20 left-1/2 w-96 h-96 bg-pink-400 rounded-full mix-blend-multiply filter blur-3xl animate-pulse" style={{ animationDelay: '2s', borderRadius: '49% 51% 48% 52% / 62% 44% 56% 38%' }}></div>
-        </div>
+      <div className="relative overflow-hidden pt-32 pb-20 lg:pt-48 lg:pb-32">
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-indigo-200/20 via-slate-50/0 to-slate-50/0 dark:from-indigo-900/20 dark:via-slate-900/0 dark:to-slate-900/0"></div>
+        
+        <div className="max-w-7xl mx-auto px-6 relative z-10 text-center">
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 font-medium text-sm mb-8 animate-fadeIn">
+            <Sparkles className="w-4 h-4" />
+            <span>New: Local AI Integration Available Now</span>
+          </div>
 
-        <div className="max-w-7xl mx-auto px-6 py-24 relative">
-          <div className="mb-16 animate-fadeIn">
-            {/* Asymmetric layout */}
-            <div className="max-w-4xl">
-              <div className="inline-flex items-center justify-start mb-8">
-                <div className="w-32 h-32 rounded-3xl flex items-center justify-center shadow-2xl transform hover:scale-105 transition-all duration-500 glass-strong" style={{ transform: 'rotate(-3deg)' }}>
-                  <ClipboardList className="w-16 h-16" style={{ color: 'var(--color-accent-primary)' }} />
-                </div>
-              </div>
+          <h1 className="text-6xl md:text-7xl font-bold tracking-tight text-slate-900 dark:text-white mb-8 leading-tight">
+            Your clipboard, <br />
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-purple-600 dark:from-indigo-400 dark:to-purple-400">
+              supercharged.
+            </span>
+          </h1>
 
-              <h1 className="text-7xl font-bold mb-6 leading-tight" style={{ color: 'var(--color-text-primary)', textAlign: 'left' }}>
-                Your clipboard,
-                <br />
-                <span className="italic" style={{ fontWeight: '800' }}>supercharged</span> ⚡
-              </h1>
+          <p className="text-xl text-slate-600 dark:text-slate-300 max-w-2xl mx-auto mb-12 leading-relaxed">
+            Stop losing snippets. ClipSync gives you infinite history, real-time sync across devices, and 50+ developer tools right at your fingertips.
+          </p>
 
-              <p className="text-3xl mb-4 font-medium" style={{ color: 'var(--color-text-secondary)', textAlign: 'left', maxWidth: '600px' }}>
-                Stop losing stuff you copied 5 minutes ago
-              </p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+            <button
+              onClick={onGetStarted}
+              className="px-8 py-4 rounded-xl bg-indigo-600 text-white font-semibold text-lg hover:bg-indigo-700 hover:shadow-xl hover:-translate-y-0.5 transition-all flex items-center gap-2"
+            >
+              Get Started for Free
+              <ArrowRight className="w-5 h-5" />
+            </button>
+            {onDevMode && (
+              <button
+                onClick={onDevMode}
+                className="px-8 py-4 rounded-xl bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 font-semibold text-lg border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700 transition-all flex items-center gap-2"
+              >
+                <Code className="w-5 h-5" />
+                Dev Mode
+              </button>
+            )}
+          </div>
 
-              <p className="text-xl mb-12 leading-relaxed" style={{ color: 'var(--color-text-tertiary)', textAlign: 'left', maxWidth: '550px' }}>
-                Real-time sync, team sharing, and 50+ developer tools.
-                Built by developers who got tired of losing important snippets.
-                <Coffee className="inline w-5 h-5 ml-2" />
-              </p>
-
-              <div className="flex gap-4 items-center flex-wrap">
-                <button
-                  onClick={onGetStarted}
-                  className="px-10 py-5 rounded-2xl font-semibold text-lg transition-all transform hover:scale-105 shadow-xl flex items-center gap-2 group glass-strong"
-                  style={{ color: 'var(--color-text-primary)', transform: 'rotate(-1deg)' }}
-                >
-                  Get Started Free
-                  <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                </button>
-                {onDevMode && (
-                  <button
-                    onClick={onDevMode}
-                    className="px-10 py-5 rounded-2xl font-semibold text-lg transition-all transform hover:scale-105 shadow-lg flex items-center gap-2 glass"
-                    style={{ color: 'var(--color-text-secondary)', transform: 'rotate(1deg)' }}
-                  >
-                    <Code className="w-5 h-5" />
-                    Dev Mode
-                  </button>
-                )}
-              </div>
-
-              <div className="mt-12 flex items-center gap-8 text-sm flex-wrap" style={{ color: 'var(--color-text-tertiary)' }}>
-                <div className="flex items-center gap-2">
-                  <CheckCircle2 className="w-5 h-5 text-emerald-500" />
-                  <span>No credit card</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <CheckCircle2 className="w-5 h-5 text-emerald-500" />
-                  <span>14 days free</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <CheckCircle2 className="w-5 h-5 text-emerald-500" />
-                  <span>Cancel anytime</span>
-                </div>
-              </div>
+          <div className="mt-12 flex items-center justify-center gap-8 text-sm text-slate-500 dark:text-slate-400">
+            <div className="flex items-center gap-2">
+              <CheckCircle2 className="w-4 h-4 text-emerald-500" />
+              <span>No credit card required</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <CheckCircle2 className="w-4 h-4 text-emerald-500" />
+              <span>14-day free trial</span>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Customer Logos */}
-      <div className="max-w-7xl mx-auto px-6 py-16 mb-16">
-        <p className="text-sm font-semibold mb-8 uppercase tracking-wider" style={{ color: 'var(--color-text-tertiary)', textAlign: 'left', marginLeft: '20px' }}>
-          Trusted by developers at →
-        </p>
-        <div className="flex flex-wrap items-center gap-12 ml-8">
-          {customerLogos.map((logo, index) => (
-            <div
-              key={index}
-              className="text-2xl font-bold opacity-50 hover:opacity-100 transition-opacity"
-              style={{
-                color: 'var(--color-text-secondary)',
-                transform: `rotate(${index % 2 === 0 ? '-' : ''}${Math.random() * 2 + 0.5}deg)`
-              }}
-            >
-              {logo}
-            </div>
-          ))}
+      {/* Social Proof */}
+      <div className="py-12 border-y border-slate-200 dark:border-slate-800 bg-white/50 dark:bg-slate-900/50">
+        <div className="max-w-7xl mx-auto px-6">
+          <p className="text-center text-sm font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-8">
+            Trusted by developers at
+          </p>
+          <div className="flex flex-wrap justify-center gap-12 grayscale opacity-60 hover:opacity-100 transition-opacity">
+            {customerLogos.map((logo, index) => (
+              <span key={index} className="text-xl font-bold text-slate-700 dark:text-slate-300">{logo}</span>
+            ))}
+          </div>
         </div>
       </div>
 
-      {/* Video Demo */}
-      <div className="max-w-7xl mx-auto px-6 mb-32">
-        <div className="mb-12" style={{ textAlign: 'left', maxWidth: '600px' }}>
-          <h2 className="text-5xl font-bold mb-4 animate-fadeIn" style={{ color: 'var(--color-text-primary)' }}>
-            See it in action
-          </h2>
-          <p className="text-xl animate-fadeIn" style={{ color: 'var(--color-text-secondary)', animationDelay: '0.1s' }}>
-            Watch how ClipSync makes your workflow smoother (under 2 min, promise)
-          </p>
-        </div>
-        <div
-          className="relative rounded-3xl overflow-hidden shadow-2xl glass-strong hover:scale-[1.02] transition-all duration-500"
-          style={{ paddingBottom: '56.25%', transform: `rotate(-0.5deg)` }}
-        >
-          <div className="absolute inset-0 flex items-center justify-center" style={{ background: 'var(--color-bg-tertiary)' }}>
-            <div className="text-center">
-              <button
-                onClick={() => setIsVideoPlaying(true)}
-                className="w-24 h-24 rounded-full glass-strong flex items-center justify-center mx-auto mb-4 hover:scale-110 transition-all duration-300 cursor-pointer group"
-                aria-label="Play demo video"
-              >
-                <Play className="w-12 h-12 group-hover:scale-125 transition-transform" style={{ color: 'var(--color-accent-primary)' }} />
-              </button>
-              <p className="text-lg font-semibold" style={{ color: 'var(--color-text-secondary)' }}>
-                Click to watch demo
-              </p>
+      {/* Video Demo Section */}
+      <div className="py-24 bg-white dark:bg-slate-900">
+        <div className="max-w-6xl mx-auto px-6">
+          <div className="rounded-2xl overflow-hidden shadow-2xl border border-slate-200 dark:border-slate-800 relative bg-slate-900 aspect-video group cursor-pointer">
+            <div className="absolute inset-0 flex items-center justify-center bg-black/40 group-hover:bg-black/30 transition-colors">
+              <div className="w-20 h-20 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center group-hover:scale-110 transition-transform">
+                <Play className="w-8 h-8 text-white ml-1" />
+              </div>
             </div>
+            {/* Placeholder for video thumbnail */}
+            <div className="w-full h-full bg-gradient-to-br from-slate-800 to-slate-900 flex items-center justify-center">
+              <span className="text-slate-500 font-medium">Demo Video Placeholder</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Features Grid */}
+      <div className="py-24 bg-slate-50 dark:bg-slate-900/50">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="text-center max-w-3xl mx-auto mb-16">
+            <h2 className="text-4xl font-bold text-slate-900 dark:text-white mb-4">
+              Everything you need to ship faster
+            </h2>
+            <p className="text-xl text-slate-600 dark:text-slate-400">
+              We built the tools we wished we had. Now they're yours.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {features.map((feature, index) => {
+              const Icon = feature.icon;
+              return (
+                <div
+                  key={index}
+                  className="p-6 rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:shadow-xl hover:-translate-y-1 transition-all group"
+                  onMouseEnter={() => setActiveFeature(index)}
+                >
+                  <div className={`w-12 h-12 rounded-xl flex items-center justify-center mb-4 ${feature.color}`}>
+                    <Icon className="w-6 h-6" />
+                  </div>
+                  <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-2">
+                    {feature.title}
+                  </h3>
+                  <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">
+                    {feature.description}
+                  </p>
+                </div>
+              );
+            })}
           </div>
         </div>
       </div>
@@ -424,394 +400,334 @@ const LandingPage = ({ onGetStarted, onDevMode }) => {
       </div>
 
       {/* Stats Section */}
-      <div className="max-w-7xl mx-auto px-6 py-16 mb-24">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-          {stats.map((stat, index) => {
-            const Icon = stat.icon;
-            return (
-              <div
-                key={index}
-                className="text-center p-6 rounded-2xl shadow-sm hover:shadow-xl transition-all glass-strong transform hover:-translate-y-1"
-                style={{ transform: `rotate(${index % 2 === 0 ? '-' : ''}${Math.random() * 3 + 0.5}deg)` }}
-              >
-                <div className="w-12 h-12 rounded-xl flex items-center justify-center mx-auto mb-4 glass">
-                  <Icon className="w-6 h-6" style={{ color: 'var(--color-text-primary)' }} />
-                </div>
-                <div className="text-3xl font-bold mb-2" style={{ color: 'var(--color-text-primary)' }}>
-                  {stat.value}{stat.suffix}
-                </div>
-                <div className="text-sm" style={{ color: 'var(--color-text-secondary)' }}>{stat.label}</div>
-              </div>
-            );
-          })}
-        </div>
-      </div>
-
-      {/* Features Grid */}
-      <div className="max-w-7xl mx-auto px-6 mb-32">
-        <div className="mb-16" style={{ textAlign: 'left', maxWidth: '700px' }}>
-          <h2 className="text-5xl font-bold mb-4" style={{ color: 'var(--color-text-primary)' }}>
-            Everything you need
-            <br />
-            <span className="text-3xl font-normal italic" style={{ color: 'var(--color-text-secondary)' }}>
-              (and nothing you don't)
-            </span>
-          </h2>
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {features.map((feature, index) => {
-            const Icon = feature.icon;
-            return (
-              <div
-                key={index}
-                className="rounded-2xl p-8 shadow-sm hover:shadow-xl transition-all transform hover:-translate-y-2 group cursor-pointer glass-strong"
-                style={{ transform: `rotate(${feature.rotation})` }}
-                onMouseEnter={() => setActiveFeature(index)}
-              >
-                <div className={`w-14 h-14 bg-gradient-to-br ${feature.color} rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform shadow-lg`}>
-                  <Icon className="w-7 h-7 text-white" />
-                </div>
-                <h3 className="text-xl font-semibold mb-3" style={{ color: 'var(--color-text-primary)' }}>
-                  {feature.title}
-                </h3>
-                <p className="text-sm leading-relaxed" style={{ color: 'var(--color-text-secondary)' }}>
-                  {feature.description}
-                </p>
-              </div>
-            );
-          })}
-        </div>
-      </div>
-
-      {/* Comparison Table */}
-      <div className="max-w-6xl mx-auto px-6 mb-32">
-        <div className="mb-16" style={{ textAlign: 'left' }}>
-          <h2 className="text-5xl font-bold mb-4" style={{ color: 'var(--color-text-primary)' }}>
-            How we stack up
-          </h2>
-          <p className="text-xl" style={{ color: 'var(--color-text-secondary)' }}>
-            Spoiler: pretty well 😎
-          </p>
-        </div>
-        <div className="rounded-3xl overflow-hidden shadow-2xl glass-strong" style={{ transform: 'rotate(0.5deg)' }}>
-          <table className="w-full">
-            <thead>
-              <tr style={{ background: 'var(--color-bg-tertiary)' }}>
-                <th className="px-6 py-4 text-left font-semibold" style={{ color: 'var(--color-text-primary)' }}>Feature</th>
-                <th className="px-6 py-4 text-center font-semibold" style={{ color: 'var(--color-text-primary)' }}>ClipSync</th>
-                <th className="px-6 py-4 text-center font-semibold" style={{ color: 'var(--color-text-secondary)' }}>Other Guy A</th>
-                <th className="px-6 py-4 text-center font-semibold" style={{ color: 'var(--color-text-secondary)' }}>Other Guy B</th>
-              </tr>
-            </thead>
-            <tbody>
-              {comparisonFeatures.map((item, index) => (
-                <tr key={index} className="border-t" style={{ borderColor: 'var(--color-border-primary)' }}>
-                  <td className="px-6 py-4" style={{ color: 'var(--color-text-primary)' }}>{item.feature}</td>
-                  <td className="px-6 py-4 text-center">
-                    {item.clipsync ? <CheckCircle2 className="w-6 h-6 text-emerald-500 mx-auto" /> : <span style={{ color: 'var(--color-text-tertiary)' }}>—</span>}
-                  </td>
-                  <td className="px-6 py-4 text-center">
-                    {item.competitor1 ? <CheckCircle2 className="w-6 h-6 text-emerald-500 mx-auto opacity-50" /> : <span style={{ color: 'var(--color-text-tertiary)' }}>—</span>}
-                  </td>
-                  <td className="px-6 py-4 text-center">
-                    {item.competitor2 ? <CheckCircle2 className="w-6 h-6 text-emerald-500 mx-auto opacity-50" /> : <span style={{ color: 'var(--color-text-tertiary)' }}>—</span>}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
-
-      {/* Developer Tools */}
-      <div className="max-w-7xl mx-auto px-6 mb-32">
-        <div className="rounded-3xl p-12 shadow-2xl glass-strong" style={{ transform: 'rotate(-0.5deg)' }}>
-          <div className="mb-12" style={{ textAlign: 'left' }}>
-            <h2 className="text-5xl font-bold mb-4" style={{ color: 'var(--color-text-primary)' }}>
-              Built for developers
-              <br />
-              <span className="text-2xl font-normal italic" style={{ color: 'var(--color-text-secondary)' }}>
-                (by developers who actually code)
-              </span>
-            </h2>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
-            {devTools.map((tool, index) => {
-              const Icon = tool.icon;
+      <div className="py-20 bg-indigo-600 dark:bg-indigo-900">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+            {stats.map((stat, index) => {
+              const Icon = stat.icon;
               return (
-                <div key={index} className="glass rounded-2xl p-6 hover:scale-105 transition-all" style={{ transform: `rotate(${index % 2 === 0 ? '-' : ''}1deg)` }}>
-                  <div className="w-12 h-12 rounded-xl flex items-center justify-center mb-4 glass">
-                    <Icon className="w-6 h-6" style={{ color: 'var(--color-accent-primary)' }} />
+                <div key={index} className="text-center">
+                  <div className="inline-flex p-3 rounded-lg bg-white/10 text-white mb-4">
+                    <Icon className="w-6 h-6" />
                   </div>
-                  <h3 className="text-lg font-semibold mb-2" style={{ color: 'var(--color-text-primary)' }}>{tool.name}</h3>
-                  <p className="text-sm" style={{ color: 'var(--color-text-secondary)' }}>{tool.desc}</p>
+                  <div className="text-4xl font-bold text-white mb-1">
+                    {stat.value}{stat.suffix}
+                  </div>
+                  <div className="text-indigo-100">{stat.label}</div>
                 </div>
               );
             })}
           </div>
+        </div>
+      </div>
 
-          <div className="glass rounded-2xl p-8">
-            <h3 className="text-2xl font-semibold mb-6" style={{ color: 'var(--color-text-primary)', textAlign: 'left' }}>
-              50+ text transforms (the ones you actually use)
-            </h3>
-            <div className="flex flex-wrap gap-3">
-              {transforms.map((transform, index) => (
-                <span
-                  key={index}
-                  className="px-5 py-2.5 glass rounded-lg text-sm font-medium hover:scale-105 transition-transform"
-                  style={{
-                    color: 'var(--color-text-primary)',
-                    transform: `rotate(${index % 3 === 0 ? '-' : index % 3 === 1 ? '' : ''}${Math.random() * 2}deg)`
-                  }}
-                >
-                  {transform}
-                </span>
-              ))}
+      {/* Developer Tools */}
+      <div className="py-24 bg-white dark:bg-slate-900">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="flex flex-col lg:flex-row gap-16 items-center">
+            <div className="lg:w-1/2">
+              <h2 className="text-4xl font-bold text-slate-900 dark:text-white mb-6">
+                Built for developers,<br />
+                by developers.
+              </h2>
+              <p className="text-lg text-slate-600 dark:text-slate-400 mb-8 leading-relaxed">
+                ClipSync isn't just a clipboard manager. It's a complete developer utility belt. 
+                Format JSON, generate UUIDs, or clean up code snippets without leaving your keyboard.
+              </p>
+              
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
+                {devTools.map((tool, index) => {
+                  const Icon = tool.icon;
+                  return (
+                    <div key={index} className="flex items-start gap-3">
+                      <div className="mt-1 p-1.5 rounded bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400">
+                        <Icon className="w-4 h-4" />
+                      </div>
+                      <div>
+                        <h4 className="font-semibold text-slate-900 dark:text-white">{tool.name}</h4>
+                        <p className="text-sm text-slate-500 dark:text-slate-400">{tool.desc}</p>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+
+              <div className="p-6 rounded-2xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
+                <h4 className="font-semibold text-slate-900 dark:text-white mb-4">50+ Built-in Transforms</h4>
+                <div className="flex flex-wrap gap-2">
+                  {transforms.slice(0, 8).map((t, i) => (
+                    <span key={i} className="px-3 py-1 text-xs font-medium rounded-md bg-white dark:bg-slate-700 border border-slate-200 dark:border-slate-600 text-slate-600 dark:text-slate-300">
+                      {t}
+                    </span>
+                  ))}
+                  <span className="px-3 py-1 text-xs font-medium rounded-md bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400">
+                    +40 more
+                  </span>
+                </div>
+              </div>
             </div>
+            
+            <div className="lg:w-1/2 w-full">
+              <div className="rounded-2xl bg-slate-900 shadow-2xl p-6 border border-slate-800">
+                <div className="flex gap-2 mb-4">
+                  <div className="w-3 h-3 rounded-full bg-red-500"></div>
+                  <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
+                  <div className="w-3 h-3 rounded-full bg-green-500"></div>
+                </div>
+                <div className="font-mono text-sm text-slate-300 space-y-2">
+                  <div className="flex gap-4">
+                    <span className="text-slate-500">1</span>
+                    <span className="text-purple-400">const</span> <span className="text-blue-400">data</span> = <span className="text-yellow-300">await</span> clip.json();
+                  </div>
+                  <div className="flex gap-4">
+                    <span className="text-slate-500">2</span>
+                    <span className="text-slate-500">// Auto-formatted instantly</span>
+                  </div>
+                  <div className="flex gap-4">
+                    <span className="text-slate-500">3</span>
+                    <span className="text-purple-400">console</span>.<span className="text-blue-400">log</span>(data.<span className="text-blue-400">formatted</span>);
+                  </div>
+                  <div className="flex gap-4">
+                    <span className="text-slate-500">4</span>
+                    <span className="text-green-400">"{'{ "id": 123, "status": "active" }'}"</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Comparison Table */}
+      <div className="py-24 bg-slate-50 dark:bg-slate-900/50">
+        <div className="max-w-5xl mx-auto px-6">
+          <h2 className="text-4xl font-bold text-center text-slate-900 dark:text-white mb-16">
+            How we stack up
+          </h2>
+          <div className="rounded-2xl overflow-hidden shadow-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800">
+            <table className="w-full">
+              <thead>
+                <tr className="bg-slate-50 dark:bg-slate-900/50 border-b border-slate-200 dark:border-slate-700">
+                  <th className="px-6 py-5 text-left font-semibold text-slate-900 dark:text-white">Feature</th>
+                  <th className="px-6 py-5 text-center font-bold text-indigo-600 dark:text-indigo-400 bg-indigo-50/50 dark:bg-indigo-900/10">ClipSync</th>
+                  <th className="px-6 py-5 text-center font-medium text-slate-500 dark:text-slate-400">Other A</th>
+                  <th className="px-6 py-5 text-center font-medium text-slate-500 dark:text-slate-400">Other B</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-slate-200 dark:divide-slate-700">
+                {comparisonFeatures.map((item, index) => (
+                  <tr key={index} className="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+                    <td className="px-6 py-4 font-medium text-slate-700 dark:text-slate-200">{item.feature}</td>
+                    <td className="px-6 py-4 text-center bg-indigo-50/30 dark:bg-indigo-900/5">
+                      {item.clipsync ? <CheckCircle2 className="w-5 h-5 text-emerald-500 mx-auto" /> : <span className="text-slate-300">—</span>}
+                    </td>
+                    <td className="px-6 py-4 text-center">
+                      {item.competitor1 ? <CheckCircle2 className="w-5 h-5 text-slate-400 mx-auto" /> : <span className="text-slate-300">—</span>}
+                    </td>
+                    <td className="px-6 py-4 text-center">
+                      {item.competitor2 ? <CheckCircle2 className="w-5 h-5 text-slate-400 mx-auto" /> : <span className="text-slate-300">—</span>}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
         </div>
       </div>
 
       {/* Pricing */}
-      <div className="max-w-7xl mx-auto px-6 mb-32">
-        <div className="mb-16" style={{ textAlign: 'left' }}>
-          <h2 className="text-5xl font-bold mb-4" style={{ color: 'var(--color-text-primary)' }}>
-            Simple pricing
-          </h2>
-          <p className="text-xl" style={{ color: 'var(--color-text-secondary)' }}>
-            No tricks, no hidden fees. Just honest pricing.
-          </p>
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {pricingPlans.map((plan, index) => (
-            <div
-              key={index}
-              className={`rounded-3xl p-8 shadow-lg transition-all hover:shadow-2xl glass-strong ${plan.highlight ? 'scale-105 ring-2' : ''
-                }`}
-              style={{
-                ringColor: plan.highlight ? 'var(--color-accent-primary)' : undefined,
-                transform: `rotate(${index === 0 ? '-1' : index === 2 ? '1' : '0'}deg)`
-              }}
-            >
-              <div className="inline-block px-3 py-1 text-xs font-semibold rounded-full mb-4 glass">
-                {plan.badge}
-              </div>
-              <h3 className="text-2xl font-bold mb-2" style={{ color: 'var(--color-text-primary)' }}>{plan.name}</h3>
-              <div className="mb-6">
-                <span className="text-5xl font-bold" style={{ color: 'var(--color-text-primary)' }}>{plan.price}</span>
-                <span className="ml-2" style={{ color: 'var(--color-text-secondary)' }}>/{plan.period}</span>
-              </div>
-              <ul className="space-y-4 mb-8">
-                {plan.features.map((feature, i) => (
-                  <li key={i} className="flex items-start gap-3">
-                    <CheckCircle2 className="w-5 h-5 text-emerald-500 mt-0.5 flex-shrink-0" />
-                    <span style={{ color: 'var(--color-text-secondary)' }}>{feature}</span>
-                  </li>
-                ))}
-              </ul>
-              <button
-                className={`w-full py-3 rounded-xl font-semibold transition-all ${plan.highlight ? 'glass-strong shadow-lg hover:scale-105' : 'glass hover:scale-105'
-                  }`}
-                style={{ color: 'var(--color-text-primary)' }}
+      <div className="py-24 bg-white dark:bg-slate-900">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold text-slate-900 dark:text-white mb-4">Simple, transparent pricing</h2>
+            <p className="text-xl text-slate-600 dark:text-slate-400">Start for free, upgrade when you need to.</p>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+            {pricingPlans.map((plan, index) => (
+              <div
+                key={index}
+                className={`rounded-3xl p-8 border ${
+                  plan.highlight 
+                    ? 'border-indigo-600 shadow-2xl scale-105 z-10 bg-white dark:bg-slate-800' 
+                    : 'border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50'
+                } transition-all`}
               >
-                Get Started
-              </button>
-            </div>
-          ))}
+                {plan.highlight && (
+                  <div className="inline-block px-3 py-1 text-xs font-semibold rounded-full mb-4 bg-indigo-100 dark:bg-indigo-900 text-indigo-700 dark:text-indigo-300">
+                    {plan.badge}
+                  </div>
+                )}
+                <h3 className="text-2xl font-bold text-slate-900 dark:text-white mb-2">{plan.name}</h3>
+                <div className="mb-6 flex items-baseline">
+                  <span className="text-4xl font-bold text-slate-900 dark:text-white">{plan.price}</span>
+                  <span className="ml-2 text-slate-500 dark:text-slate-400">/{plan.period}</span>
+                </div>
+                <ul className="space-y-4 mb-8">
+                  {plan.features.map((feature, i) => (
+                    <li key={i} className="flex items-start gap-3">
+                      <CheckCircle2 className="w-5 h-5 text-emerald-500 mt-0.5 flex-shrink-0" />
+                      <span className="text-slate-600 dark:text-slate-300">{feature}</span>
+                    </li>
+                  ))}
+                </ul>
+                <button
+                  className={`w-full py-3 rounded-xl font-semibold transition-all ${
+                    plan.highlight
+                      ? 'bg-indigo-600 text-white hover:bg-indigo-700 shadow-lg'
+                      : 'bg-white dark:bg-slate-700 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-600 hover:bg-slate-50 dark:hover:bg-slate-600'
+                  }`}
+                >
+                  Get Started
+                </button>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
 
       {/* Testimonials */}
-      <div className="max-w-7xl mx-auto px-6 mb-32">
-        <div className="mb-16" style={{ textAlign: 'left' }}>
-          <h2 className="text-5xl font-bold mb-4" style={{ color: 'var(--color-text-primary)' }}>
-            What people are saying
+      <div className="py-24 bg-slate-50 dark:bg-slate-900/50">
+        <div className="max-w-7xl mx-auto px-6">
+          <h2 className="text-4xl font-bold text-center text-slate-900 dark:text-white mb-16">
+            Loved by developers
           </h2>
-          <p className="text-xl" style={{ color: 'var(--color-text-secondary)' }}>
-            Real reviews from real developers <Heart className="inline w-5 h-5 text-red-500" />
-          </p>
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {testimonials.map((testimonial, index) => (
-            <div
-              key={index}
-              className="rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all glass-strong"
-              style={{ transform: `rotate(${index % 2 === 0 ? '-' : ''}${Math.random() * 2 + 0.5}deg)` }}
-            >
-              <div className="flex gap-1 mb-4">
-                {[...Array(testimonial.rating)].map((_, i) => (
-                  <Star key={i} className="w-5 h-5 fill-amber-400 text-amber-400" />
-                ))}
-              </div>
-              <p className="mb-6 leading-relaxed" style={{ color: 'var(--color-text-secondary)' }}>
-                "{testimonial.text}"
-              </p>
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="font-semibold" style={{ color: 'var(--color-text-primary)' }}>{testimonial.name}</p>
-                  <p className="text-sm" style={{ color: 'var(--color-text-tertiary)' }}>{testimonial.role} at {testimonial.company}</p>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {testimonials.map((testimonial, index) => (
+              <div key={index} className="p-8 rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-sm hover:shadow-lg transition-all">
+                <div className="flex gap-1 mb-4">
+                  {[...Array(testimonial.rating)].map((_, i) => (
+                    <Star key={i} className="w-4 h-4 fill-amber-400 text-amber-400" />
+                  ))}
                 </div>
-                <span className="text-3xl">{testimonial.emoji}</span>
+                <p className="mb-6 text-slate-600 dark:text-slate-300 italic">"{testimonial.text}"</p>
+                <div className="flex items-center gap-4">
+                  <div className="w-10 h-10 rounded-full bg-slate-200 dark:bg-slate-700 flex items-center justify-center text-xl">
+                    {testimonial.emoji}
+                  </div>
+                  <div>
+                    <p className="font-semibold text-slate-900 dark:text-white">{testimonial.name}</p>
+                    <p className="text-xs text-slate-500 dark:text-slate-400">{testimonial.role} at {testimonial.company}</p>
+                  </div>
+                </div>
               </div>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* Use Cases */}
-      <div className="max-w-7xl mx-auto px-6 mb-32">
-        <div className="mb-16" style={{ textAlign: 'left' }}>
-          <h2 className="text-5xl font-bold mb-4" style={{ color: 'var(--color-text-primary)' }}>
-            Perfect for...
-          </h2>
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <div className="rounded-2xl p-10 hover:shadow-2xl transition-all glass-strong" style={{ transform: 'rotate(-1deg)' }}>
-            <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center mb-6 shadow-lg">
-              <Code className="w-8 h-8 text-white" />
-            </div>
-            <h3 className="text-2xl font-bold mb-4" style={{ color: 'var(--color-text-primary)' }}>Solo Devs</h3>
-            <p className="leading-relaxed" style={{ color: 'var(--color-text-secondary)' }}>
-              Keep your workflow smooth. Unlimited history, smart search, powerful transforms, seamless sync.
-            </p>
-          </div>
-          <div className="rounded-2xl p-10 hover:shadow-2xl transition-all glass-strong" style={{ transform: 'rotate(0.5deg)' }}>
-            <div className="w-16 h-16 bg-gradient-to-br from-purple-500 to-purple-600 rounded-2xl flex items-center justify-center mb-6 shadow-lg">
-              <Users className="w-8 h-8 text-white" />
-            </div>
-            <h3 className="text-2xl font-bold mb-4" style={{ color: 'var(--color-text-primary)' }}>Dev Teams</h3>
-            <p className="leading-relaxed" style={{ color: 'var(--color-text-secondary)' }}>
-              Share snippets instantly. Collaborate in real-time. Maintain standards. Speed up knowledge transfer.
-            </p>
-          </div>
-          <div className="rounded-2xl p-10 hover:shadow-2xl transition-all glass-strong" style={{ transform: 'rotate(-0.5deg)' }}>
-            <div className="w-16 h-16 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-2xl flex items-center justify-center mb-6 shadow-lg">
-              <Shield className="w-8 h-8 text-white" />
-            </div>
-            <h3 className="text-2xl font-bold mb-4" style={{ color: 'var(--color-text-primary)' }}>Enterprises</h3>
-            <p className="leading-relaxed" style={{ color: 'var(--color-text-secondary)' }}>
-              Enterprise security, SSO, compliance-ready, audit trails, centralized admin controls.
-            </p>
+            ))}
           </div>
         </div>
       </div>
 
       {/* FAQ */}
-      <div className="max-w-4xl mx-auto px-6 mb-32">
-        <div className="mb-16" style={{ textAlign: 'left' }}>
-          <h2 className="text-5xl font-bold mb-4" style={{ color: 'var(--color-text-primary)' }}>
-            Questions?
+      <div className="py-24 bg-white dark:bg-slate-900">
+        <div className="max-w-3xl mx-auto px-6">
+          <h2 className="text-4xl font-bold text-center text-slate-900 dark:text-white mb-16">
+            Frequently Asked Questions
           </h2>
-          <p className="text-xl" style={{ color: 'var(--color-text-secondary)' }}>
-            We've got answers
-          </p>
-        </div>
-        <div className="space-y-4">
-          {faqs.map((faq, index) => (
-            <div
-              key={index}
-              className="rounded-xl overflow-hidden glass-strong"
-              style={{ transform: `rotate(${index % 2 === 0 ? '-' : ''}0.5deg)` }}
-            >
-              <button
-                onClick={() => setOpenFaq(openFaq === index ? null : index)}
-                className="w-full px-6 py-5 flex items-center justify-between text-left hover:opacity-80 transition-opacity"
+          <div className="space-y-4">
+            {faqs.map((faq, index) => (
+              <div
+                key={index}
+                className="rounded-xl border border-slate-200 dark:border-slate-700 overflow-hidden"
               >
-                <span className="font-semibold" style={{ color: 'var(--color-text-primary)' }}>{faq.q}</span>
-                <ChevronDown
-                  className={`w-5 h-5 transition-transform ${openFaq === index ? 'rotate-180' : ''
-                    }`}
-                  style={{ color: 'var(--color-text-secondary)' }}
-                />
-              </button>
-              {openFaq === index && (
-                <div className="px-6 py-4 glass">
-                  <p className="leading-relaxed" style={{ color: 'var(--color-text-secondary)' }}>{faq.a}</p>
-                </div>
-              )}
-            </div>
-          ))}
+                <button
+                  onClick={() => setOpenFaq(openFaq === index ? null : index)}
+                  className="w-full px-6 py-5 flex items-center justify-between text-left bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors"
+                >
+                  <span className="font-semibold text-slate-900 dark:text-white">{faq.q}</span>
+                  <ChevronDown
+                    className={`w-5 h-5 text-slate-500 transition-transform ${openFaq === index ? 'rotate-180' : ''}`}
+                  />
+                </button>
+                {openFaq === index && (
+                  <div className="px-6 py-5 bg-slate-50 dark:bg-slate-800/50 text-slate-600 dark:text-slate-300 leading-relaxed border-t border-slate-200 dark:border-slate-700">
+                    {faq.a}
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
         </div>
       </div>
 
-      {/* Final CTA */}
-      <div className="max-w-7xl mx-auto px-6 mb-24">
-        <div className="rounded-3xl p-16 shadow-2xl glass-strong" style={{ transform: 'rotate(-0.5deg)' }}>
-          <div style={{ textAlign: 'left', maxWidth: '700px' }}>
-            <h2 className="text-5xl font-bold mb-4" style={{ color: 'var(--color-text-primary)' }}>
-              Ready to level up your workflow?
-            </h2>
-            <p className="text-2xl mb-12" style={{ color: 'var(--color-text-secondary)' }}>
-              Join thousands of developers who stopped losing their clipboard history.
-            </p>
-          </div>
-          <div className="flex gap-4 flex-wrap">
-            <button
-              onClick={onGetStarted}
-              className="px-10 py-5 rounded-2xl font-semibold text-lg transition-all transform hover:scale-105 shadow-xl flex items-center gap-2 group glass-strong"
-              style={{ color: 'var(--color-text-primary)', transform: 'rotate(-1deg)' }}
-            >
-              Get Started Free
-              <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-            </button>
-            {onDevMode && (
+      {/* CTA */}
+      <div className="py-24">
+        <div className="max-w-5xl mx-auto px-6">
+          <div className="rounded-3xl p-12 md:p-16 bg-indigo-600 text-center relative overflow-hidden">
+            <div className="absolute top-0 left-0 w-full h-full bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20"></div>
+            <div className="relative z-10">
+              <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
+                Ready to stop losing clips?
+              </h2>
+              <p className="text-xl text-indigo-100 mb-10 max-w-2xl mx-auto">
+                Join thousands of developers who have already supercharged their workflow.
+              </p>
               <button
-                onClick={onDevMode}
-                className="px-10 py-5 rounded-2xl font-semibold text-lg transition-all transform hover:scale-105 flex items-center gap-2 glass"
-                style={{ color: 'var(--color-text-secondary)', transform: 'rotate(1deg)' }}
+                onClick={onGetStarted}
+                className="px-10 py-4 rounded-xl bg-white text-indigo-600 font-bold text-lg hover:bg-indigo-50 hover:shadow-xl hover:-translate-y-1 transition-all"
               >
-                <Code className="w-5 h-5" />
-                Try Dev Mode
+                Get Started for Free
               </button>
-            )}
+            </div>
           </div>
         </div>
       </div>
 
       {/* Footer */}
-      <div className="border-t py-12 glass-strong" style={{ borderColor: 'var(--color-border-primary)' }}>
+      <footer className="py-12 bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800">
         <div className="max-w-7xl mx-auto px-6">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
             <div>
               <div className="flex items-center gap-2 mb-4">
-                <ClipboardList className="w-6 h-6" style={{ color: 'var(--color-accent-primary)' }} />
-                <span className="text-xl font-bold" style={{ color: 'var(--color-text-primary)' }}>ClipSync</span>
+                <ClipboardList className="w-6 h-6 text-indigo-600 dark:text-indigo-400" />
+                <span className="text-xl font-bold text-slate-900 dark:text-white">ClipSync</span>
               </div>
-              <p className="text-sm" style={{ color: 'var(--color-text-secondary)' }}>
-                Made with <Heart className="inline w-4 h-4 text-red-500" /> by developers, for developers.
+              <p className="text-sm text-slate-500 dark:text-slate-400 mb-6">
+                The clipboard manager built for developers. Secure, fast, and packed with tools.
               </p>
-            </div>
-            <div>
-              <h4 className="font-semibold mb-4" style={{ color: 'var(--color-text-primary)' }}>Product</h4>
-              <ul className="space-y-2 text-sm" style={{ color: 'var(--color-text-secondary)' }}>
-                <li><a href="#" className="hover:opacity-70 transition-opacity">Features</a></li>
-                <li><a href="#" className="hover:opacity-70 transition-opacity">Pricing</a></li>
-                <li><a href="#" className="hover:opacity-70 transition-opacity">Security</a></li>
-              </ul>
-            </div>
-            <div>
-              <h4 className="font-semibold mb-4" style={{ color: 'var(--color-text-primary)' }}>Company</h4>
-              <ul className="space-y-2 text-sm" style={{ color: 'var(--color-text-secondary)' }}>
-                <li><a href="#" className="hover:opacity-70 transition-opacity">About</a></li>
-                <li><a href="#" className="hover:opacity-70 transition-opacity">Blog</a></li>
-                <li><a href="#" className="hover:opacity-70 transition-opacity">Careers</a></li>
-              </ul>
-            </div>
-            <div>
-              <h4 className="font-semibold mb-4" style={{ color: 'var(--color-text-primary)' }}>Connect</h4>
               <div className="flex gap-4">
-                <a href="#" className="hover:opacity-70 transition-opacity" style={{ color: 'var(--color-text-secondary)' }}><Twitter className="w-5 h-5" /></a>
-                <a href="#" className="hover:opacity-70 transition-opacity" style={{ color: 'var(--color-text-secondary)' }}><Github className="w-5 h-5" /></a>
-                <a href="#" className="hover:opacity-70 transition-opacity" style={{ color: 'var(--color-text-secondary)' }}><Linkedin className="w-5 h-5" /></a>
+                <a href="#" className="text-slate-400 hover:text-indigo-600 transition-colors"><Twitter className="w-5 h-5" /></a>
+                <a href="#" className="text-slate-400 hover:text-indigo-600 transition-colors"><Github className="w-5 h-5" /></a>
+                <a href="#" className="text-slate-400 hover:text-indigo-600 transition-colors"><Linkedin className="w-5 h-5" /></a>
               </div>
+            </div>
+            
+            <div>
+              <h4 className="font-semibold text-slate-900 dark:text-white mb-6">Product</h4>
+              <ul className="space-y-3 text-sm text-slate-500 dark:text-slate-400">
+                <li><a href="#" className="hover:text-indigo-600 transition-colors">Features</a></li>
+                <li><a href="#" className="hover:text-indigo-600 transition-colors">Pricing</a></li>
+                <li><a href="#" className="hover:text-indigo-600 transition-colors">Changelog</a></li>
+                <li><a href="#" className="hover:text-indigo-600 transition-colors">Docs</a></li>
+              </ul>
+            </div>
+            
+            <div>
+              <h4 className="font-semibold text-slate-900 dark:text-white mb-6">Company</h4>
+              <ul className="space-y-3 text-sm text-slate-500 dark:text-slate-400">
+                <li><a href="#" className="hover:text-indigo-600 transition-colors">About</a></li>
+                <li><a href="#" className="hover:text-indigo-600 transition-colors">Careers</a></li>
+                <li><a href="#" className="hover:text-indigo-600 transition-colors">Blog</a></li>
+                <li><a href="#" className="hover:text-indigo-600 transition-colors">Contact</a></li>
+              </ul>
+            </div>
+            
+            <div>
+              <h4 className="font-semibold text-slate-900 dark:text-white mb-6">Legal</h4>
+              <ul className="space-y-3 text-sm text-slate-500 dark:text-slate-400">
+                <li><a href="#" className="hover:text-indigo-600 transition-colors">Privacy</a></li>
+                <li><a href="#" className="hover:text-indigo-600 transition-colors">Terms</a></li>
+                <li><a href="#" className="hover:text-indigo-600 transition-colors">Security</a></li>
+              </ul>
             </div>
           </div>
-          <div className="border-t pt-8 text-center text-sm" style={{ borderColor: 'var(--color-border-primary)', color: 'var(--color-text-tertiary)' }}>
-            <p>© 2024 ClipSync. Built by developers who actually code.</p>
+          
+          <div className="pt-8 border-t border-slate-200 dark:border-slate-800 flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-slate-500 dark:text-slate-400">
+            <p>© 2024 ClipSync. All rights reserved.</p>
+            <p className="flex items-center gap-1">
+              Made with <Heart className="w-4 h-4 text-red-500 fill-red-500" /> by developers.
+            </p>
           </div>
         </div>
-      </div>
+      </footer>
     </div>
   );
 };

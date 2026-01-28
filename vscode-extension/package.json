@@ -27,6 +27,11 @@
   "contributes": {
     "commands": [
       {
+        "command": "clipsync.openDashboard",
+        "title": "ClipSync: Open Dashboard",
+        "icon": "$(dashboard)"
+      },
+      {
         "command": "clipsync.openPanel",
         "title": "ClipSync: Open Panel",
         "icon": "$(clippy)"
